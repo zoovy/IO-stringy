@@ -13,7 +13,7 @@
 <UL>
 <LI> <A HREF="#Construction">Construction</A>
 <LI> <A HREF="#Input_and_output">Input and output</A>
-<LI> <A HREF="#Seeking_and_telling">Seeking and telling</A>
+<LI> <A HREF="#Seeking_telling_and_other_attributes">Seeking/telling and other attributes</A>
 </UL>
 <LI> <A HREF="#VERSION">VERSION</A>
 <LI> <A HREF="#AUTHORS">AUTHORS</A>
@@ -145,13 +145,13 @@ interface, and read/write scalars just like files:
 
 
 <DL>
-<P><DT><B><A NAME="item:new_ARGS">new [ARGS...]</A></B></DT>
+<P><DT><B><A NAME="item:new">new [ARGS...]</A></B></DT>
 <DD>
 <I>Class method.</I>
 Return a new, unattached scalar handle.  
 If any arguments are given, they're sent to open().
 
-<P><DT><B><A NAME="item:open_SCALARREF">open [SCALARREF]</A></B></DT>
+<P><DT><B><A NAME="item:open">open [SCALARREF]</A></B></DT>
 <DD>
 <I>Instance method.</I>
 Open the scalar handle on a new scalar, pointed to by SCALARREF.
@@ -182,6 +182,11 @@ Done automatically on destroy.
 
 
 <DL>
+<P><DT><B><A NAME="item:flush">flush</A></B></DT>
+<DD>
+<I>Instance method.</I>
+No-op, provided for OO compatibility.
+
 <P><DT><B><A NAME="item:getc">getc</A></B></DT>
 <DD>
 <I>Instance method.</I>
@@ -200,7 +205,7 @@ Currently, lines are delimited by &quot;\n&quot;.
 Get all remaining lines.
 It will croak() if accidentally called in a scalar context.
 
-<P><DT><B><A NAME="item:print_ARGS">print ARGS...</A></B></DT>
+<P><DT><B><A NAME="item:print">print ARGS...</A></B></DT>
 <DD>
 <I>Instance method.</I>
 Print ARGS to the underlying scalar.  
@@ -209,13 +214,13 @@ Print ARGS to the underlying scalar.
 <P><B>Warning:</B> Currently, this always causes a &quot;seek to the end of the string&quot;; 
 this may change in the future.
 
-<P><DT><B><A NAME="item:read_BUF_NBYTES_OFFSET">read BUF, NBYTES, [OFFSET]</A></B></DT>
+<P><DT><B><A NAME="item:read">read BUF, NBYTES, [OFFSET]</A></B></DT>
 <DD>
 <I>Instance method.</I>
 Read some bytes from the scalar.
 Returns the number of bytes actually read, 0 on end-of-file, undef on error.
 
-<P><DT><B><A NAME="item:write_BUF_NBYTES_OFFSET">write BUF, NBYTES, [OFFSET]</A></B></DT>
+<P><DT><B><A NAME="item:write">write BUF, NBYTES, [OFFSET]</A></B></DT>
 <DD>
 <I>Instance method.</I>
 Write some bytes to the scalar.
@@ -225,11 +230,21 @@ Write some bytes to the scalar.
 
 
 <P><HR>
-<A NAME="Seeking_and_telling"><H3><A HREF="#__TOP__"><IMG SRC="icons/h2bullet.gif" ALT="Top" BORDER="0"></A> Seeking and telling</H3></A>
+<A NAME="Seeking_telling_and_other_attributes"><H3><A HREF="#__TOP__"><IMG SRC="icons/h2bullet.gif" ALT="Top" BORDER="0"></A> Seeking/telling and other attributes</H3></A>
 
 
 
 <DL>
+<P><DT><B><A NAME="item:autoflush">autoflush</A></B></DT>
+<DD>
+<I>Instance method.</I>
+No-op, provided for OO compatibility.
+
+<P><DT><B><A NAME="item:binmode">binmode</A></B></DT>
+<DD>
+<I>Instance method.</I>
+No-op, provided for OO compatibility.
+
 <P><DT><B><A NAME="item:clearerr">clearerr</A></B></DT>
 <DD>
 <I>Instance method.</I>  Clear the error and EOF flags.  A no-op.
@@ -238,7 +253,7 @@ Write some bytes to the scalar.
 <DD>
 <I>Instance method.</I>  Are we at end of file?
 
-<P><DT><B><A NAME="item:seek_OFFSET_WHENCE">seek OFFSET, WHENCE</A></B></DT>
+<P><DT><B><A NAME="item:seek">seek OFFSET, WHENCE</A></B></DT>
 <DD>
 <I>Instance method.</I>  Seek to a given position in the stream.
 
@@ -247,7 +262,7 @@ Write some bytes to the scalar.
 <I>Instance method.</I>
 Return the current position in the stream, as a numeric offset.
 
-<P><DT><B><A NAME="item:setpos_POS">setpos POS</A></B></DT>
+<P><DT><B><A NAME="item:setpos">setpos POS</A></B></DT>
 <DD>
 <I>Instance method.</I>
 Set the current position, using the opaque value returned by <CODE>getpos()</CODE>.
@@ -270,7 +285,7 @@ Return a reference to the underlying scalar.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Scalar.pm,v 1.117 2000/03/17 08:14:59 eryq Exp $
+<P>$Id: Scalar.pm,v 1.118 2000/04/17 03:42:00 eryq Exp $
 
 
 
@@ -317,7 +332,7 @@ for his patch to massively improve the performance of <CODE>getline()</CODE>.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Fri Mar 17 03:16:23 2000 by cvu_pod2html
+Generated Sun Apr 16 23:43:01 2000 by cvu_pod2html
 </FONT></ADDRESS>
 </BODY>
 </HTML>

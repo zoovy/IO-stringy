@@ -1,4 +1,9 @@
-MENU perldoc
+MENU perlmod
+
+SECTION Overview
+
+ITEM IO::Stringy
+HREF IO/Stringy.pm.html
 
 SECTION Modules
 
@@ -13,9 +18,6 @@ HREF IO/Scalar.pm.html
 
 ITEM IO::ScalarArray
 HREF IO/ScalarArray.pm.html
-
-ITEM IO::Stringy
-HREF IO/Stringy.pm.html
 
 ITEM IO::Wrap
 HREF IO/Wrap.pm.html

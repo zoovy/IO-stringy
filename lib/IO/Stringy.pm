@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.209 $, 10;
+$VERSION = substr q$Revision: 1.210 $, 10;
 
 1;
 __END__
@@ -57,6 +57,12 @@ You know the drill...
 
 =over 4
 
+=item Version 1.210
+
+Added flush() and other no-op methods.
+I<Thanks to Doru Petrescu for suggesting this.>
+
+
 =item Version 1.209
 
 Small bug fixes.
@@ -106,7 +112,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.209 2000/03/17 08:15:00 eryq Exp $
+$Id: Stringy.pm,v 1.210 2000/04/17 03:42:00 eryq Exp $
 
 
 

@@ -102,7 +102,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.114 $, 10;
+$VERSION = substr q$Revision: 1.115 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -204,6 +204,17 @@ sub close {
 =over 4
 
 =cut
+
+#------------------------------
+
+=item flush 
+
+I<Instance method.>
+No-op, provided for OO compatibility.
+
+=cut
+
+sub flush {} 
 
 #------------------------------
 
@@ -357,11 +368,43 @@ sub write {
 
 #==============================
 
-=head2 Seeking and telling
+=head2 Seeking/telling and other attributes
 
 =over 4
 
 =cut
+
+#------------------------------
+
+=item autoflush 
+
+I<Instance method.>
+No-op, provided for OO compatibility.
+
+=cut
+
+sub autoflush {} 
+
+#------------------------------
+
+=item binmode
+
+I<Instance method.>
+No-op, provided for OO compatibility.
+
+=cut
+
+sub binmode {} 
+
+#------------------------------
+
+=item clearerr
+
+I<Instance method.>  Clear the error and EOF flags.  A no-op.
+
+=cut
+
+sub clearerr { 1 }
 
 #------------------------------
 
@@ -521,7 +564,7 @@ __END__
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.114 2000/03/17 08:14:59 eryq Exp $
+$Id: ScalarArray.pm,v 1.115 2000/04/17 03:42:00 eryq Exp $
 
 
 =head1 AUTHOR
