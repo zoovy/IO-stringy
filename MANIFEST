@@ -1,0 +1,16 @@
+COPYING
+MANIFEST
+Makefile.PL
+README
+docs/IO/IO-stringy/h1bullet.gif
+docs/IO/IO-stringy/h2bullet.gif
+docs/IO/Scalar.pm.html
+docs/IO/ScalarArray.pm.html
+docs/IO/Wrap.pm.html
+docs/Makefile
+lib/IO/Scalar.pm
+lib/IO/ScalarArray.pm
+lib/IO/Wrap.pm
+t/Checker.pm
+t/IO_Scalar.t
+t/IO_ScalarArray.t
