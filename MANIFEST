@@ -1,5 +1,7 @@
 MANIFEST
 Makefile.PL
+README
+README.system
 docs/IO/AtomicFile.pm.html
 docs/IO/InnerFile.pm.html
 docs/IO/Lines.pm.html
@@ -9,11 +11,7 @@ docs/IO/Stringy.pm.html
 docs/IO/Wrap.pm.html
 docs/IO/WrapTie.pm.html
 docs/IO/icons/h1bullet.gif
-docs/IO/icons/h1bullet1.gif
-docs/IO/icons/h1bullet2.gif
 docs/IO/icons/h2bullet.gif
-docs/IO/icons/h2bullet1.gif
-docs/IO/icons/up.gif
 docs/IO/icons/zeegee.gif
 docs/index-menu.html
 docs/index.html

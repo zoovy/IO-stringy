@@ -3,10 +3,11 @@
   <TITLE>IO::InnerFile</TITLE>
 </HEAD>
 <BODY 
-       bgcolor="#FFFFFF" link="#BE1B58" vlink="#8C337C" alink="#F28EAA">
-<A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::InnerFile</H1>
+       bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::InnerFile</H1>
 </A><UL>
 <LI> <A HREF="#NAME">NAME</A>
+<LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
 <LI> <A HREF="#PUBLIC_INTERFACE">PUBLIC INTERFACE</A>
 <LI> <A HREF="#AUTHOR">AUTHOR</A>
@@ -19,6 +20,18 @@
 
 <P>IO::InnerFile - define a file inside another file
 
+
+
+<P><HR>
+<A NAME="SYNOPSIS"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> SYNOPSIS</H2></A>
+
+<FONT SIZE=3 FACE="courier"><PRE>
+    ### Read a subset of a file:
+    $inner = IO::InnerFile-&gt;new($fh, $start, $length);
+    while (&lt;$inner&gt;) {
+	...
+    }
+</PRE></FONT>
 
 
 <P><HR>
@@ -107,7 +120,7 @@ Standard filehandle methods.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Fri Jun  2 02:30:40 2000 by cvu_pod2html
+Generated Wed Aug 16 01:03:17 2000 by cvu_pod2html
 </FONT></ADDRESS>
-</BODY>
+</FONT></BODY>
 </HTML>

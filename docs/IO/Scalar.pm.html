@@ -3,8 +3,8 @@
   <TITLE>IO::Scalar</TITLE>
 </HEAD>
 <BODY 
-       bgcolor="#FFFFFF" link="#BE1B58" vlink="#8C337C" alink="#F28EAA">
-<A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::Scalar</H1>
+       bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::Scalar</H1>
 </A><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
@@ -38,7 +38,7 @@
 
 <P>If you have any Perl5, you can use the basic OO interface...
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     use IO::Scalar;
     
     # Open a handle on a string:
@@ -68,15 +68,15 @@
     $SH = new IO::Scalar;
     $SH-&gt;print(&quot;Hi there!&quot;);
     print &quot;I got: &quot;, ${$SH-&gt;sref}, &quot;\n&quot;;      ### get at value
-</PRE>
+</PRE></FONT>
 
 <P>If your Perl is 5.004 or later, you can use the TIEHANDLE
 interface, and read/write scalars just like files:
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     use IO::Scalar;
-</PRE>
-<PRE>
+</PRE></FONT>
+<FONT SIZE=3 FACE="courier"><PRE>
     # Writing to a scalar...
     my $s; 
     tie *OUT, 'IO::Scalar', \$s;
@@ -88,7 +88,7 @@ interface, and read/write scalars just like files:
     print OUT &quot;line 1\nline 2\n&quot;, &quot;line 3\n&quot;;
     tied(OUT)-&gt;seek(0,0);
     while (&lt;OUT&gt;) { print &quot;LINE: &quot;, $_ }
-</PRE>
+</PRE></FONT>
 
 
 <P><HR>
@@ -102,36 +102,36 @@ interface, and read/write scalars just like files:
 
 <P>Basically, this:
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     my $s;
     $SH = new IO::Scalar \$s;
     $SH-&gt;print(&quot;Hel&quot;, &quot;lo, &quot;);         # OO style
     $SH-&gt;print(&quot;world!\n&quot;);            # ditto
-</PRE>
+</PRE></FONT>
 
 <P>Or this (if you have 5.004 or later):
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     my $s;
     $SH = tie *OUT, 'IO::Scalar', \$s;
     print OUT &quot;Hel&quot;, &quot;lo, &quot;;           # non-OO style
     print OUT &quot;world!\n&quot;;              # ditto
-</PRE>
+</PRE></FONT>
 
 <P>Or this (if you have 5.004 or later):
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     my $s;
     $SH = IO::Scalar-&gt;new_tie(\$s);
     $SH-&gt;print(&quot;Hel&quot;, &quot;lo, &quot;);         # OO style...
     print $SH &quot;world!\n&quot;;              # ...or non-OO style!
-</PRE>
+</PRE></FONT>
 
 <P>Causes $s to be set to:    
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     &quot;Hello, world!\n&quot; 
-</PRE>
+</PRE></FONT>
 
 
 <P><HR>
@@ -332,7 +332,7 @@ for his patch to massively improve the performance of <CODE>getline()</CODE>.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed May  3 08:15:30 2000 by cvu_pod2html
+Generated Wed Aug 16 01:03:21 2000 by cvu_pod2html
 </FONT></ADDRESS>
-</BODY>
+</FONT></BODY>
 </HTML>

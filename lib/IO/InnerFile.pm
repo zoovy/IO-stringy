@@ -5,6 +5,16 @@ package IO::InnerFile;
 IO::InnerFile - define a file inside another file
 
 
+=head1 SYNOPSIS
+
+
+    ### Read a subset of a file:
+    $inner = IO::InnerFile->new($fh, $start, $length);
+    while (<$inner>) {
+	...
+    }
+
+
 =head1 DESCRIPTION
 
 If you have a filehandle that can seek() and tell(), then you 
@@ -20,7 +30,7 @@ can open an IO::InnerFile on a range of the underlying file.
 use Symbol;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.102 $, 10;
+$VERSION = substr q$Revision: 1.103 $, 10;
 
 #------------------------------
 

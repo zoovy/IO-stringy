@@ -3,15 +3,15 @@
   <TITLE>IO-stringy</TITLE>
 </HEAD>
 <BODY 
-       bgcolor="#FFFFFF" link="#BE1B58" vlink="#8C337C" alink="#F28EAA">
-<A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO-stringy</H1>
+       bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO-stringy</H1>
 </A><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
 <LI> <A HREF="#INSTALLATION">INSTALLATION</A>
-<LI> <A HREF="#CHANGE_LOG">CHANGE LOG</A>
 <LI> <A HREF="#VERSION">VERSION</A>
+<LI> <A HREF="#CHANGE_LOG">CHANGE LOG</A>
 <LI> <A HREF="#AUTHOR">AUTHOR</A>
 </UL>
 </A>
@@ -27,7 +27,7 @@
 <P><HR>
 <A NAME="SYNOPSIS"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> SYNOPSIS</H2></A>
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     IO::
     ::AtomicFile   adpO  Write a file which is updated atomically     ERYQ
     ::Lines        bdpO  I/O handle to read/write to array of lines   ERYQ
@@ -35,7 +35,7 @@
     ::ScalarArray  RdpO  I/O handle to read/write to array of scalars ERYQ
     ::Wrap         RdpO  Wrap old-style FHs in standard OO interface  ERYQ
     ::WrapTie      adpO  Tie your handles &amp; retain full OO interface  ERYQ
-</PRE>
+</PRE></FONT>
 
 
 <P><HR>
@@ -44,21 +44,23 @@
 
 <P>This toolkit primarily provides modules for performing both traditional 
 and object-oriented i/o) on things <I>other</I> than normal filehandles; 
-in particular, <A HREF="../IO/Scalar.pm.html">IO::Scalar</A>, <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A>, and <A HREF="../IO/Lines.pm.html">IO::Lines</A>.
+in particular, <A HREF="../IO/Scalar.pm.html">IO::Scalar</A>, <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A>, 
+and <A HREF="../IO/Lines.pm.html">IO::Lines</A>.
 
 
 <P>If you have access to tie(), these classes will make use of the
-<A HREF="../IO/WrapTie.pm.html">IO::WrapTie</A> module to inherit a convenient new_tie() constructor.
-It also exports a nice wraptie() function.
+<A HREF="../IO/WrapTie.pm.html">IO::WrapTie</A> module to inherit a convenient new_tie() 
+constructor.  It also exports a nice wraptie() function.
 
 
-<P>In the more-traditional IO::Handle front, we have <A HREF="../IO/AtomicFile.pm.html">IO::AtomicFile</A>
+<P>In the more-traditional IO::Handle front, we 
+have <A HREF="../IO/AtomicFile.pm.html">IO::AtomicFile</A>
 which may be used to painlessly create files which are updated
 atomically.
 
 
-<P>And in the &quot;this-may-prove-useful&quot; corner, we have <A HREF="../IO/Wrap.pm.html">IO::Wrap</A>, whose
-exported wraphandle() function will clothe anything that's not
+<P>And in the &quot;this-may-prove-useful&quot; corner, we have <A HREF="../IO/Wrap.pm.html">IO::Wrap</A>, 
+whose exported wraphandle() function will clothe anything that's not
 a blessed object in an IO::Handle-like wrapper... so you can just
 use OO syntax and stop worrying about whether your function's caller
 handed you a string, a globref, or a FileHandle.
@@ -71,11 +73,19 @@ handed you a string, a globref, or a FileHandle.
 
 <P>You know the drill...
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     perl Makefile.PL
     make test
     make install
-</PRE>
+</PRE></FONT>
+
+
+<P><HR>
+<A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
+
+
+<P>$Id: Stringy.pm,v 1.213 2000/08/16 04:59:02 eryq Exp $
+
 
 
 <P><HR>
@@ -84,35 +94,39 @@ handed you a string, a globref, or a FileHandle.
 
 
 <DL>
-<P><DT><B><A NAME="item:Version">Version 1.212</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.213   (2000/08/16)</A></B></DT>
+<DD>
+Minor documentation fixes.
+
+<P><DT><B><A NAME="item:Version">Version 1.212   (2000/06/02)</A></B></DT>
 <DD>
 Fixed IO::InnerFile incompatibility with Perl5.004.
 <I>Thanks to many folks for reporting this.</I>
 
-<P><DT><B><A NAME="item:Version">Version 1.210</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.210   (2000/04/17)</A></B></DT>
 <DD>
 Added flush() and other no-op methods.
 <I>Thanks to Doru Petrescu for suggesting this.</I>
 
-<P><DT><B><A NAME="item:Version">Version 1.209</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.209   (2000/03/17)</A></B></DT>
 <DD>
 Small bug fixes.
 
-<P><DT><B><A NAME="item:Version">Version 1.208</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.208   (2000/03/14)</A></B></DT>
 <DD>
 Incorporated a number of contributed patches and extensions,
 mostly related to speed hacks, support for &quot;offset&quot;, and
 WRITE/CLOSE methods.
 
-<P><DT><B><A NAME="item:Version">Version 1.206</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.206   (1999/04/18)</A></B></DT>
 <DD>
 Added creation of ./testout when Makefile.PL is run.
 
-<P><DT><B><A NAME="item:Version">Version 1.205</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.205   (1999/01/15)</A></B></DT>
 <DD>
 Verified for Perl5.005.
 
-<P><DT><B><A NAME="item:Version">Version 1.202</A></B></DT>
+<P><DT><B><A NAME="item:Version">Version 1.202   (1998/04/18)</A></B></DT>
 <DD>
 New IO::WrapTie and IO::AtomicFile added.
 
@@ -134,14 +148,6 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 
 <P><HR>
-<A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
-
-
-<P>$Id: Stringy.pm,v 1.212 2000/06/02 06:30:15 eryq Exp $
-
-
-
-<P><HR>
 <A NAME="AUTHOR"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> AUTHOR</H2></A>
 
 
@@ -153,7 +159,7 @@ President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Fri Jun  2 02:30:44 2000 by cvu_pod2html
+Generated Wed Aug 16 01:03:25 2000 by cvu_pod2html
 </FONT></ADDRESS>
-</BODY>
+</FONT></BODY>
 </HTML>

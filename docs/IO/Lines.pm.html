@@ -3,8 +3,8 @@
   <TITLE>IO::Lines</TITLE>
 </HEAD>
 <BODY 
-       bgcolor="#FFFFFF" link="#BE1B58" vlink="#8C337C" alink="#F28EAA">
-<A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::Lines</H1>
+       bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::Lines</H1>
 </A><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
@@ -29,11 +29,11 @@
 <P><HR>
 <A NAME="SYNOPSIS"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> SYNOPSIS</H2></A>
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     use IO::Lines;
      
     # See IO::ScalarArray for details 
-</PRE>
+</PRE></FONT>
 
 
 <P><HR>
@@ -45,7 +45,8 @@
 (or read from) an array of lines.  They can be tiehandle'd as well.  
 
 
-<P>This is a subclass of <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A> in which the underlying
+<P>This is a subclass of <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A> 
+in which the underlying
 array has its data stored in a line-oriented-format: that is,
 every element ends in a <CODE>&quot;\n&quot;</CODE>, with the possible exception of the
 final element.  This makes <CODE>getline()</CODE> <I>much</I> more efficient;
@@ -65,7 +66,7 @@ newlines appropriately.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Lines.pm,v 1.109 2000/05/03 12:14:49 eryq Exp $
+<P>$Id: Lines.pm,v 1.110 2000/08/16 04:59:02 eryq Exp $
 
 
 
@@ -96,7 +97,7 @@ for his $/ patch and the new <CODE>getlines()</CODE>.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed May  3 08:15:28 2000 by cvu_pod2html
+Generated Wed Aug 16 01:03:19 2000 by cvu_pod2html
 </FONT></ADDRESS>
-</BODY>
+</FONT></BODY>
 </HTML>

@@ -19,7 +19,8 @@ This class implements objects which behave just like FileHandle
 (or IO::Handle) objects, except that you may use them to write to
 (or read from) an array of lines.  They can be tiehandle'd as well.  
 
-This is a subclass of L<IO::ScalarArray> in which the underlying
+This is a subclass of L<IO::ScalarArray|IO::ScalarArray> 
+in which the underlying
 array has its data stored in a line-oriented-format: that is,
 every element ends in a C<"\n">, with the possible exception of the
 final element.  This makes C<getline()> I<much> more efficient;
@@ -39,7 +40,7 @@ use IO::ScalarArray;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.109 $, 10;
+$VERSION = substr q$Revision: 1.110 $, 10;
 
 # Inheritance:
 @ISA = qw(IO::ScalarArray);     # also gets us new_tie  :-)
@@ -123,7 +124,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Lines.pm,v 1.109 2000/05/03 12:14:49 eryq Exp $
+$Id: Lines.pm,v 1.110 2000/08/16 04:59:02 eryq Exp $
 
 
 =head1 AUTHORS

@@ -3,8 +3,8 @@
   <TITLE>IO::ScalarArray</TITLE>
 </HEAD>
 <BODY 
-       bgcolor="#FFFFFF" link="#BE1B58" vlink="#8C337C" alink="#F28EAA">
-<A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::ScalarArray</H1>
+       bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::ScalarArray</H1>
 </A><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
@@ -38,7 +38,7 @@
 
 <P>If you have any Perl5, you can use the basic OO interface...
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     use IO::ScalarArray;
     
     # Open a handle on an array-of-scalars:
@@ -71,15 +71,15 @@
     $AH-&gt;print(&quot;Hi there!\nHey there!\n&quot;);
     $AH-&gt;print(&quot;Ho there!\n&quot;);
     print &quot;I got: &quot;, @{$AH-&gt;aref}, &quot;\n&quot;;      ### get at value
-</PRE>
+</PRE></FONT>
 
 <P>If your Perl is 5.004 or later, you can use the TIEHANDLE
 interface, and read/write as array-of-scalars just like files:
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     use IO::ScalarArray;
-</PRE>
-<PRE>
+</PRE></FONT>
+<FONT SIZE=3 FACE="courier"><PRE>
     # Writing to a scalar array...
     my @a; 
     tie *OUT, 'IO::ScalarArray', \@a;
@@ -91,7 +91,7 @@ interface, and read/write as array-of-scalars just like files:
     print OUT &quot;line 1\nline 2\n&quot;, &quot;line 3\n&quot;;
     tied(OUT)-&gt;seek(0,0);
     while (&lt;OUT&gt;) { print &quot;LINE: &quot;, $_ }
-</PRE>
+</PRE></FONT>
 
 
 <P><HR>
@@ -109,29 +109,29 @@ this is likely to be more efficient than IO::Scalar.
 
 <P>Basically, this:
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     my @a;
     $AH = new IO::ScalarArray \@a;
     $AH-&gt;print(&quot;Hel&quot;, &quot;lo, &quot;);     
     $AH-&gt;print(&quot;world!\n&quot;);     
-</PRE>
+</PRE></FONT>
 
 <P>Or this (if you have 5.004 or later):
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     my @a;
     $AH = tie *OUT, 'IO::ScalarArray', \@a;
     print OUT &quot;Hel&quot;, &quot;lo, &quot;; 
     print OUT &quot;world!\n&quot;; 
-</PRE>
+</PRE></FONT>
 
 <P>Causes @a to be set to the following arrayt of 3 strings:
 
-<PRE>
+<FONT SIZE=3 FACE="courier"><PRE>
     ( &quot;Hel&quot; , 
       &quot;lo, &quot; , 
       &quot;world!\n&quot; )
-</PRE>
+</PRE></FONT>
 
 <P>Compare this with IO::Scalar.
 
@@ -332,7 +332,7 @@ for his offset-using read() and write() implementations.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed May  3 08:15:33 2000 by cvu_pod2html
+Generated Wed Aug 16 01:03:23 2000 by cvu_pod2html
 </FONT></ADDRESS>
-</BODY>
+</FONT></BODY>
 </HTML>
