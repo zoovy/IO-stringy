@@ -85,9 +85,10 @@ A blank line follows each test's record, for clarity.
 use strict;
 use vars qw($VERSION);
 use FileHandle;
+use File::Basename;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.110 $, 10;
+$VERSION = substr q$Revision: 1.111 $, 10;
 
 
 #------------------------------
@@ -131,10 +132,12 @@ the output log file.
 
 sub typical {
     my $class = shift;
-    my ($tfile) = ($0 =~ m{([^/]+)\Z});
-    (-d "testout") 
-	or (mkdir "testout", 0755) 
+    my ($tfile) = basename $0;
+    unless (-d "testout") {
+	mkdir "testout", 0755 
 	    or die "Couldn't create a ./testout directory: $!\n";
+	### warn "$class: created 'testout' directory\n";
+    }
     $class->new("testout/${tfile}log");
 }
 
@@ -417,9 +420,16 @@ sub ln_print {
 =head1 CHANGE LOG
 
 B<Current version:>
-$Id: TBone.pm,v 1.110 1999/04/17 05:12:29 eryq Exp $
+$Id: TBone.pm,v 1.111 1999/04/18 04:07:28 eryq Exp $
 
 =over 4
+
+
+=item Version 1.111
+
+Now uses File::Basename to create "typical" logfile name,
+for portability.
+
 
 =item Version 1.110
 

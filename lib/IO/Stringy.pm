@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.206 $, 10;
+$VERSION = substr q$Revision: 1.207 $, 10;
 
 1;
 __END__
@@ -94,7 +94,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.206 1999/04/18 03:43:41 eryq Exp $
+$Id: Stringy.pm,v 1.207 1999/04/18 04:14:04 eryq Exp $
 
 
 
