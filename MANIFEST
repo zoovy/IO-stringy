@@ -8,13 +8,16 @@ docs/IO/Lines.pm.html
 docs/IO/Scalar.pm.html
 docs/IO/ScalarArray.pm.html
 docs/IO/Wrap.pm.html
+docs/IO/WrapTie.pm.html
 docs/Makefile
 lib/IO/Lines.pm
 lib/IO/Scalar.pm
 lib/IO/ScalarArray.pm
 lib/IO/Wrap.pm
+lib/IO/WrapTie.pm
 t/Common.pm
+t/ExtUtils/TBone.pm
 t/IO_Lines.t
 t/IO_Scalar.t
 t/IO_ScalarArray.t
-t/ExtUtils/TBone.pm
+t/IO_WrapTie.t

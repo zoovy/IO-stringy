@@ -250,6 +250,49 @@ sub test_tie {
 }
 
 #------------------------------
+# test_close
+#------------------------------
+# Close the handle.
+#
+sub test_close {
+    my ($self, $GH) = @_;
+    local($_);
+    
+    $M = "CLOSE/OPENED: open?'";
+    $T->ok($GH->opened, $M);
+
+    $M = "CLOSE/CLOSE'";
+    $GH->close;
+    $T->ok(1, $M);
+
+    $M = "CLOSE/CLOSED? closed?'";
+    $T->ok(!$GH->opened, $M);
+}
+
+#------------------------------
+# test_glob
+#------------------------------
+# Tests for blessed globrefs.
+#
+sub test_glob {
+    my ($self, $GH) = @_;
+    local($_);
+ 
+    $M = "Can we use blessed globref like an ordinary filehandle?";
+    $T->msg("OO print");
+    $GH->print("a\nb\n");
+    $T->msg("Op print");
+#    print $GH "c\nd\n";
+
+    $GH->seek(0,0);
+    @l = $GH->getlines();
+    $T->ok(join('', @l) eq "a\nb\nc\nd\n", 
+	   $M,
+	   NLines => int(@l),
+	   Lines => \@l);
+}
+
+#------------------------------
 1;
 
 

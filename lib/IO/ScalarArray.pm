@@ -117,7 +117,7 @@ use strict;
 use vars qw($VERSION);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.109 $, 10;
+$VERSION = substr q$Revision: 1.110 $, 10;
 
 
 
@@ -171,6 +171,19 @@ sub open {
     $self->setpos([0,0]);
     $self->{AR} = $aref;
     $self;
+}
+
+#------------------------------
+
+=item opened
+
+I<Instance method.>
+Is the array handle opened on something?
+
+=cut
+
+sub opened {
+    shift->{AR};
 }
 
 #------------------------------
@@ -469,7 +482,7 @@ sub aref {
 #------------------------------
 
 sub TIEHANDLE { shift->new(@_) }
-sub GETC      { die "IO::ScalarArray: GETC unimplemented" }
+sub GETC      { shift->getc(@_) }
 sub PRINT     { shift->print(@_) }
 sub PRINTF    { shift->print(sprintf(@_)) }
 sub READ      { shift->read(@_) }
@@ -479,13 +492,17 @@ sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.109 1998/03/23 05:55:53 eryq Exp $
+$Id: ScalarArray.pm,v 1.110 1998/03/27 07:30:34 eryq Exp $
 
 
 =head1 AUTHOR
 
 Eryq (F<eryq@zeegee.com>).
 President, Zero G Inc (F<http://www.zeegee.com>).
+
+Thanks to Andy Glew for suggesting C<getc()>.
+
+Thanks to Brandon Browning for suggesting C<opened()>.
 
 =cut
 

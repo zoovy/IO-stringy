@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w         #-*-Perl-*-
 
-use lib "./t", "./lib"; 
+use lib "./t";
 use IO::Lines;
 use ExtUtils::TBone;
 use Common;
@@ -18,7 +18,7 @@ Common->test_init(TBone=>$T);
 
 # Set the counter:
 my $tie_tests = (($] >= 5.004) ? 4 : 0);
-$T->begin(11 + $tie_tests);
+$T->begin(14 + $tie_tests);
 
 # Open a scalar on a string, containing initial data:
 my @la = @Common::DATA_LA;
@@ -31,6 +31,7 @@ Common->test_getc($LAH);
 Common->test_getline($LAH);
 Common->test_read($LAH);
 #Common->test_seek($LAH);
+Common->test_close($LAH);
 
 # Run tie tests:
 if ($tie_tests) {

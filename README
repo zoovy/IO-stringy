@@ -3,10 +3,11 @@ INSTALLATION
 
     This distribution contains several modules:
 
-	IO::Lines	- I/O to/from arrays of newline-terminated lines
-	IO::Scalar	- I/O to/from scalar variables
-	IO::ScalarArray - I/O to/from arrays of arbitrary scalars
-	IO::Wrap	- wrap old-style filehandles with OO interface
+     	IO::
+     	::Lines        bdpO  I/O handle to read/write to array of lines   ERYQ
+    	::Scalar       RdpO  I/O handle to read/write to a string         ERYQ
+     	::ScalarArray  RdpO  I/O handle to read/write to array of scalars ERYQ
+  	::Wrap         RdpO  Wrap old-style FHs in IO::-like interface    ERYQ
 
     You know the drill...
 
