@@ -99,7 +99,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.116 $, 10;
+$VERSION = substr q$Revision: 1.117 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -312,7 +312,7 @@ sub read {
     my $read = substr(${$self->{SR}}, $self->{Pos}, $n);
     $n = length($read);
     $self->{Pos} += $n;
-    substr($_[1], $off) = $read;
+    ($off ? substr($_[1], $off) : $_[1]) = $read;
     return $n;
 }
 
@@ -470,7 +470,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.116 2000/03/14 07:49:16 eryq Exp $
+$Id: Scalar.pm,v 1.117 2000/03/17 08:14:59 eryq Exp $
 
 
 =head1 AUTHORS

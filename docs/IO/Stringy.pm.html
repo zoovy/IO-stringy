@@ -44,20 +44,20 @@
 
 <P>This toolkit primarily provides modules for performing both traditional 
 and object-oriented i/o) on things <I>other</I> than normal filehandles; 
-in particular, <B>IO::Scalar</B>, <B>IO::ScalarArray</B>, and <B>IO::Lines</B>.
+in particular, <A HREF="../IO/Scalar.pm.html">IO::Scalar</A>, <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A>, and <A HREF="../IO/Lines.pm.html">IO::Lines</A>.
 
 
 <P>If you have access to tie(), these classes will make use of the
-<B>IO::WrapTie</B> module to inherit a convenient new_tie() constructor.
+<A HREF="../IO/WrapTie.pm.html">IO::WrapTie</A> module to inherit a convenient new_tie() constructor.
 It also exports a nice wraptie() function.
 
 
-<P>In the more-traditional IO::Handle front, we have <B>IO::AtomicFile</B>
+<P>In the more-traditional IO::Handle front, we have <A HREF="../IO/AtomicFile.pm.html">IO::AtomicFile</A>
 which may be used to painlessly create files which are updated
 atomically.
 
 
-<P>And in the &quot;this-may-prove-useful&quot; corner, we have <B>IO::Wrap</B>, whose
+<P>And in the &quot;this-may-prove-useful&quot; corner, we have <A HREF="../IO/Wrap.pm.html">IO::Wrap</A>, whose
 exported wraphandle() function will clothe anything that's not
 a blessed object in an IO::Handle-like wrapper... so you can just
 use OO syntax and stop worrying about whether your function's caller
@@ -84,6 +84,10 @@ handed you a string, a globref, or a FileHandle.
 
 
 <DL>
+<P><DT><B><A NAME="item:Version_1_209">Version 1.209</A></B></DT>
+<DD>
+Small bug fixes.
+
 <P><DT><B><A NAME="item:Version_1_208">Version 1.208</A></B></DT>
 <DD>
 Incorporated a number of contributed patches and extensions,
@@ -123,7 +127,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Stringy.pm,v 1.208 2000/03/14 07:49:17 eryq Exp $
+<P>$Id: Stringy.pm,v 1.209 2000/03/17 08:15:00 eryq Exp $
 
 
 
@@ -139,7 +143,7 @@ President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Mar 15 00:17:01 2000 by cvu_pod2html
+Generated Fri Mar 17 03:16:31 2000 by cvu_pod2html
 </FONT></ADDRESS>
 </BODY>
 </HTML>

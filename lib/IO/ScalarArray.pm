@@ -102,7 +102,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.113 $, 10;
+$VERSION = substr q$Revision: 1.114 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -308,8 +308,8 @@ sub read {
     ### print "getline\n";
     my $justread;
     my $len;
-    substr($_[1], $off) = '';
-
+    ($off ? substr($_[1], $off) : $_[1]) = '';
+    
     # Stop when we have zero bytes to go, or when we hit EOF:
     until (!$n or $self->eof) {       
         # If at end of current string, go forward to next one (won't be EOF):
@@ -521,7 +521,7 @@ __END__
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.113 2000/03/14 07:49:17 eryq Exp $
+$Id: ScalarArray.pm,v 1.114 2000/03/17 08:14:59 eryq Exp $
 
 
 =head1 AUTHOR
