@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 2.108 $, 10;
+$VERSION = substr q$Revision: 2.109 $, 10;
 
 1;
 __END__
@@ -107,7 +107,7 @@ Don't think I won't.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 2.108 2001/08/20 20:36:15 eryq Exp $
+$Id: Stringy.pm,v 2.109 2003/12/21 18:51:45 eryq Exp $
 
 
 
@@ -165,6 +165,12 @@ object is just like an IO::Scalar in its use of globrefs.
 =head1 CHANGE LOG 
 
 =over 4
+
+
+=item Version 2.109   (2003/12/21)
+
+IO::Scalar::getline now works with ref to int.
+I<Thanks to Dominique Quatravaux for this patch.>
 
 
 =item Version 2.108   (2001/08/20)

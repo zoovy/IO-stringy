@@ -1,12 +1,11 @@
 <HTML>
 <HEAD>
-  <TITLE>IO-stringy 2.108</TITLE>
+  <TITLE>IO-stringy 2.109</TITLE>
 </HEAD>
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
-<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO-stringy 2.108</H1>
-</A>
-<P><B>This module is <FONT COLOR="#990000">BETA</FONT> code, which means that the interfaces are fairly stable BUT it has not been out in the community long enough to guarantee much testing. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO-stringy 2.109</H1>
+</A><UL>
 <LI> <A NAME="menu:NAME"><A HREF="#NAME">NAME</A></A>
 <LI> <A NAME="menu:SYNOPSIS"><A HREF="#SYNOPSIS">SYNOPSIS</A></A>
 <LI> <A NAME="menu:DESCRIPTION"><A HREF="#DESCRIPTION">DESCRIPTION</A></A>
@@ -20,6 +19,7 @@
 <LI> <A NAME="menu:TO_DO"><A HREF="#TO_DO">TO DO</A></A>
 <LI> <A NAME="menu:CHANGE_LOG"><A HREF="#CHANGE_LOG">CHANGE LOG</A></A>
 <UL>
+<LI> <A NAME="menu:item:Version_2_109_2003_12_21"><A HREF="#item:Version_2_109_2003_12_21">Version 2.109   (2003/12/21)</A></A>
 <LI> <A NAME="menu:item:Version_2_108_2001_08_20"><A HREF="#item:Version_2_108_2001_08_20">Version 2.108   (2001/08/20)</A></A>
 <LI> <A NAME="menu:item:Version_2_105_2001_08_09"><A HREF="#item:Version_2_105_2001_08_09">Version 2.105   (2001/08/09)</A></A>
 <LI> <A NAME="menu:item:Version_2_103_2001_08_08"><A HREF="#item:Version_2_103_2001_08_08">Version 2.103   (2001/08/08)</A></A>
@@ -178,7 +178,7 @@ Don't think I won't.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Stringy.pm,v 2.108 2001/08/20 20:36:15 eryq Exp $
+<P>$Id: Stringy.pm,v 2.109 2003/12/21 18:51:45 eryq Exp $
 
 
 
@@ -244,6 +244,11 @@ object is just like an IO::Scalar in its use of globrefs.
 
 
 <DL>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:Version"><A NAME="item:Version_2_109_2003_12_21">Version 2.109   (2003/12/21)</A></A></B></DT>
+<DD>
+IO::Scalar::getline now works with ref to int.
+<I>Thanks to Dominique Quatravaux for this patch.</I>
+
 <P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:Version"><A NAME="item:Version_2_108_2001_08_20">Version 2.108   (2001/08/20)</A></A></B></DT>
 <DD>
 The terms-of-use have been placed in the distribution file &quot;COPYING&quot;.  
@@ -493,7 +498,7 @@ and on-line documentation for this module.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Mon Aug 20 16:36:43 2001 by cvu_pod2html
+Generated Sun Dec 21 13:54:37 2003 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>
