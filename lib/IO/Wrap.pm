@@ -130,12 +130,16 @@ Eryq (F<eryq@zeegee.com>), Zero G Inc.
 require 5.002;
 
 use strict;
-use vars qw(@ISA @EXPORT);
+use vars qw(@ISA @EXPORT $VERSION);
 @ISA = qw(Exporter);
 @EXPORT = qw(wraphandle);
 
 use FileHandle;
 use Carp;
+
+# The package version, both in 1.23 style *and* usable by MakeMaker:
+$VERSION = substr q$Revision: 1.101 $, 10;
+
 
 
 #------------------------------

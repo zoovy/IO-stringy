@@ -1,19 +1,29 @@
+------------------------------------------------------------
+INSTALLATION
 
-This distribution contains several modules:
+    This distribution contains several modules:
 
 	IO::Scalar	- I/O to/from scalar variables
 	IO::ScalarArray - I/O to/from arrays of scalars
 	IO::Wrap	- wrap old-style filehandles with OO interface
 
-You know the drill...
+    You know the drill...
 
 	perl Makefile.PL
 	make test
 	make install
 
-Enjoy.  Yell if it breaks.
+------------------------------------------------------------
+CHANGE LOG FOR TOOLKIT
+
+    1.105
+	No real changes; just upgraded IO::Wrap to have a $VERSION
+	string.
+
 
 ------------------------------------------------------------
+Enjoy.  Yell if it breaks.
+
 Eryq
 eryq@zeegee.com
 

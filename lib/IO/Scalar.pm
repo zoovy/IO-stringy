@@ -97,7 +97,7 @@ use strict;
 use vars qw($VERSION);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.104 $, 10;
+$VERSION = substr q$Revision: 1.105 $, 10;
 
 
 #==============================
@@ -395,7 +395,7 @@ sub sref { shift->{SR} }
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.104 1997/11/06 04:39:41 eryq Exp eryq $
+$Id: Scalar.pm,v 1.105 1997/12/14 02:24:35 eryq Exp $
 
 
 =head1 AUTHOR
@@ -444,4 +444,3 @@ exit 0;
 
 #------------------------------
 1;
-

@@ -466,7 +466,7 @@ sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.105 1997/11/06 04:39:41 eryq Exp eryq $
+$Id: ScalarArray.pm,v 1.105 1997/11/06 04:39:41 eryq Exp $
 
 
 =head1 AUTHOR
