@@ -10,7 +10,7 @@ IO::Lines - IO:: interface for reading/writing an array of lines
 
     use IO::Lines;
 
-    # See IO::ScalarArray for details 
+    ### See IO::ScalarArray for details 
 
 
 =head1 DESCRIPTION
@@ -30,7 +30,7 @@ The C<print()> method will enforce this rule, so you can print
 arbitrary data to the line-array: it will break the data at
 newlines appropriately.
 
-See L<IO::ScalarArray> for full usage.
+See L<IO::ScalarArray> for full usage and warnings.
 
 =cut
 
@@ -40,15 +40,16 @@ use IO::ScalarArray;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.111 $, 10;
+$VERSION = substr q$Revision: 2.103 $, 10;
 
 # Inheritance:
-@ISA = qw(IO::ScalarArray);     # also gets us new_tie  :-)
+@ISA = qw(IO::ScalarArray);     ### also gets us new_tie  :-)
 
 
 #------------------------------
+#
 # getline
-#------------------------------
+#
 # Instance method, override.
 # Return the next line, or undef on end of data.
 # Can safely be called in an array context.
@@ -56,25 +57,29 @@ $VERSION = substr q$Revision: 1.111 $, 10;
 #
 sub getline {
     my $self = shift;
-    if (!defined $/) {
-	return join( '' => $self->getlines );
-    }
-    ($/ eq "\n")
-	or croak '$/ must be "\n" or undef, not ', "'$/'.";
 
-    if (!$self->{Pos}) {      # full line...
-	return $self->{AR}[$self->{Str}++];
+    if (!defined $/) {
+	return join( '', $self->_getlines_for_newlines );
     }
-    else {                    # partial line...
-	my $partial = substr($self->{AR}[$self->{Str}++], $self->{Pos});
-	$self->{Pos} = 0;
-	return $partial;
+    elsif ($/ eq "\n") {
+	if (!*$self->{Pos}) {      ### full line...
+	    return *$self->{AR}[*$self->{Str}++];
+	}
+	else {                     ### partial line...
+	    my $partial = substr(*$self->{AR}[*$self->{Str}++], *$self->{Pos});
+	    *$self->{Pos} = 0;
+	    return $partial;
+	}
+    }
+    else {
+	croak 'unsupported $/: must be "\n" or undef';
     }
 }
 
 #------------------------------
+#
 # getlines
-#------------------------------
+#
 # Instance method, override.
 # Return an array comprised of the remaining lines, or () on end of data.
 # Must be called in an array context.
@@ -82,37 +87,57 @@ sub getline {
 #
 sub getlines {
     my $self = shift;
-    wantarray or croak("Can't call getlines in scalar context!");
+    wantarray or croak("can't call getlines in scalar context!");
 
-    my ($rArray, $Str, $Pos) = @$self{ qw( AR Str Pos ) };
-    my @partial = ();
-
-    if ($Pos) {					# partial line...
-	@partial = (substr( $rArray->[ $Str++ ], $Pos ));
-	$self->{Pos} = 0;
+    if ((defined $/) and ($/ eq "\n")) {
+	return $self->_getlines_for_newlines(@_);
     }
-    $self->{Str} = scalar @$rArray;		# about to exhaust @$rArray
-    return (@partial,
-	    @$rArray[ $Str .. $#$rArray ]);	# remaining full lines...
+    else {         ### slow but steady
+	return $self->SUPER::getlines(@_);
+    }
 }
 
 #------------------------------
-# print ARGS...
+#
+# _getlines_for_newlines
+#
+# Instance method, private.
+# If $/ is newline, do fast getlines.
+# This CAN NOT invoke getline!
+#
+sub _getlines_for_newlines {
+    my $self = shift;
+    my ($rArray, $Str, $Pos) = @{*$self}{ qw( AR Str Pos ) };
+    my @partial = ();
+
+    if ($Pos) {				### partial line...
+	@partial = (substr( $rArray->[ $Str++ ], $Pos ));
+	*$self->{Pos} = 0;
+    }
+    *$self->{Str} = scalar @$rArray;	### about to exhaust @$rArray
+    return (@partial,
+	    @$rArray[ $Str .. $#$rArray ]);	### remaining full lines...
+}
+
 #------------------------------
+#
+# print ARGS...
+#
 # Instance method, override.
 # Print ARGS to the underlying line array.  
 #
 sub print {
     my $self = shift;
-    ### print STDERR "\n[[ARRAY WAS...\n", @{$self->{AR}}, "<<EOF>>\n";
+    ### print STDERR "\n[[ARRAY WAS...\n", @{*$self->{AR}}, "<<EOF>>\n";
     my @lines = split /^/, join('', @_); @lines or return 1;
 
-    # Did the previous print not end with a newline?  If so, append first line:
-    if (@{$self->{AR}} and ($self->{AR}[-1] !~ /\n\Z/)) {
-	$self->{AR}[-1] .= shift @lines;
+    ### Did the previous print not end with a newline?  
+    ### If so, append first line:
+    if (@{*$self->{AR}} and (*$self->{AR}[-1] !~ /\n\Z/)) {
+	*$self->{AR}[-1] .= shift @lines;
     }
-    push @{$self->{AR}}, @lines;       # add the remainder
-    ### print STDERR "\n[[ARRAY IS NOW...\n", @{$self->{AR}}, "<<EOF>>\n";
+    push @{*$self->{AR}}, @lines;       ### add the remainder
+    ### print STDERR "\n[[ARRAY IS NOW...\n", @{*$self->{AR}}, "<<EOF>>\n";
     1;
 }
 
@@ -124,7 +149,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Lines.pm,v 1.111 2001/04/04 05:37:51 eryq Exp $
+$Id: Lines.pm,v 2.103 2001/08/09 08:04:44 eryq Exp $
 
 
 =head1 AUTHORS
@@ -143,6 +168,9 @@ Thanks to the following individuals for their invaluable contributions
 
 I<Morris M. Siegel,>
 for his $/ patch and the new C<getlines()>.
+
+I<Doug Wilson,>
+for the IO::Handle inheritance and automatic tie-ing.
 
 =cut
 

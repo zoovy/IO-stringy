@@ -84,6 +84,7 @@ sub test_init {
 # test_print HANDLE, TEST
 #------------------------------
 # Test printing to handle.
+# 1
 #
 sub test_print {
     my ($self, $GH, $all) = @_;
@@ -100,6 +101,7 @@ sub test_print {
 # test_getc HANDLE
 #------------------------------
 # Test getc().
+# 1
 #
 sub test_getc {
     my ($self, $GH) = @_;
@@ -118,6 +120,7 @@ sub test_getc {
 # test_getline HANDLE
 #------------------------------
 # Test getline() and getlines().
+# 4
 #
 sub test_getline {
     my ($self, $GH) = @_;
@@ -157,6 +160,7 @@ sub test_getline {
 # test_read HANDLE
 #------------------------------
 # Test read().
+# 4
 #
 sub test_read {
     my ($self, $GH) = @_;
@@ -184,26 +188,36 @@ sub test_read {
 # test_seek HANDLE
 #------------------------------
 # Test seeks other than (0,0).
+# 2
 #
 sub test_seek {
     my ($self, $GH) = @_;
     local($_);
 
+    $M = "SEEK/SET: seek(2,SET) + read(5) returns 'diner'";
+    $GH->seek(2,0);
+    $GH->read($BUF,5);
+    $T->ok_eq($BUF, 'diner', 
+	      $M);
+
     $M = "SEEK/END: seek(-6,END) + read(3) returns 'too'";
     $GH->seek(-6,2);
     $GH->read($BUF,3);
-    $T->ok(($BUF eq 'too'), $M);
+    $T->ok_eq($BUF, 'too', 
+	      $M);
 
-    $M = "SEEK/CUR: seek(-3,CUR) + read(3) returns 'too' again"; 
-    $GH->seek(-3,1);
-    $GH->read($BUF,3);
-    $T->ok(($BUF eq 'too'), $M);
+    $M = "SEEK/CUR: seek(-7,CUR) + read(7) returns 'one too'"; 
+    $GH->seek(-7,1);
+    $GH->read($BUF,7);
+    $T->ok_eq($BUF, 'one too',
+	      $M);
 }
 
 #------------------------------
 # test_tie PARAMHASH
 #------------------------------
 # Test tiehandle getline() interface.
+# 4
 #
 sub test_tie {
     my ($self, %p) = @_;
@@ -215,7 +229,9 @@ sub test_tie {
     
     $M = "TIE/TIE: able to tie";
     tie(*OUT, $tieclass, @tieargs);
-    $T->ok(1, $M);
+    $T->ok(1, $M,
+	   TieClass => $tieclass,
+	   TieArgs => \@tieargs);
 
     $M = "TIE/PRINT: printing data";
     print OUT @DATA_SA;
@@ -253,6 +269,93 @@ sub test_tie {
 #    $T->ok(($tell_oo == $tell_tie), $M,
 #	   Want => $tell_oo,
 #	   Gotl => $tell_tie);
+
+}
+
+#------------------------------
+# test_recordsep
+#------------------------------
+# Try $/ tests.
+#
+#    3 x undef
+#    3 x empty
+#    2 x custom
+#   11 x newline
+#
+sub test_recordsep_count {
+    my ($self, $seps) = @_;
+    my $count = 0;
+    $count += 3 if ($seps =~ /undef/) ;
+    $count += 3 if ($seps =~ /empty/) ;
+    $count += 2 if ($seps =~ /custom/) ;
+    $count += 11 if ($seps =~ /newline/); 
+    $count;
+}
+sub test_recordsep {
+    my ($self, $seps, $opener) = @_;
+    my $GH;
+    my @lines = ("par 1, line 1\n",
+		 "par 1, line 2\n",
+		 "\n",
+		 "\n",
+		 "\n",
+		 "\n",
+		 "par 2, line 1\n",
+		 "\n",
+		 "par 3, line 1\n",
+		 "par 3, line 2\n",
+		 "par 3, line 3");
+    my $all = join('', @lines);
+
+    ### Slurp everything:
+    if ($seps =~ /undef/) {
+	$GH = &$opener(\@lines);
+        local $/ = undef;
+        $T->ok_eq($GH->getline, $all,
+                  "RECORDSEP undef: getline slurps everything");
+    }
+
+    ### Read a little, slurp the rest:
+    if ($seps =~ /undef/) {
+	$GH = &$opener(\@lines);
+        $T->ok_eq($GH->getline, $lines[0],
+		  "RECORDSEP undef: get first line");
+        local $/ = undef;
+        $T->ok_eq($GH->getline, join('', @lines[1..$#lines]),
+		  "RECORDSEP undef: slurp the rest");
+    }
+
+    ### Read paragraph by paragraph:
+    if ($seps =~ /empty/) {
+	$GH = &$opener(\@lines);
+        local $/ = "";
+        $T->ok_eq($GH->getline, join('', @lines[0..2]),
+                  "RECORDSEP empty: first par");
+        $T->ok_eq($GH->getline, join('', @lines[6..7]),
+                  "RECORDSEP empty: second par");
+        $T->ok_eq($GH->getline, join('', @lines[8..10]),
+                  "RECORDSEP empty: third par");
+    }
+
+    ### Read record by record:
+    if ($seps =~ /custom/) {
+	$GH = &$opener(\@lines);
+        local $/ = "1,";
+        $T->ok_eq($GH->getline, "par 1,",
+                  "RECORDSEP custom: first rec");
+        $T->ok_eq($GH->getline, " line 1\npar 1,",
+                  "RECORDSEP custom: second rec");
+    }
+
+    ### Read line by line:
+    if ($seps =~ /newline/) {
+	$GH = &$opener(\@lines);
+        local $/ = "\n";
+	for my $i (0..10) {
+	    $T->ok_eq($GH->getline, $lines[$i],
+		      "RECORDSEP newline: rec $i");
+	}
+    }
 
 }
 

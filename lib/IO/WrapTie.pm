@@ -4,7 +4,7 @@
 #------------------------------------------------------------
 package IO::WrapTie;
 #------------------------------------------------------------
-require 5.004;              # for tie
+require 5.004;              ### for tie
 use strict;
 use vars qw(@ISA @EXPORT $VERSION);
 use Exporter;
@@ -12,7 +12,7 @@ use Exporter;
 # Inheritance, exporting, and package version:
 @ISA     = qw(Exporter);
 @EXPORT  = qw(wraptie);
-$VERSION = substr q$Revision: 1.109 $, 10;
+$VERSION = substr q$Revision: 2.101 $, 10;
 
 # Function, exported.
 sub wraptie {
@@ -60,10 +60,10 @@ use IO::Handle;
 #
 sub new {
     my $master = shift;
-    my $io = IO::Handle->new;   # create a new handle
+    my $io = IO::Handle->new;   ### create a new handle
     my $slave = shift;
-    tie *$io, $slave, @_;       # tie: will invoke slave's TIEHANDLE
-    bless $io, $master;         # return a master
+    tie *$io, $slave, @_;       ### tie: will invoke slave's TIEHANDLE
+    bless $io, $master;         ### return a master
 }
 
 #------------------------------
@@ -127,7 +127,7 @@ package IO::WrapTie::Slave;
 #
 sub new_tie {
     my $self = shift;
-    $self->TIE_MASTER->new($self,@_);     # e.g., IO::Scalar::Master->new(@_)
+    $self->TIE_MASTER->new($self,@_);     ### e.g., IO::Scalar::Master->new(@_)
 }
 
 # Default class method for new_tie().
@@ -142,7 +142,7 @@ sub TIE_MASTER { 'IO::WrapTie::Master' }
 __END__
 
 
-package IO::WrapTie;      # for doc generator
+package IO::WrapTie;      ### for doc generator
 
 
 =head1 NAME
@@ -163,35 +163,35 @@ I<Function interface (experimental).>
 Use this with any existing class...
 
    use IO::WrapTie;
-   use FooHandle;                  # implements TIEHANDLE interface
+   use FooHandle;                  ### implements TIEHANDLE interface
 
-   # Suppose we want a "FooHandle->new(&FOO_RDWR, 2)".
-   # We can instead say...
+   ### Suppose we want a "FooHandle->new(&FOO_RDWR, 2)".
+   ### We can instead say...
 
    $FH = wraptie('FooHandle', &FOO_RDWR, 2); 
 
-   # Now we can use...    
-   print $FH "Hello, ";            # traditional operator syntax...
-   $FH->print("world!\n");         # ...and OO syntax as well!
+   ### Now we can use...    
+   print $FH "Hello, ";            ### traditional operator syntax...
+   $FH->print("world!\n");         ### ...and OO syntax as well!
 
 I<OO interface (preferred).>
 You can inherit from the IO::WrapTie::Slave mixin to get a
 nifty C<new_tie()> constructor...
 
    #------------------------------    
-   package FooHandle;                        # a class which can TIEHANDLE
+   package FooHandle;                        ### a class which can TIEHANDLE
 
    use IO::WrapTie;  
-   @ISA = qw(IO::WrapTie::Slave);            # inherit new_tie()
+   @ISA = qw(IO::WrapTie::Slave);            ### inherit new_tie()
    ...
 
 
    #------------------------------    
    package main; 
 
-   $FH = FooHandle->new_tie(&FOO_RDWR, 2);   # $FH is an IO::WrapTie::Master
-   print $FH "Hello, ";                      # traditional operator syntax
-   $FH->print("world!\n");                   # OO syntax
+   $FH = FooHandle->new_tie(&FOO_RDWR, 2);   ### $FH is an IO::WrapTie::Master
+   print $FH "Hello, ";                      ### traditional operator syntax
+   $FH->print("world!\n");                   ### OO syntax
 
 See IO::Scalar as an example.  It also shows you how to create classes
 which work both with and without 5.004.
@@ -246,9 +246,9 @@ object via tied()... giving the object a "split personality").
 But now with IO::WrapTie, you can say:
 
     $WT = wraptie('FooHandle', &FOO_RDWR, 2);
-    $WT->print("Hello, world\n");   # OO syntax
-    print $WT "Yes!\n";             # Named operator syntax too!
-    $WT->weird_stuff;               # Other methods!
+    $WT->print("Hello, world\n");   ### OO syntax
+    print $WT "Yes!\n";             ### Named operator syntax too!
+    $WT->weird_stuff;               ### Other methods!
 
 And if you're authoring a class like FooHandle, just have it inherit 
 from C<IO::WrapTie::Slave> and that first line becomes even prettier:
@@ -406,10 +406,10 @@ like print(), and you may need to pass the object to a subroutine
 which will attempt to use those operators:
 
     $O = FooHandle->new(&FOO_RDWR, 2);
-    $O->print("Hello, world\n");  # OO syntax is okay, BUT....
+    $O->print("Hello, world\n");  ### OO syntax is okay, BUT....
 
     sub nope { print $_[0] "Nope!\n" }
- X  nope($O);                     # ERROR!!! (not a glob ref)
+ X  nope($O);                     ### ERROR!!! (not a glob ref)
 
 
 B<Why not simply use tie()?> 
@@ -419,12 +419,12 @@ the tied symbol to another subroutine which will attempt to treat
 it in an OO-way... and that will break it:
 
     tie *T, 'FooHandle', &FOO_RDWR, 2; 
-    print T "Hello, world\n";     # Operator is okay, BUT... 
+    print T "Hello, world\n";   ### Operator is okay, BUT... 
 
-    tied(*T)->other_stuff;        # yuck! AND...
+    tied(*T)->other_stuff;      ### yuck! AND...
 
     sub nope { shift->print("Nope!\n") }
- X  nope(\*T);                    # ERROR!!! (method "print" on unblessed ref)
+ X  nope(\*T);                  ### ERROR!!! (method "print" on unblessed ref)
 
 
 B<Why a master and slave? 

@@ -5,7 +5,8 @@
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
 <FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::AtomicFile</H1>
-</A><UL>
+</A>
+<P><B>This module is <FONT COLOR="#990000">ALPHA</FONT> code, which means that public interfaces are largely untested, and may change in future releases. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
@@ -29,19 +30,19 @@
     use IO::AtomicFile;
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-    # Write a temp file, and have it install itself when closed:
+    ### Write a temp file, and have it install itself when closed:
     my $FH = IO::AtomicFile-&gt;open(&quot;bar.dat&quot;, &quot;w&quot;);
     print $FH &quot;Hello!\n&quot;;
     $FH-&gt;close || die &quot;couldn't install atomic file: $!&quot;;    
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-    # Write a temp file, but delete it before it gets installed:
+    ### Write a temp file, but delete it before it gets installed:
     my $FH = IO::AtomicFile-&gt;open(&quot;bar.dat&quot;, &quot;w&quot;);
     print $FH &quot;Hello!\n&quot;;
     $FH-&gt;delete; 
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-    # Write a temp file, but neither install it nor delete it:
+    ### Write a temp file, but neither install it nor delete it:
     my $FH = IO::AtomicFile-&gt;open(&quot;bar.dat&quot;, &quot;w&quot;);
     print $FH &quot;Hello!\n&quot;;
     $FH-&gt;detach;   
@@ -94,11 +95,11 @@ President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://
 <A NAME="REVISION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> REVISION</H2></A>
 
 
-<P>$Revision: 1.106 $
+<P>$Revision: 2.101 $
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Apr  4 01:38:08 2001 by cvu_pod2html
+Generated Thu Aug  9 04:09:17 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

@@ -1,3 +1,4 @@
+COPYING
 MANIFEST
 Makefile.PL
 README
@@ -16,6 +17,7 @@ docs/IO/icons/zeegee.gif
 docs/index-menu.html
 docs/index.html
 docs/index.menu
+examples/IO_Scalar_synopsis
 lib/IO/AtomicFile.pm
 lib/IO/InnerFile.pm
 lib/IO/Lines.pm
@@ -30,3 +32,5 @@ t/IO_Lines.t
 t/IO_Scalar.t
 t/IO_ScalarArray.t
 t/IO_WrapTie.t
+t/simple.t
+t/two.t

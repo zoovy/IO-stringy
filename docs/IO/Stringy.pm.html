@@ -5,11 +5,17 @@
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
 <FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO-stringy</H1>
-</A><UL>
+</A>
+<P><B>This module is <FONT COLOR="#990000">ALPHA</FONT> code, which means that public interfaces are largely untested, and may change in future releases. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
+<LI> <A HREF="#WARNINGS">WARNINGS</A>
 <LI> <A HREF="#INSTALLATION">INSTALLATION</A>
+<UL>
+<LI> <A HREF="#Requirements">Requirements</A>
+<LI> <A HREF="#Directions">Directions</A>
+</UL>
 <LI> <A HREF="#VERSION">VERSION</A>
 <LI> <A HREF="#TO_DO">TO DO</A>
 <LI> <A HREF="#CHANGE_LOG">CHANGE LOG</A>
@@ -49,11 +55,6 @@ in particular, <A HREF="../IO/Scalar.pm.html">IO::Scalar</A>, <A HREF="../IO/Sca
 and <A HREF="../IO/Lines.pm.html">IO::Lines</A>.
 
 
-<P>If you have access to tie(), these classes will make use of the
-<A HREF="../IO/WrapTie.pm.html">IO::WrapTie</A> module to inherit a convenient new_tie() 
-constructor.  It also exports a nice wraptie() function.
-
-
 <P>In the more-traditional IO::Handle front, we 
 have <A HREF="../IO/AtomicFile.pm.html">IO::AtomicFile</A>
 which may be used to painlessly create files which are updated
@@ -69,13 +70,56 @@ handed you a string, a globref, or a FileHandle.
 
 
 <P><HR>
+<A NAME="WARNINGS"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> WARNINGS</H2></A>
+
+
+<P>Perl's TIEHANDLE spec was incomplete prior to 5.005_57;
+it was missing support for <CODE>seek()</CODE>, <CODE>tell()</CODE>, and <CODE>eof()</CODE>.
+Attempting to use these functions with an IO::Scalar, IO::ScalarArray,
+IO::Lines, etc. <B>will not work</B> prior to 5.005_57.  
+None of the relevant methods will be invoked by Perl; 
+and even worse, this kind of bug can lie dormant for a while.
+If you turn warnings on (via <CODE>$^W</CODE> or <CODE>perl -w</CODE>), and you see 
+something like this...
+
+<FONT SIZE=3 FACE="courier"><PRE>
+    seek() on unopened file
+</PRE></FONT>
+
+<P>...then you are probably trying to use one of these functions
+on one of our IO:: classes with an old Perl.  The remedy is to simply
+use the OO version; e.g.:
+
+<FONT SIZE=3 FACE="courier"><PRE>
+    $SH-&gt;seek(0,0);    ### GOOD: will work on any 5.005
+    seek($SH,0,0);     ### WARNING: will only work on 5.005_57 and beyond
+</PRE></FONT>
+
+
+<P><HR>
 <A NAME="INSTALLATION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> INSTALLATION</H2></A>
+
+
+
+<P><HR>
+<A NAME="Requirements"><H3><A HREF="#__TOP__"><IMG SRC="icons/h2bullet.gif" ALT="Top" BORDER="0"></A> Requirements</H3></A>
+
+
+<P>As of version 2.x, this toolkit requires Perl 5.005 for 
+the IO::Handle subclasses, and 5.005_57 or better is
+<B>strongly</B> recommended.  See <A HREF="#WARNINGS">WARNINGS</A> for details.
+
+
+
+<P><HR>
+<A NAME="Directions"><H3><A HREF="#__TOP__"><IMG SRC="icons/h2bullet.gif" ALT="Top" BORDER="0"></A> Directions</H3></A>
 
 
 <P>Most of you already know the drill...
 
 <FONT SIZE=3 FACE="courier"><PRE>
     perl Makefile.PL
+    make
     make test
     make install
 </PRE></FONT>
@@ -110,7 +154,7 @@ Don't think I won't.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Stringy.pm,v 1.220 2001/04/04 05:37:51 eryq Exp $
+<P>$Id: Stringy.pm,v 2.105 2001/08/09 08:08:32 eryq Exp $
 
 
 
@@ -128,7 +172,9 @@ and only now have the experimental implementation done.
 
 
 <P>Will the sudden sensitivity to $/ hose anyone out there?
-I'm worried, so you have to enable it explicitly.
+I'm worried, so you have to enable it explicitly in 1.x.
+It will be on by default in 2.x, though only IO::Scalar
+has been implemented.
 
 <P><DT><B><A NAME="item:2000_09_28_Separate_read_write_cursors">(2000/09/28)  Separate read/write cursors?</A></B></DT>
 <DD>
@@ -142,7 +188,9 @@ and one for writing.  Quoth he:
     seek(2) resets them both)? 
 </PRE></FONT>
 
-<P>He also pointed out some issues with his implementation:  
+<P>(My answer: perhaps, but stdio's fseek/ftell manpages seem to
+imply a single file position indicator, and I'm trying to be IO::-ish.)
+Binkley also pointed out some issues with his implementation:  
 
 <FONT SIZE=3 FACE="courier"><PRE>
     For example, what does eof or tell return?  The read position or 
@@ -152,8 +200,15 @@ and one for writing.  Quoth he:
 <P>Your opinions on this are most welcome.
 (Me, I'm just squeamish that this will break some code
 which depends on the existing behavior, and that attempts to
-maintain backwards-compatibility will slow down the code.
-But I'll give it a shot.) 
+maintain backwards-compatibility will slow down the code.)
+
+<P><DT><B><A NAME="item:2001_08_08_Remove_IO_WrapTie_from_new_IO_classes">(2001/08/08)  Remove IO::WrapTie from new IO:: classes</A></B></DT>
+<DD>
+It's not needed.  Backwards compatibility could be maintained
+by having new_tie() be identical to new().  Heck, I'll bet
+that IO::WrapTie should be reimplemented so the returned 
+object is just like an IO::Scalar in its use of globrefs.
+ 
 
 </DL>
 
@@ -165,6 +220,86 @@ But I'll give it a shot.)
 
 
 <DL>
+<P><DT><B><A NAME="item:Version">Version 2.105   (2001/08/09)</A></B></DT>
+<DD>
+Added support for various seek() whences to IO::ScalarArray.
+
+
+<P>Added support for consulting $/ in IO::Scalar and IO::ScalarArray.
+The old <CODE>use_RS()</CODE> is not even an option.  
+Unsupported record separators will cause a croak().
+
+
+<P>Added a lot of regression tests to supoprt the above.
+
+
+<P>Better on-line docs (hyperlinks to individual functions).
+
+<P><DT><B><A NAME="item:Version">Version 2.103   (2001/08/08)</A></B></DT>
+<DD>
+After sober consideration I have reimplemented IO::Scalar::print() 
+so that it once again always seeks to the end of the string.
+Benchmarks show the new implementation to be just as fast as
+Juergen's contributed patch; until someone can convince me otherwise,
+the current, safer implementation stays.
+
+
+<P>I thought more about giving IO::Scalar two separate handles,
+one for reading and one for writing, as suggested by Binkley.
+His points about what tell() and eof() return are, I think,
+show-stoppers for this feature.  Even the manpages for stdio's fseek()
+seem to imply a <I>single</I> file position indicator, not two.
+So I think I will take this off the TO DO list.  
+<B>Remedy:</B> you can always have two handles open on the same
+scalar, one which you only write to, and one which you only read from.
+That should give the same effect.
+
+<P><DT><B><A NAME="item:Version">Version 2.101   (2001/08/07)</A></B></DT>
+<DD>
+<B>Alpha release.</B>
+This is the initial release of the &quot;IO::Scalar and friends are
+now subclasses of IO::Handle&quot;.  I'm flinging it against the wall.  
+Please tell me if the banana sticks.  When it does, the banana
+will be called 2.2x. 
+
+
+<P>First off, <I>many many thanks to Doug Wilson</I>, who
+has provided an <I>invaluable</I> service by patching IO::Scalar
+and friends so that they (1) inherit from IO::Handle, (2) automatically
+tie themselves so that the <CODE>new()</CODE> objects can be used in native i/o
+constructs, and (3) doing it so that the whole damn thing passes
+its regression tests.  As Doug knows, my globref Kung-Fu was not
+up to the task; he graciously provided the patches.  This has earned
+him a seat at the <A HREF="#AUTHOR">Co-Authors</A> table, and the 
+right to have me address him as <I>sensei</I>.
+
+
+<P>Performance of IO::Scalar::print() has been improved by as much as 2x
+for lots of little prints, with the cost of forcing those
+who print-then-seek-then-print to explicitly seek to end-of-string
+before printing again.
+<I>Thanks to Juergen Zeller for this patch.</I>
+
+
+<P>Added the COPYING file, which had been missing from prior versions.  
+<I>Thanks to Albert Chin-A-Young for pointing this out.</I>
+
+
+<P>IO::Scalar consults $/ by default (1.x ignored it by default).
+Yes, I still need to support IO::ScalarArray.
+
+<P><DT><B><A NAME="item:Version">Version 1.221   (2001/08/07)</A></B></DT>
+<DD>
+I threatened in <A HREF="#INSTALLATION">INSTALLATION</A> to write an unflattering haiku
+about anyone who whined that I gave them insufficient information...
+but it turns out that I left out a crucial direction.  D'OH!
+<I>Thanks to David Beroff for the &quot;patch&quot; and the haiku...</I>
+
+<FONT SIZE=3 FACE="courier"><PRE>
+       Enough info there?
+         Here's unflattering haiku:
+       Forgot the line, &quot;make&quot;!  ;-)
+</PRE></FONT>
 <P><DT><B><A NAME="item:Version">Version 1.220   (2001/04/03)</A></B></DT>
 <DD>
 Added untested SEEK, TELL, and EOF methods to IO::Scalar 
@@ -307,7 +442,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 Eryq (<I><FILE><A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A></FILE></I>).
 President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://www.zeegee.com</A></FILE></I>).
 
-<P><DT><B><A NAME="item:Unofficial_Co-Authors">Unofficial Co-Authors</A></B></DT>
+<P><DT><B><A NAME="item:Co-Authors">Co-Authors</A></B></DT>
 <DD>
 For all their bug reports and patch submissions, the following
 are officially recognized:
@@ -316,6 +451,7 @@ are officially recognized:
      Richard Jones
      B. K. Oxley (binkley) 
      Doru Petrescu 
+     Doug Wilson (for picking up the ball I dropped, and doing tie() right)
 </PRE></FONT>
 </DL>
 
@@ -324,7 +460,7 @@ are officially recognized:
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Apr  4 01:38:26 2001 by cvu_pod2html
+Generated Thu Aug  9 04:09:34 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

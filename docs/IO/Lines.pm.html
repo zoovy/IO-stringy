@@ -5,7 +5,8 @@
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
 <FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::Lines</H1>
-</A><UL>
+</A>
+<P><B>This module is <FONT COLOR="#990000">ALPHA</FONT> code, which means that public interfaces are largely untested, and may change in future releases. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
@@ -33,7 +34,7 @@
     use IO::Lines;
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-    # See IO::ScalarArray for details 
+    ### See IO::ScalarArray for details 
 </PRE></FONT>
 
 
@@ -59,7 +60,7 @@ arbitrary data to the line-array: it will break the data at
 newlines appropriately.
 
 
-<P>See <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A> for full usage.
+<P>See <A HREF="../IO/ScalarArray.pm.html">IO::ScalarArray</A> for full usage and warnings.
 
 
 
@@ -67,7 +68,7 @@ newlines appropriately.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Lines.pm,v 1.111 2001/04/04 05:37:51 eryq Exp $
+<P>$Id: Lines.pm,v 2.103 2001/08/09 08:04:44 eryq Exp $
 
 
 
@@ -96,9 +97,13 @@ President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://
 <P><I>Morris M. Siegel,</I>
 for his $/ patch and the new <CODE>getlines()</CODE>.
 
+
+<P><I>Doug Wilson,</I>
+for the IO::Handle inheritance and automatic tie-ing.
+
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Apr  4 01:38:18 2001 by cvu_pod2html
+Generated Thu Aug  9 04:09:26 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

@@ -5,11 +5,33 @@
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
 <FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::InnerFile</H1>
-</A><UL>
+</A>
+<P><B>This module is <FONT COLOR="#990000">ALPHA</FONT> code, which means that public interfaces are largely untested, and may change in future releases. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
 <LI> <A HREF="#PUBLIC_INTERFACE">PUBLIC INTERFACE</A>
+<UL>
+<LI> <A HREF="#item:new">new FILEHANDLE, [START, [LENGTH]]</A>
+<LI> <A HREF="#item:set_length">set_length LENGTH</A>
+<LI> <A HREF="#item:get_length">get_length </A>
+<LI> <A HREF="#item:add_length">add_length NBYTES</A>
+<LI> <A HREF="#item:set_start">set_start START</A>
+<LI> <A HREF="#item:get_start">get_start </A>
+<LI> <A HREF="#item:add_start">add_start NBYTES</A>
+<LI> <A HREF="#item:binmode">binmode</A>
+<LI> <A HREF="#item:close">close</A>
+<LI> <A HREF="#item:flush">flush</A>
+<LI> <A HREF="#item:getc">getc</A>
+<LI> <A HREF="#item:getline">getline</A>
+<LI> <A HREF="#item:print">print LIST</A>
+<LI> <A HREF="#item:printf">printf LIST</A>
+<LI> <A HREF="#item:read">read BUF, NBYTES</A>
+<LI> <A HREF="#item:readline">readline</A>
+<LI> <A HREF="#item:seek">seek OFFFSET, WHENCE</A>
+<LI> <A HREF="#item:tell">tell</A>
+<LI> <A HREF="#item:write">write ARGS...</A>
+</UL>
 <LI> <A HREF="#AUTHOR">AUTHOR</A>
 </UL>
 </A>
@@ -120,7 +142,7 @@ Standard filehandle methods.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Apr  4 01:38:12 2001 by cvu_pod2html
+Generated Thu Aug  9 04:09:22 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

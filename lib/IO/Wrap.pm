@@ -13,7 +13,7 @@ use FileHandle;
 use Carp;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.104 $, 10;
+$VERSION = substr q$Revision: 2.101 $, 10;
 
 
 #------------------------------
@@ -31,15 +31,15 @@ sub new {
     my ($class, $stream) = @_;
     no strict 'refs';
 
-    # Convert raw scalar to globref:
+    ### Convert raw scalar to globref:
     ref($stream) or $stream = \*$stream;
 
-    # Wrap globref and incomplete objects:
-    if ((ref($stream) eq 'GLOB') or      # globref
+    ### Wrap globref and incomplete objects:
+    if ((ref($stream) eq 'GLOB') or      ### globref
 	(ref($stream) eq 'FileHandle') && !defined(&FileHandle::read)) {
 	return bless \$stream, $class;
     }
-    $stream;           # already okay!
+    $stream;           ### already okay!
 }
 
 #------------------------------
@@ -91,9 +91,9 @@ IO::Wrap - wrap raw filehandles in IO::Handle interface
 
    use IO::Wrap;
        
-   # Do stuff with any kind of filehandle (including a bare globref), or 
-   # any kind of blessed object that responds to a print() message.
-   #
+   ### Do stuff with any kind of filehandle (including a bare globref), or 
+   ### any kind of blessed object that responds to a print() message.
+   ###
    sub do_stuff {
        my $fh = shift;         
        

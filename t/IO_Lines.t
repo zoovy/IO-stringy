@@ -12,13 +12,18 @@ use Common;
 #
 #--------------------
 
+my $RECORDSEP_TESTS = 'undef newline';
+sub opener { my $a = [@{$_[0]}]; IO::Lines->new($a); }
+
 # Make a tester:
 my $T = typical ExtUtils::TBone;
 Common->test_init(TBone=>$T);
 
 # Set the counter:
-my $tie_tests = (($] >= 5.004) ? 4 : 0);
-$T->begin(11 + $tie_tests);
+my $main_tests = 1;
+my $common_tests = (1 + 1 + 4 + 4 + 3 + 4
+		    + Common->test_recordsep_count($RECORDSEP_TESTS));
+$T->begin($main_tests + $common_tests);
 
 # Open a scalar on a string, containing initial data:
 my @la = @Common::DATA_LA;
@@ -30,12 +35,9 @@ Common->test_print($LAH);
 Common->test_getc($LAH);
 Common->test_getline($LAH);
 Common->test_read($LAH);
-#Common->test_seek($LAH);
-
-# Run tie tests:
-if ($tie_tests) {
-    Common->test_tie(TieArgs => ['IO::Lines', []]);
-}
+Common->test_seek($LAH);
+Common->test_tie(TieArgs => ['IO::Lines', []]);
+Common->test_recordsep($RECORDSEP_TESTS, \&opener);
 
 # So we know everything went well...
 $T->end;

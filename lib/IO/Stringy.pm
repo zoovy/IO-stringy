@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.220 $, 10;
+$VERSION = substr q$Revision: 2.105 $, 10;
 
 1;
 __END__
@@ -30,10 +30,6 @@ and object-oriented i/o) on things I<other> than normal filehandles;
 in particular, L<IO::Scalar|IO::Scalar>, L<IO::ScalarArray|IO::ScalarArray>, 
 and L<IO::Lines|IO::Lines>.
 
-If you have access to tie(), these classes will make use of the
-L<IO::WrapTie|IO::WrapTie> module to inherit a convenient new_tie() 
-constructor.  It also exports a nice wraptie() function.
-
 In the more-traditional IO::Handle front, we 
 have L<IO::AtomicFile|IO::AtomicFile>
 which may be used to painlessly create files which are updated
@@ -46,11 +42,44 @@ use OO syntax and stop worrying about whether your function's caller
 handed you a string, a globref, or a FileHandle.
 
 
+=head1 WARNINGS
+
+Perl's TIEHANDLE spec was incomplete prior to 5.005_57;
+it was missing support for C<seek()>, C<tell()>, and C<eof()>.
+Attempting to use these functions with an IO::Scalar, IO::ScalarArray,
+IO::Lines, etc. B<will not work> prior to 5.005_57.  
+None of the relevant methods will be invoked by Perl; 
+and even worse, this kind of bug can lie dormant for a while.
+If you turn warnings on (via C<$^W> or C<perl -w>), and you see 
+something like this...
+
+    seek() on unopened file
+
+...then you are probably trying to use one of these functions
+on one of our IO:: classes with an old Perl.  The remedy is to simply
+use the OO version; e.g.:
+
+    $SH->seek(0,0);    ### GOOD: will work on any 5.005
+    seek($SH,0,0);     ### WARNING: will only work on 5.005_57 and beyond
+
+
+
 =head1 INSTALLATION
+
+
+=head2 Requirements
+
+As of version 2.x, this toolkit requires Perl 5.005 for 
+the IO::Handle subclasses, and 5.005_57 or better is
+B<strongly> recommended.  See L<"WARNINGS"> for details.
+
+
+=head2 Directions
 
 Most of you already know the drill...
 
     perl Makefile.PL
+    make
     make test
     make install
 
@@ -78,7 +107,7 @@ Don't think I won't.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.220 2001/04/04 05:37:51 eryq Exp $
+$Id: Stringy.pm,v 2.105 2001/08/09 08:08:32 eryq Exp $
 
 
 
@@ -93,7 +122,9 @@ Like a moron, I lost his message under a ton of others,
 and only now have the experimental implementation done.
 
 Will the sudden sensitivity to $/ hose anyone out there?
-I'm worried, so you have to enable it explicitly.
+I'm worried, so you have to enable it explicitly in 1.x.
+It will be on by default in 2.x, though only IO::Scalar
+has been implemented.
 
 
 =item (2000/09/28)  Separate read/write cursors?
@@ -106,7 +137,9 @@ and one for writing.  Quoth he:
     maintain an independent read and write file position (and 
     seek(2) resets them both)? 
 
-He also pointed out some issues with his implementation:  
+(My answer: perhaps, but stdio's fseek/ftell manpages seem to
+imply a single file position indicator, and I'm trying to be IO::-ish.)
+Binkley also pointed out some issues with his implementation:  
 
     For example, what does eof or tell return?  The read position or 
     the write position?  (I assumed read position was more important). 
@@ -114,8 +147,16 @@ He also pointed out some issues with his implementation:
 Your opinions on this are most welcome.
 (Me, I'm just squeamish that this will break some code
 which depends on the existing behavior, and that attempts to
-maintain backwards-compatibility will slow down the code.
-But I'll give it a shot.) 
+maintain backwards-compatibility will slow down the code.)
+
+
+=item (2001/08/08)  Remove IO::WrapTie from new IO:: classes
+
+It's not needed.  Backwards compatibility could be maintained
+by having new_tie() be identical to new().  Heck, I'll bet
+that IO::WrapTie should be reimplemented so the returned 
+object is just like an IO::Scalar in its use of globrefs.
+ 
 
 =back
 
@@ -124,6 +165,84 @@ But I'll give it a shot.)
 =head1 CHANGE LOG 
 
 =over 4
+
+
+=item Version 2.105   (2001/08/09)
+
+Added support for various seek() whences to IO::ScalarArray.
+
+Added support for consulting $/ in IO::Scalar and IO::ScalarArray.
+The old C<use_RS()> is not even an option.  
+Unsupported record separators will cause a croak().
+
+Added a lot of regression tests to supoprt the above.
+
+Better on-line docs (hyperlinks to individual functions).
+
+
+
+=item Version 2.103   (2001/08/08)
+
+After sober consideration I have reimplemented IO::Scalar::print() 
+so that it once again always seeks to the end of the string.
+Benchmarks show the new implementation to be just as fast as
+Juergen's contributed patch; until someone can convince me otherwise,
+the current, safer implementation stays.
+
+I thought more about giving IO::Scalar two separate handles,
+one for reading and one for writing, as suggested by Binkley.
+His points about what tell() and eof() return are, I think,
+show-stoppers for this feature.  Even the manpages for stdio's fseek()
+seem to imply a I<single> file position indicator, not two.
+So I think I will take this off the TO DO list.  
+B<Remedy:> you can always have two handles open on the same
+scalar, one which you only write to, and one which you only read from.
+That should give the same effect.
+
+
+=item Version 2.101   (2001/08/07)
+
+B<Alpha release.>
+This is the initial release of the "IO::Scalar and friends are
+now subclasses of IO::Handle".  I'm flinging it against the wall.  
+Please tell me if the banana sticks.  When it does, the banana
+will be called 2.2x. 
+
+First off, I<many many thanks to Doug Wilson>, who
+has provided an I<invaluable> service by patching IO::Scalar
+and friends so that they (1) inherit from IO::Handle, (2) automatically
+tie themselves so that the C<new()> objects can be used in native i/o
+constructs, and (3) doing it so that the whole damn thing passes
+its regression tests.  As Doug knows, my globref Kung-Fu was not
+up to the task; he graciously provided the patches.  This has earned
+him a seat at the L<Co-Authors|"AUTHOR"> table, and the 
+right to have me address him as I<sensei>.
+
+Performance of IO::Scalar::print() has been improved by as much as 2x
+for lots of little prints, with the cost of forcing those
+who print-then-seek-then-print to explicitly seek to end-of-string
+before printing again.
+I<Thanks to Juergen Zeller for this patch.>
+
+Added the COPYING file, which had been missing from prior versions.  
+I<Thanks to Albert Chin-A-Young for pointing this out.>
+
+IO::Scalar consults $/ by default (1.x ignored it by default).
+Yes, I still need to support IO::ScalarArray.
+
+
+=item Version 1.221   (2001/08/07)
+
+I threatened in L<"INSTALLATION"> to write an unflattering haiku
+about anyone who whined that I gave them insufficient information...
+but it turns out that I left out a crucial direction.  D'OH!
+I<Thanks to David Beroff for the "patch" and the haiku...>
+
+       Enough info there?
+         Here's unflattering haiku:
+       Forgot the line, "make"!  ;-)
+
+
 
 =item Version 1.220   (2001/04/03)
 
@@ -277,7 +396,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 Eryq (F<eryq@zeegee.com>).
 President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
-=item Unofficial Co-Authors
+=item Co-Authors
 
 For all their bug reports and patch submissions, the following
 are officially recognized:
@@ -285,6 +404,7 @@ are officially recognized:
      Richard Jones
      B. K. Oxley (binkley) 
      Doru Petrescu 
+     Doug Wilson (for picking up the ball I dropped, and doing tie() right)
 
 
 =back

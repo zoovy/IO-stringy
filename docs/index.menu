@@ -28,3 +28,8 @@ HREF IO/Wrap.pm.html
 ITEM IO::WrapTie
 HREF IO/WrapTie.pm.html
 
+SECTION Examples
+
+ITEM IO_Scalar_synopsis
+HREF IO_Scalar_synopsis.html
+

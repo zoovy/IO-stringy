@@ -5,7 +5,8 @@
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
 <FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::WrapTie</H1>
-</A><UL>
+</A>
+<P><B>This module is <FONT COLOR="#990000">ALPHA</FONT> code, which means that public interfaces are largely untested, and may change in future releases. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
 <LI> <A HREF="#NAME">NAME</A>
 <LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
 <LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
@@ -49,19 +50,19 @@ Use this with any existing class...
 
 <FONT SIZE=3 FACE="courier"><PRE>
    use IO::WrapTie;
-   use FooHandle;                  # implements TIEHANDLE interface
+   use FooHandle;                  ### implements TIEHANDLE interface
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-   # Suppose we want a &quot;FooHandle-&gt;new(&amp;FOO_RDWR, 2)&quot;.
-   # We can instead say...
+   ### Suppose we want a &quot;FooHandle-&gt;new(&amp;FOO_RDWR, 2)&quot;.
+   ### We can instead say...
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
    $FH = wraptie('FooHandle', &amp;FOO_RDWR, 2); 
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-   # Now we can use...    
-   print $FH &quot;Hello, &quot;;            # traditional operator syntax...
-   $FH-&gt;print(&quot;world!\n&quot;);         # ...and OO syntax as well!
+   ### Now we can use...    
+   print $FH &quot;Hello, &quot;;            ### traditional operator syntax...
+   $FH-&gt;print(&quot;world!\n&quot;);         ### ...and OO syntax as well!
 </PRE></FONT>
 
 <P><I>OO interface (preferred).</I>
@@ -70,11 +71,11 @@ nifty <CODE>new_tie()</CODE> constructor...
 
 <FONT SIZE=3 FACE="courier"><PRE>
    #------------------------------    
-   package FooHandle;                        # a class which can TIEHANDLE
+   package FooHandle;                        ### a class which can TIEHANDLE
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
    use IO::WrapTie;  
-   @ISA = qw(IO::WrapTie::Slave);            # inherit new_tie()
+   @ISA = qw(IO::WrapTie::Slave);            ### inherit new_tie()
    ...
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
@@ -82,9 +83,9 @@ nifty <CODE>new_tie()</CODE> constructor...
    package main; 
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-   $FH = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);   # $FH is an IO::WrapTie::Master
-   print $FH &quot;Hello, &quot;;                      # traditional operator syntax
-   $FH-&gt;print(&quot;world!\n&quot;);                   # OO syntax
+   $FH = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);   ### $FH is an IO::WrapTie::Master
+   print $FH &quot;Hello, &quot;;                      ### traditional operator syntax
+   $FH-&gt;print(&quot;world!\n&quot;);                   ### OO syntax
 </PRE></FONT>
 
 <P>See IO::Scalar as an example.  It also shows you how to create classes
@@ -140,9 +141,9 @@ object via tied()... giving the object a &quot;split personality&quot;).
 
 <FONT SIZE=3 FACE="courier"><PRE>
     $WT = wraptie('FooHandle', &amp;FOO_RDWR, 2);
-    $WT-&gt;print(&quot;Hello, world\n&quot;);   # OO syntax
-    print $WT &quot;Yes!\n&quot;;             # Named operator syntax too!
-    $WT-&gt;weird_stuff;               # Other methods!
+    $WT-&gt;print(&quot;Hello, world\n&quot;);   ### OO syntax
+    print $WT &quot;Yes!\n&quot;;             ### Named operator syntax too!
+    $WT-&gt;weird_stuff;               ### Other methods!
 </PRE></FONT>
 
 <P>And if you're authoring a class like FooHandle, just have it inherit 
@@ -329,11 +330,11 @@ which will attempt to use those operators:
 
 <FONT SIZE=3 FACE="courier"><PRE>
     $O = FooHandle-&gt;new(&amp;FOO_RDWR, 2);
-    $O-&gt;print(&quot;Hello, world\n&quot;);  # OO syntax is okay, BUT....
+    $O-&gt;print(&quot;Hello, world\n&quot;);  ### OO syntax is okay, BUT....
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
     sub nope { print $_[0] &quot;Nope!\n&quot; }
- X  nope($O);                     # ERROR!!! (not a glob ref)
+ X  nope($O);                     ### ERROR!!! (not a glob ref)
 </PRE></FONT>
 
 <P><B>Why not simply use tie()?</B> 
@@ -344,14 +345,14 @@ it in an OO-way... and that will break it:
 
 <FONT SIZE=3 FACE="courier"><PRE>
     tie *T, 'FooHandle', &amp;FOO_RDWR, 2; 
-    print T &quot;Hello, world\n&quot;;     # Operator is okay, BUT... 
+    print T &quot;Hello, world\n&quot;;   ### Operator is okay, BUT... 
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-    tied(*T)-&gt;other_stuff;        # yuck! AND...
+    tied(*T)-&gt;other_stuff;      ### yuck! AND...
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
     sub nope { shift-&gt;print(&quot;Nope!\n&quot;) }
- X  nope(\*T);                    # ERROR!!! (method &quot;print&quot; on unblessed ref)
+ X  nope(\*T);                  ### ERROR!!! (method &quot;print&quot; on unblessed ref)
 </PRE></FONT>
 
 <P><B>Why a master and slave? 
@@ -420,7 +421,7 @@ President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Apr  4 01:38:36 2001 by cvu_pod2html
+Generated Thu Aug  9 04:09:41 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

@@ -14,7 +14,7 @@ WriteMakefile(
 	      VERSION_FROM => "lib/IO/Stringy.pm",
 	      DISTNAME     => "IO-stringy",
 	      'dist'       => {
-		  PREOP    => "cvu_perl_preop -m IO::Stringy -f",
+		  PREOP    => "cvu_perl_preop -m IO::Stringy -f -A",
 		  COMPRESS => 'gzip',
 		  SUFFIX   => 'gz',
 	      }

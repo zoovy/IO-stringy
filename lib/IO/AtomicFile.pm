@@ -17,7 +17,7 @@ use IO::File;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.106 $, 10;
+$VERSION = substr q$Revision: 2.101 $, 10;
 
 # Inheritance:
 @ISA = qw(IO::File);
@@ -43,7 +43,7 @@ sub new {
 # Destructor.
 #
 sub DESTROY {
-    shift->close(1);   # like close, but raises fatal exception on failure
+    shift->close(1);   ### like close, but raises fatal exception on failure
 }
 
 #------------------------------
@@ -53,14 +53,14 @@ sub DESTROY {
 #
 sub open {
     my ($self, $path, $mode) = @_;
-    ref($self) or $self = $self->new;    # now we have an instance! 
+    ref($self) or $self = $self->new;    ### now we have an instance! 
 
-    # Create tmp path, and remember this info: 
+    ### Create tmp path, and remember this info: 
     my $temp = "${path}..TMP" . ${*$self}{'io_atomicfile_suffix'};
     ${*$self}{'io_atomicfile_temp'} = $temp;
     ${*$self}{'io_atomicfile_path'} = $path;
 
-    # Open the file!  Returns filehandle on success, for use as a constructor: 
+    ### Open the file!  Returns filehandle on success, for use as a constructor: 
     $self->SUPER::open($temp, $mode) ? $self : undef;
 }
 
@@ -85,7 +85,7 @@ sub _closed {
 #
 sub close {
     my ($self, $die) = @_;
-    unless ($self->_closed(1)) {             # sentinel...
+    unless ($self->_closed(1)) {             ### sentinel...
         $self->SUPER::close();    
         rename(${*$self}{'io_atomicfile_temp'},
 	       ${*$self}{'io_atomicfile_path'}) 
@@ -102,7 +102,7 @@ sub close {
 #
 sub delete {
     my $self = shift;
-    unless ($self->_closed(1)) {             # sentinel...
+    unless ($self->_closed(1)) {             ### sentinel...
         $self->SUPER::close();    
         return unlink(${*$self}{'io_atomicfile_temp'});
     }
@@ -135,17 +135,17 @@ IO::AtomicFile - write a file which is updated atomically
 
     use IO::AtomicFile;
 
-    # Write a temp file, and have it install itself when closed:
+    ### Write a temp file, and have it install itself when closed:
     my $FH = IO::AtomicFile->open("bar.dat", "w");
     print $FH "Hello!\n";
     $FH->close || die "couldn't install atomic file: $!";    
 
-    # Write a temp file, but delete it before it gets installed:
+    ### Write a temp file, but delete it before it gets installed:
     my $FH = IO::AtomicFile->open("bar.dat", "w");
     print $FH "Hello!\n";
     $FH->delete; 
 
-    # Write a temp file, but neither install it nor delete it:
+    ### Write a temp file, but neither install it nor delete it:
     my $FH = IO::AtomicFile->open("bar.dat", "w");
     print $FH "Hello!\n";
     $FH->detach;   
@@ -185,6 +185,6 @@ President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
 =head1 REVISION
 
-$Revision: 1.106 $
+$Revision: 2.101 $
 
 =cut 
