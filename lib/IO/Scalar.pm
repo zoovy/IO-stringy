@@ -158,7 +158,7 @@ use overload '""'   => sub { ${*{$_[0]}->{SR}} };
 use overload 'bool' => sub { 1 };      ### have to do this, so object is true!
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 2.105 $, 10;
+$VERSION = "2.110";
 
 ### Inheritance:
 @ISA = qw(IO::Handle);
@@ -275,7 +275,7 @@ No-op, provided for OO compatibility.
 
 =cut
 
-sub flush {}
+sub flush { "0 but true" }
 
 #------------------------------
 
@@ -418,19 +418,19 @@ still safer to explicitly seek-to-end before subsequent print()s.
 
 sub print {
     my $self = shift;
-    *$self->{Pos} = length(${*$self->{SR}} .= join('', @_));
+    *$self->{Pos} = length(${*$self->{SR}} .= join('', @_) . (defined($\) ? $\ : ""));
     1;
 }
 sub _unsafe_print {
     my $self = shift;
-    my $append = join('', @_);
+    my $append = join('', @_) . $\;
     ${*$self->{SR}} .= $append;
     *$self->{Pos}   += length($append);
     1;
 }
 sub _old_print {
     my $self = shift;
-    ${*$self->{SR}} .= join('', @_);
+    ${*$self->{SR}} .= join('', @_) . $\;
     *$self->{Pos} = length(${*$self->{SR}});
     1;
 }
@@ -587,7 +587,7 @@ sub seek {
     ### Fixup:
     if (*$self->{Pos} < 0)       { *$self->{Pos} = 0 }
     if (*$self->{Pos} > $eofpos) { *$self->{Pos} = $eofpos }
-    1;
+    return 1;
 }
 
 #------------------------------
@@ -718,11 +718,14 @@ use the OO version; e.g.:
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 2.105 2003/12/21 18:51:45 eryq Exp $
+$Id: Scalar.pm,v 1.6 2005/02/10 21:21:53 dfs Exp $
 
 
 =head1 AUTHORS
 
+=head2 Primary Maintainer
+
+David F. Skoll (F<dfs@roaringpenguin.com>).
 
 =head2 Principal author
 

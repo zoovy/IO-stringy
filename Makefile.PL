@@ -10,12 +10,11 @@ use ExtUtils::MakeMaker;
 
 # Write the Makefile:
 WriteMakefile(
-	      NAME         => "IO-stringy",
+	      NAME         => "IO::Stringy",
 	      VERSION_FROM => "lib/IO/Stringy.pm",
 	      DISTNAME     => "IO-stringy",
 	      'dist'       => {
-		  PREOP    => "cvu_perl_preop -m IO::Stringy -f",
-		  COMPRESS => 'gzip',
+		  COMPRESS => 'gzip -f',
 		  SUFFIX   => 'gz',
 	      }
 	      );

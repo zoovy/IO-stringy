@@ -75,7 +75,7 @@ INSTALLATION
     them in the next change log. I'll do it. Don't think I won't.
 
 VERSION
-    $Id: Stringy.pm,v 2.109 2003/12/21 18:51:45 eryq Exp $
+    $Id: README,v 1.2 2005/02/10 21:24:05 dfs Exp $
 
 TO DO
     (2000/08/02) Finalize $/ support
@@ -87,27 +87,6 @@ TO DO
         worried, so you have to enable it explicitly in 1.x. It will be on
         by default in 2.x, though only IO::Scalar has been implemented.
 
-    (2000/09/28) Separate read/write cursors?
-        Binkley sent me a very interesting variant of IO::Scalar which
-        maintains two separate cursors on the data, one for reading and one
-        for writing. Quoth he:
-
-            Isn't it the case that real operating system file descriptors 
-            maintain an independent read and write file position (and 
-            seek(2) resets them both)? 
-
-        (My answer: perhaps, but stdio's fseek/ftell manpages seem to imply
-        a single file position indicator, and I'm trying to be IO::-ish.)
-        Binkley also pointed out some issues with his implementation:
-
-            For example, what does eof or tell return?  The read position or 
-            the write position?  (I assumed read position was more important). 
-
-        Your opinions on this are most welcome. (Me, I'm just squeamish that
-        this will break some code which depends on the existing behavior,
-        and that attempts to maintain backwards-compatibility will slow down
-        the code.)
-
     (2001/08/08) Remove IO::WrapTie from new IO:: classes
         It's not needed. Backwards compatibility could be maintained by
         having new_tie() be identical to new(). Heck, I'll bet that
@@ -115,6 +94,29 @@ TO DO
         like an IO::Scalar in its use of globrefs.
 
 CHANGE LOG
+    Version 2.110 (2005/02/10)
+        Maintainership taken over by DSKOLL <dfs@roaringpenguin.com>
+
+        Closed the following bugs at
+        https://rt.cpan.org/NoAuth/Bugs.html?Dist=IO-stringy:
+
+    *   2208 IO::ScalarArray->getline does not return undef for EOF if
+        undef($/)
+
+    *   7132 IO-stringy/Makefile.PL bug - name should be module name
+
+    *   11249 IO::Scalar flush shouldn't return undef
+
+    *   2172 $\ (output record separator) not respected
+
+    *   8605 IO::InnerFile::seek() should return 1 on success
+
+    *   4798 *.html in lib/
+
+    *   4369 Improvement: handling of fixed-size reads in IO::Scalar
+
+        (Actually, bug 4369 was closed in Version 2.109)
+
     Version 2.109 (2003/12/21)
         IO::Scalar::getline now works with ref to int. *Thanks to Dominique
         Quatravaux for this patch.*
@@ -233,7 +235,7 @@ CHANGE LOG
                loses urgency
 
                BABY EATS FISH is
-                  simply not equivalent   
+                  simply not equivalent
                to FISH EATS BABY
 
         New sysread and syswrite methods for IO::Scalar. *Thanks again to
@@ -287,6 +289,9 @@ CHANGE LOG
 
 AUTHOR
     Primary Maintainer
+        David F. Skoll (dfs@roaringpenguin.com).
+
+    Original Author
         Eryq (eryq@zeegee.com). President, ZeeGee Software Inc
         (http://www.zeegee.com).
 
@@ -295,8 +300,8 @@ AUTHOR
         officially recognized:
 
              Richard Jones
-             B. K. Oxley (binkley) 
-             Doru Petrescu 
+             B. K. Oxley (binkley)
+             Doru Petrescu
              Doug Wilson (for picking up the ball I dropped, and doing tie() right)
 
     Go to http://www.zeegee.com for the latest downloads and on-line

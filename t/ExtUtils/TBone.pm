@@ -101,7 +101,7 @@ use FileHandle;
 use File::Basename;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.124 $, 10;
+$VERSION = substr q$Revision: 1.1 $, 10;
 
 
 
@@ -524,7 +524,7 @@ sub catfile {
 
 =head1 VERSION
 
-$Id: TBone.pm,v 1.124 2001/08/20 20:30:07 eryq Exp $
+$Id: TBone.pm,v 1.1 2005/02/10 19:38:36 dfs Exp $
 
 
 =head1 CHANGE LOG
