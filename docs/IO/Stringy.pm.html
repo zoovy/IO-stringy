@@ -84,7 +84,7 @@ handed you a string, a globref, or a FileHandle.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Stringy.pm,v 1.213 2000/08/16 04:59:02 eryq Exp $
+<P>$Id: Stringy.pm,v 1.215 2000/09/05 03:53:58 eryq Exp $
 
 
 
@@ -94,6 +94,17 @@ handed you a string, a globref, or a FileHandle.
 
 
 <DL>
+<P><DT><B><A NAME="item:Version">Version 1.215   (2000/09/05)</A></B></DT>
+<DD>
+Added 'bool' overload to '&quot;&quot;' overload, so object always evaluates 
+to true.  (Whew.  Glad I caught this before it went to CPAN.)
+
+<P><DT><B><A NAME="item:Version">Version 1.214   (2000/09/03)</A></B></DT>
+<DD>
+Evaluating an IO::Scalar in a string context now yields
+the underlying string.
+<I>Thanks to B. K. Oxley (binkley) for this.</I>
+
 <P><DT><B><A NAME="item:Version">Version 1.213   (2000/08/16)</A></B></DT>
 <DD>
 Minor documentation fixes.
@@ -159,7 +170,7 @@ President, ZeeGee Software Inc (<I><FILE><A HREF="http://www.zeegee.com">http://
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Aug 16 01:03:25 2000 by cvu_pod2html
+Generated Mon Sep  4 23:55:02 2000 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

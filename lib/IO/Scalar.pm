@@ -12,30 +12,30 @@ If you have any Perl5, you can use the basic OO interface...
 
     use IO::Scalar;
     
-    # Open a handle on a string:
+    ### Open a handle on a string:
     $SH = new IO::Scalar;
     $SH->open(\$somestring);
     
-    # Open a handle on a string, read it line-by-line, then close it:
+    ### Open a handle on a string, read it line-by-line, then close it:
     $SH = new IO::Scalar \$somestring;
     while ($_ = $SH->getline) { print "Line: $_" }
     $SH->close;
         
-    # Open a handle on a string, and slurp in all the lines:
+    ### Open a handle on a string, and slurp in all the lines:
     $SH = new IO::Scalar \$somestring;
     print $SH->getlines; 
      
-    # Open a handle on a string, and append to it:
+    ### Open a handle on a string, and append to it:
     $SH = new IO::Scalar \$somestring
     $SH->print("bar\n");        ### will add "bar\n" to the end   
       
-    # Get the current position:
+    ### Get the current position:
     $pos = $SH->getpos;         ### $SH->tell() also works
      
-    # Set the current position:
+    ### Set the current position:
     $SH->setpos($pos);          ### $SH->seek(POS,WHENCE) also works
         
-    # Open an anonymous temporary scalar:
+    ### Open an anonymous temporary scalar:
     $SH = new IO::Scalar;
     $SH->print("Hi there!");
     print "I got: ", ${$SH->sref}, "\n";      ### get at value
@@ -45,17 +45,24 @@ interface, and read/write scalars just like files:
 
     use IO::Scalar;
 
-    # Writing to a scalar...
+    ### Writing to a scalar...
     my $s; 
     tie *OUT, 'IO::Scalar', \$s;
     print OUT "line 1\nline 2\n", "line 3\n";
     print "s is now... $s\n"
      
-    # Reading and writing an anonymous scalar... 
+    ### Reading and writing an anonymous scalar... 
     tie *OUT, 'IO::Scalar';
     print OUT "line 1\nline 2\n", "line 3\n";
     tied(OUT)->seek(0,0);
     while (<OUT>) { print "LINE: ", $_ }
+
+Stringification now works, too!
+
+    my $SH = new IO::Scalar \$somestring;
+    $SH->print("Hello, ");
+    $SH->print("world!");
+    print "I've got: <$SH>\n";
 
 
 =head1 DESCRIPTION
@@ -98,10 +105,14 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA);
 
-# The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.119 $, 10;
+### Stringification, courtesy of B. K. Oxley (binkley):  :-)
+use overload '""'   => sub { ${$_[0]->{SR}} };
+use overload 'bool' => sub { 1 };      ### have to do this, so object is true! 
 
-# Inheritance:
+### The package version, both in 1.23 style *and* usable by MakeMaker:
+$VERSION = substr q$Revision: 1.121 $, 10;
+
+### Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
 
 
@@ -493,6 +504,7 @@ sub CLOSE     { shift->close(@_); }
 #------------------------------------------------------------
 
 1;
+
 __END__
 
 
@@ -503,7 +515,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.119 2000/05/03 12:14:50 eryq Exp $
+$Id: Scalar.pm,v 1.121 2000/09/05 03:53:58 eryq Exp $
 
 
 =head1 AUTHORS

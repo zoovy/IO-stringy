@@ -36,9 +36,17 @@ INSTALLATION
         make install
 
 VERSION
-    $Id: Stringy.pm,v 1.213 2000/08/16 04:59:02 eryq Exp $
+    $Id: Stringy.pm,v 1.215 2000/09/05 03:53:58 eryq Exp $
 
 CHANGE LOG
+    Version 1.215   (2000/09/05)
+        Added 'bool' overload to '""' overload, so object always evaluates
+        to true. (Whew. Glad I caught this before it went to CPAN.)
+
+    Version 1.214   (2000/09/03)
+        Evaluating an IO::Scalar in a string context now yields the
+        underlying string. *Thanks to B. K. Oxley (binkley) for this.*
+
     Version 1.213   (2000/08/16)
         Minor documentation fixes.
 

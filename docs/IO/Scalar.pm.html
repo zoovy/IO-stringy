@@ -41,30 +41,30 @@
 <FONT SIZE=3 FACE="courier"><PRE>
     use IO::Scalar;
     
-    # Open a handle on a string:
+    ### Open a handle on a string:
     $SH = new IO::Scalar;
     $SH-&gt;open(\$somestring);
     
-    # Open a handle on a string, read it line-by-line, then close it:
+    ### Open a handle on a string, read it line-by-line, then close it:
     $SH = new IO::Scalar \$somestring;
     while ($_ = $SH-&gt;getline) { print &quot;Line: $_&quot; }
     $SH-&gt;close;
         
-    # Open a handle on a string, and slurp in all the lines:
+    ### Open a handle on a string, and slurp in all the lines:
     $SH = new IO::Scalar \$somestring;
     print $SH-&gt;getlines; 
      
-    # Open a handle on a string, and append to it:
+    ### Open a handle on a string, and append to it:
     $SH = new IO::Scalar \$somestring
     $SH-&gt;print(&quot;bar\n&quot;);        ### will add &quot;bar\n&quot; to the end   
       
-    # Get the current position:
+    ### Get the current position:
     $pos = $SH-&gt;getpos;         ### $SH-&gt;tell() also works
      
-    # Set the current position:
+    ### Set the current position:
     $SH-&gt;setpos($pos);          ### $SH-&gt;seek(POS,WHENCE) also works
         
-    # Open an anonymous temporary scalar:
+    ### Open an anonymous temporary scalar:
     $SH = new IO::Scalar;
     $SH-&gt;print(&quot;Hi there!&quot;);
     print &quot;I got: &quot;, ${$SH-&gt;sref}, &quot;\n&quot;;      ### get at value
@@ -77,17 +77,26 @@ interface, and read/write scalars just like files:
     use IO::Scalar;
 </PRE></FONT>
 <FONT SIZE=3 FACE="courier"><PRE>
-    # Writing to a scalar...
+    ### Writing to a scalar...
     my $s; 
     tie *OUT, 'IO::Scalar', \$s;
     print OUT &quot;line 1\nline 2\n&quot;, &quot;line 3\n&quot;;
     print &quot;s is now... $s\n&quot;
      
-    # Reading and writing an anonymous scalar... 
+    ### Reading and writing an anonymous scalar... 
     tie *OUT, 'IO::Scalar';
     print OUT &quot;line 1\nline 2\n&quot;, &quot;line 3\n&quot;;
     tied(OUT)-&gt;seek(0,0);
     while (&lt;OUT&gt;) { print &quot;LINE: &quot;, $_ }
+</PRE></FONT>
+
+<P>Stringification now works, too!
+
+<FONT SIZE=3 FACE="courier"><PRE>
+    my $SH = new IO::Scalar \$somestring;
+    $SH-&gt;print(&quot;Hello, &quot;);
+    $SH-&gt;print(&quot;world!&quot;);
+    print &quot;I've got: &lt;$SH&gt;\n&quot;;
 </PRE></FONT>
 
 
@@ -285,7 +294,7 @@ Return a reference to the underlying scalar.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Scalar.pm,v 1.119 2000/05/03 12:14:50 eryq Exp $
+<P>$Id: Scalar.pm,v 1.121 2000/09/05 03:53:58 eryq Exp $
 
 
 
@@ -332,7 +341,7 @@ for his patch to massively improve the performance of <CODE>getline()</CODE>.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Wed Aug 16 01:03:21 2000 by cvu_pod2html
+Generated Mon Sep  4 23:54:58 2000 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

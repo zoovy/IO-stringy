@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.213 $, 10;
+$VERSION = substr q$Revision: 1.215 $, 10;
 
 1;
 __END__
@@ -58,13 +58,26 @@ You know the drill...
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.213 2000/08/16 04:59:02 eryq Exp $
+$Id: Stringy.pm,v 1.215 2000/09/05 03:53:58 eryq Exp $
 
 
 
 =head1 CHANGE LOG 
 
 =over 4
+
+
+=item Version 1.215   (2000/09/05)
+
+Added 'bool' overload to '""' overload, so object always evaluates 
+to true.  (Whew.  Glad I caught this before it went to CPAN.)
+
+
+=item Version 1.214   (2000/09/03)
+
+Evaluating an IO::Scalar in a string context now yields
+the underlying string.
+I<Thanks to B. K. Oxley (binkley) for this.>
 
 
 =item Version 1.213   (2000/08/16)
