@@ -111,7 +111,7 @@ use overload '""'   => sub { ${$_[0]->{SR}} };
 use overload 'bool' => sub { 1 };      ### have to do this, so object is true! 
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.122 $, 10;
+$VERSION = substr q$Revision: 1.124 $, 10;
 
 ### Inheritance:
 @ISA = qw(IO::Handle);
@@ -474,6 +474,19 @@ sub seek {
 
 #------------------------------
 
+=item sysseek OFFSET, WHENCE
+
+I<Instance method.> Identical to C<seek OFFSET, WHENCE>, I<q.v.>
+
+=cut
+
+sub sysseek {
+  my $self = shift;
+  $self->seek (@_);
+}
+
+#------------------------------
+
 =item tell
 
 I<Instance method.>
@@ -546,7 +559,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.122 2000/09/28 06:32:28 eryq Exp $
+$Id: Scalar.pm,v 1.124 2001/02/23 07:15:35 eryq Exp $
 
 
 =head1 AUTHORS
@@ -577,9 +590,13 @@ for finding and fixing the bug in C<PRINTF()>.
 I<Eric L. Brine,>
 for his offset-using read() and write() implementations. 
 
-I<Richard Jones> (F<rich@annexia.org>),
+I<Richard Jones,>
 for his patches to massively improve the performance of C<getline()>
 and add C<sysread> and C<syswrite>.
+
+I<B. K. Oxley (binkley),>
+for stringification and inheritance improvements,
+and sundry good ideas.
 
 
 =cut

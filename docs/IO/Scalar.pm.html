@@ -277,6 +277,10 @@ No-op, provided for OO compatibility.
 <DD>
 <I>Instance method.</I>  Seek to a given position in the stream.
 
+<P><DT><B><A NAME="item:sysseek">sysseek OFFSET, WHENCE</A></B></DT>
+<DD>
+<I>Instance method.</I> Identical to <CODE>seek OFFSET, WHENCE</CODE>, <I>q.v.</I>
+
 <P><DT><B><A NAME="item:tell">tell</A></B></DT>
 <DD>
 <I>Instance method.</I>
@@ -305,7 +309,7 @@ Return a reference to the underlying scalar.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Scalar.pm,v 1.122 2000/09/28 06:32:28 eryq Exp $
+<P>$Id: Scalar.pm,v 1.124 2001/02/23 07:15:35 eryq Exp $
 
 
 
@@ -349,13 +353,18 @@ for finding and fixing the bug in <CODE>PRINTF()</CODE>.
 for his offset-using read() and write() implementations. 
 
 
-<P><I>Richard Jones</I> (<I><FILE><A HREF="mailto:rich@annexia.org">rich@annexia.org</A></FILE></I>),
+<P><I>Richard Jones,</I>
 for his patches to massively improve the performance of <CODE>getline()</CODE>
 and add <CODE>sysread</CODE> and <CODE>syswrite</CODE>.
 
+
+<P><I>B. K. Oxley (binkley),</I>
+for stringification and inheritance improvements,
+and sundry good ideas.
+
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Thu Sep 28 02:35:51 2000 by cvu_pod2html
+Generated Fri Feb 23 02:15:59 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>
