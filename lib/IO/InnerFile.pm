@@ -30,7 +30,7 @@ can open an IO::InnerFile on a range of the underlying file.
 use Symbol;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 2.101 $, 10;
+$VERSION = substr q$Revision: 2.102 $, 10;
 
 #------------------------------
 
@@ -261,6 +261,11 @@ sub CLOSE { %{$_[0]}=(); }
 __END__
 
 =back
+
+
+=head1 VERSION
+
+$Id: InnerFile.pm,v 2.102 2001/08/17 02:06:33 eryq Exp $
 
 
 =head1 AUTHOR

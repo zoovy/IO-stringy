@@ -77,7 +77,7 @@ INSTALLATION
     them in the next change log. I'll do it. Don't think I won't.
 
 VERSION
-    $Id: Stringy.pm,v 2.105 2001/08/09 08:08:32 eryq Exp $
+    $Id: Stringy.pm,v 2.106 2001/08/17 01:57:46 eryq Exp $
 
 TO DO
     (2000/08/02)  Finalize $/ support

@@ -1,40 +1,41 @@
 <HTML>
 <HEAD>
-  <TITLE>IO::InnerFile</TITLE>
+  <TITLE>IO::InnerFile 2.102</TITLE>
 </HEAD>
 <BODY 
        bgcolor="#FFFFFF" link="#CC3366" vlink="#993366" alink="#FF6666">
-<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::InnerFile</H1>
+<FONT FACE="sans-serif" SIZE=-1><A HREF="http://www.zeegee.com" TARGET="_top"><IMG SRC="icons/zeegee.gif" ALT="ZeeGee Software" ALIGN="RIGHT" BORDER="0"></A><A NAME="__TOP__"><H1>IO::InnerFile 2.102</H1>
 </A>
-<P><B>This module is <FONT COLOR="#990000">ALPHA</FONT> code, which means that public interfaces are largely untested, and may change in future releases. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
-<LI> <A HREF="#NAME">NAME</A>
-<LI> <A HREF="#SYNOPSIS">SYNOPSIS</A>
-<LI> <A HREF="#DESCRIPTION">DESCRIPTION</A>
-<LI> <A HREF="#PUBLIC_INTERFACE">PUBLIC INTERFACE</A>
+<P><B>This module is <FONT COLOR="#990000">BETA</FONT> code, which means that the interfaces are fairly stable BUT it has not been out in the community long enough to guarantee much testing. Use with caution! Please report any errors back to <A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A> as soon as you can.</B><UL>
+<LI> <A NAME="menu:NAME"><A HREF="#NAME">NAME</A></A>
+<LI> <A NAME="menu:SYNOPSIS"><A HREF="#SYNOPSIS">SYNOPSIS</A></A>
+<LI> <A NAME="menu:DESCRIPTION"><A HREF="#DESCRIPTION">DESCRIPTION</A></A>
+<LI> <A NAME="menu:PUBLIC_INTERFACE"><A HREF="#PUBLIC_INTERFACE">PUBLIC INTERFACE</A></A>
 <UL>
-<LI> <A HREF="#item:new">new FILEHANDLE, [START, [LENGTH]]</A>
-<LI> <A HREF="#item:set_length">set_length LENGTH</A>
-<LI> <A HREF="#item:get_length">get_length </A>
-<LI> <A HREF="#item:add_length">add_length NBYTES</A>
-<LI> <A HREF="#item:set_start">set_start START</A>
-<LI> <A HREF="#item:get_start">get_start </A>
-<LI> <A HREF="#item:add_start">add_start NBYTES</A>
-<LI> <A HREF="#item:binmode">binmode</A>
-<LI> <A HREF="#item:close">close</A>
-<LI> <A HREF="#item:flush">flush</A>
-<LI> <A HREF="#item:getc">getc</A>
-<LI> <A HREF="#item:getline">getline</A>
-<LI> <A HREF="#item:print">print LIST</A>
-<LI> <A HREF="#item:printf">printf LIST</A>
-<LI> <A HREF="#item:read">read BUF, NBYTES</A>
-<LI> <A HREF="#item:readline">readline</A>
-<LI> <A HREF="#item:seek">seek OFFFSET, WHENCE</A>
-<LI> <A HREF="#item:tell">tell</A>
-<LI> <A HREF="#item:write">write ARGS...</A>
+<LI> <A NAME="menu:item:new_FILEHANDLE_START_LENGTH"><A HREF="#item:new_FILEHANDLE_START_LENGTH">new FILEHANDLE, [START, [LENGTH]]</A></A>
+<LI> <A NAME="menu:item:set_length_LENGTH"><A HREF="#item:set_length_LENGTH">set_length LENGTH</A></A>
+<LI> <A NAME="menu:item:get_length"><A HREF="#item:get_length">get_length </A></A>
+<LI> <A NAME="menu:item:add_length_NBYTES"><A HREF="#item:add_length_NBYTES">add_length NBYTES</A></A>
+<LI> <A NAME="menu:item:set_start_START"><A HREF="#item:set_start_START">set_start START</A></A>
+<LI> <A NAME="menu:item:get_start"><A HREF="#item:get_start">get_start </A></A>
+<LI> <A NAME="menu:item:add_start_NBYTES"><A HREF="#item:add_start_NBYTES">add_start NBYTES</A></A>
+<LI> <A NAME="menu:item:binmode"><A HREF="#item:binmode">binmode</A></A>
+<LI> <A NAME="menu:item:close"><A HREF="#item:close">close</A></A>
+<LI> <A NAME="menu:item:flush"><A HREF="#item:flush">flush</A></A>
+<LI> <A NAME="menu:item:getc"><A HREF="#item:getc">getc</A></A>
+<LI> <A NAME="menu:item:getline"><A HREF="#item:getline">getline</A></A>
+<LI> <A NAME="menu:item:print_LIST"><A HREF="#item:print_LIST">print LIST</A></A>
+<LI> <A NAME="menu:item:printf_LIST"><A HREF="#item:printf_LIST">printf LIST</A></A>
+<LI> <A NAME="menu:item:read_BUF_NBYTES"><A HREF="#item:read_BUF_NBYTES">read BUF, NBYTES</A></A>
+<LI> <A NAME="menu:item:readline"><A HREF="#item:readline">readline</A></A>
+<LI> <A NAME="menu:item:seek_OFFFSET_WHENCE"><A HREF="#item:seek_OFFFSET_WHENCE">seek OFFFSET, WHENCE</A></A>
+<LI> <A NAME="menu:item:tell"><A HREF="#item:tell">tell</A></A>
+<LI> <A NAME="menu:item:write_ARGS"><A HREF="#item:write_ARGS">write ARGS...</A></A>
 </UL>
-<LI> <A HREF="#AUTHOR">AUTHOR</A>
+<LI> <A NAME="menu:VERSION"><A HREF="#VERSION">VERSION</A></A>
+<LI> <A NAME="menu:AUTHOR"><A HREF="#AUTHOR">AUTHOR</A></A>
 </UL>
-</A>
+
 
 <P><HR>
 <A NAME="NAME"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> NAME</H2></A>
@@ -71,7 +72,7 @@ can open an IO::InnerFile on a range of the underlying file.
 
 
 <DL>
-<P><DT><B><A NAME="item:new">new FILEHANDLE, [START, [LENGTH]]</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:new"><A NAME="item:new_FILEHANDLE_START_LENGTH">new FILEHANDLE, [START, [LENGTH]]</A></A></B></DT>
 <DD>
 <I>Class method, constructor.</I>
 Create a new inner-file opened on the given FILEHANDLE,
@@ -82,52 +83,60 @@ default to 0; negative values are silently coerced to zero.
 <P>Note that FILEHANDLE must be able to seek() and tell(), in addition
 to whatever other methods you may desire for reading it.
 
-<P><DT><B><A NAME="item:set_length">set_length LENGTH</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:set_length"><A NAME="item:set_length_LENGTH">set_length LENGTH</A></A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:get_length">get_length</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:get_length">get_length</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:add_length">add_length NBYTES</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:add_length"><A NAME="item:add_length_NBYTES">add_length NBYTES</A></A></B></DT>
 <DD>
 <I>Instance methods.</I>
 Get/set the virtual length of the inner file.
 
-<P><DT><B><A NAME="item:set_start">set_start START</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:set_start"><A NAME="item:set_start_START">set_start START</A></A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:get_start">get_start</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:get_start">get_start</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:add_start">add_start NBYTES</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:add_start"><A NAME="item:add_start_NBYTES">add_start NBYTES</A></A></B></DT>
 <DD>
 <I>Instance methods.</I>
 Get/set the virtual start position of the inner file.
 
-<P><DT><B><A NAME="item:binmode">binmode</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:binmode">binmode</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:close">close</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:close">close</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:flush">flush</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:flush">flush</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:getc">getc</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:getc">getc</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:getline">getline</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:getline">getline</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:print">print LIST</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:print"><A NAME="item:print_LIST">print LIST</A></A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:printf">printf LIST</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:printf"><A NAME="item:printf_LIST">printf LIST</A></A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:read">read BUF, NBYTES</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:read"><A NAME="item:read_BUF_NBYTES">read BUF, NBYTES</A></A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:readline">readline</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:readline">readline</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:seek">seek OFFFSET, WHENCE</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:seek"><A NAME="item:seek_OFFFSET_WHENCE">seek OFFFSET, WHENCE</A></A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:tell">tell</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:tell">tell</A></B></DT>
 <DD>
-<P><DT><B><A NAME="item:write">write ARGS...</A></B></DT>
+<P><DT><B><A HREF="#__TOP__"><IMG SRC="icons/itembullet.gif" ALT="Top" BORDER="0"></A> <A NAME="item:write"><A NAME="item:write_ARGS">write ARGS...</A></A></B></DT>
 <DD>
 <I>Instance methods.</I>
 Standard filehandle methods.
 
 </DL>
+
+
+
+<P><HR>
+<A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
+
+
+<P>$Id: InnerFile.pm,v 2.102 2001/08/17 02:06:33 eryq Exp $
 
 
 
@@ -142,7 +151,7 @@ Standard filehandle methods.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Thu Aug  9 04:09:22 2001 by cvu_pod2html
+Generated Fri Aug 17 10:39:13 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

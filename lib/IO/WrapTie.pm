@@ -12,7 +12,7 @@ use Exporter;
 # Inheritance, exporting, and package version:
 @ISA     = qw(Exporter);
 @EXPORT  = qw(wraptie);
-$VERSION = substr q$Revision: 2.101 $, 10;
+$VERSION = substr q$Revision: 2.102 $, 10;
 
 # Function, exported.
 sub wraptie {
@@ -469,6 +469,11 @@ them to the slave object... so it I<looks> like you're manipulating a
 
 I have not explored all the ramifications of this use of tie().
 I<Here there be dragons>.
+
+
+=head1 VERSION
+
+$Id: WrapTie.pm,v 2.102 2001/08/17 02:06:33 eryq Exp $
 
 
 =head1 AUTHOR

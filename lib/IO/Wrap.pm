@@ -13,7 +13,7 @@ use FileHandle;
 use Carp;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 2.101 $, 10;
+$VERSION = substr q$Revision: 2.102 $, 10;
 
 
 #------------------------------
@@ -200,6 +200,11 @@ This module does not allow you to wrap filehandle names which are given
 as strings that lack the package they were opened in. That is, if a user 
 opens FOO in package Foo, they must pass it to you either as C<\*FOO> 
 or as C<"Foo::FOO">.  However, C<"STDIN"> and friends will work just fine.
+
+
+=head1 VERSION
+
+$Id: Wrap.pm,v 2.102 2001/08/17 02:06:33 eryq Exp $
     
 
 =head1 AUTHOR
