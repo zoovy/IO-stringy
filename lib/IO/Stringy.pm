@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.215 $, 10;
+$VERSION = substr q$Revision: 1.216 $, 10;
 
 1;
 __END__
@@ -58,13 +58,41 @@ You know the drill...
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.215 2000/09/05 03:53:58 eryq Exp $
+$Id: Stringy.pm,v 1.216 2000/09/28 06:32:28 eryq Exp $
 
 
 
 =head1 CHANGE LOG 
 
 =over 4
+
+=item Version 1.216   (2000/09/28)
+
+B<IO::Scalar and IO::ScalarArray now inherit from IO::Handle.>
+I thought I'd remembered a problem with this ages ago, related to
+the fact that these IO:: modules don't have "real" filehandles,
+but the problem apparently isn't surfacing now.  
+If you suddenly encounter Perl warnings during global destruction
+(especially if you're using tied filehandles), then please let me know!
+I<Thanks to B. K. Oxley (binkley) for this.>
+
+B<Nasty bug fixed in IO::Scalar::write().>
+Apparently, the offset and the number-of-bytes arguments were,
+for all practical purposes, I<reversed.>  You were okay if
+you did all your writing with print(), but boy was I<this> a stupid bug!  
+I<Thanks to Richard Jones for finding this one.  
+For you, Rich, a double-length haiku:>
+
+       Newspaper headline
+          typeset by dyslexic man
+       loses urgency
+        
+       BABY EATS FISH is
+          simply not equivalent   
+       to FISH EATS BABY
+
+B<New sysread and syswrite methods for IO::Scalar.>
+I<Thanks again to Richard Jones for this.>
 
 
 =item Version 1.215   (2000/09/05)
@@ -107,6 +135,8 @@ Small bug fixes.
 Incorporated a number of contributed patches and extensions,
 mostly related to speed hacks, support for "offset", and
 WRITE/CLOSE methods.
+I<Thanks to Richard Jones, Doru Petrescu, and many others.>
+
 
 
 =item Version 1.206   (1999/04/18)

@@ -104,15 +104,17 @@ Causes $s to be set to:
 use Carp;
 use strict;
 use vars qw($VERSION @ISA);
+use IO::Handle;
 
 ### Stringification, courtesy of B. K. Oxley (binkley):  :-)
 use overload '""'   => sub { ${$_[0]->{SR}} };
 use overload 'bool' => sub { 1 };      ### have to do this, so object is true! 
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.121 $, 10;
+$VERSION = substr q$Revision: 1.122 $, 10;
 
 ### Inheritance:
+@ISA = qw(IO::Handle);
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
 
 
@@ -352,10 +354,39 @@ sub write {
     my $n    = $_[2];
     my $off  = $_[3] || 0;
 
-    my $data = substr($_[1], $n, $off);
+    my $data = substr($_[1], $off, $n);
     $n = length($data);
     $self->print($data);
     return $n;
+}
+
+#------------------------------
+
+=item sysread BUF, LEN, [OFFSET]
+
+I<Instance method.>
+Read some bytes from the scalar.
+Returns the number of bytes actually read, 0 on end-of-file, undef on error.
+
+=cut
+
+sub sysread {
+  my $self = shift;
+  $self->read (@_);
+}
+
+#------------------------------
+
+=item syswrite BUF, NBYTES, [OFFSET]
+
+I<Instance method.>
+Write some bytes to the scalar.
+
+=cut
+
+sub syswrite {
+  my $self = shift;
+  $self->write (@_);
 }
 
 =back
@@ -515,7 +546,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.121 2000/09/05 03:53:58 eryq Exp $
+$Id: Scalar.pm,v 1.122 2000/09/28 06:32:28 eryq Exp $
 
 
 =head1 AUTHORS
@@ -529,7 +560,9 @@ President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
 =head2 Other contributors 
 
-Thanks to the following individuals for their invaluable contributions
+The full set of contributors always includes the folks mentioned
+in L<IO::Stringy/"CHANGE LOG">.  But just the same, special
+thanks to the following individuals for their invaluable contributions
 (if I've forgotten or misspelled your name, please email me!):
 
 I<Andy Glew,>
@@ -544,8 +577,9 @@ for finding and fixing the bug in C<PRINTF()>.
 I<Eric L. Brine,>
 for his offset-using read() and write() implementations. 
 
-I<Rich> (at Annexia),
-for his patch to massively improve the performance of C<getline()>.
+I<Richard Jones> (F<rich@annexia.org>),
+for his patches to massively improve the performance of C<getline()>
+and add C<sysread> and C<syswrite>.
 
 
 =cut
