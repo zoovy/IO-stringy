@@ -102,7 +102,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.115 $, 10;
+$VERSION = substr q$Revision: 1.116 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -564,7 +564,7 @@ __END__
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.115 2000/04/17 03:42:00 eryq Exp $
+$Id: ScalarArray.pm,v 1.116 2000/05/03 12:14:50 eryq Exp $
 
 
 =head1 AUTHOR

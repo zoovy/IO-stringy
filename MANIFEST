@@ -1,6 +1,7 @@
 MANIFEST
 Makefile.PL
 docs/IO/AtomicFile.pm.html
+docs/IO/InnerFile.pm.html
 docs/IO/Lines.pm.html
 docs/IO/Scalar.pm.html
 docs/IO/ScalarArray.pm.html
@@ -18,6 +19,7 @@ docs/index-menu.html
 docs/index.html
 docs/index.menu
 lib/IO/AtomicFile.pm
+lib/IO/InnerFile.pm
 lib/IO/Lines.pm
 lib/IO/Scalar.pm
 lib/IO/ScalarArray.pm
