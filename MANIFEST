@@ -2,6 +2,7 @@ COPYING
 MANIFEST
 Makefile.PL
 README
+README.system
 docs/IO/AtomicFile.pm.html
 docs/IO/IO-stringy/h1bullet.gif
 docs/IO/IO-stringy/h2bullet.gif

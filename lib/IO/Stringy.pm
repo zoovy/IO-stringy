@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.203 $, 10;
+$VERSION = substr q$Revision: 1.205 $, 10;
 
 1;
 __END__
@@ -57,6 +57,11 @@ You know the drill...
 
 =over 4
 
+=item Version 1.205
+
+Verified for Perl5.005.
+
+
 =item Version 1.202
 
 New IO::WrapTie and IO::AtomicFile added.
@@ -84,13 +89,15 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.203 1998/04/21 04:35:42 eryq Exp $
+$Id: Stringy.pm,v 1.205 1999/01/15 06:06:18 eryq Exp $
+
+
 
 
 =head1 AUTHOR
 
 Eryq (F<eryq@zeegee.com>).
-President, Zero G Inc (F<http://www.zeegee.com>).
+President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
 Enjoy.  Yell if it breaks.
 

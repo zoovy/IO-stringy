@@ -80,6 +80,10 @@ IO::WrapTie - wrap tieable objects in IO::Handle interface
   Please give me your feedback!</I>
 
 
+<PRE></PRE>
+
+
+
 <P><HR>
 <A NAME="synopsis">
 <H1><FONT COLOR=#600020>
@@ -92,7 +96,6 @@ SYNOPSIS</FONT></H1>
 First of all, you'll need tie(), so:
 
 
-<P>
 <PRE>   require 5.004;</PRE>
 
 
@@ -102,24 +105,23 @@ First of all, you'll need tie(), so:
 Use this with any existing class...
 
 
-<P>
 <PRE>   use IO::WrapTie;
-   use FooHandle;                  # implements TIEHANDLE interface</PRE>
+   use FooHandle;                  # implements TIEHANDLE interface
+    </PRE>
 
 
 
-<P>
 <PRE>   # Suppose we want a &quot;FooHandle-&gt;new(&amp;FOO_RDWR, 2)&quot;.
-   # We can instead say...</PRE>
+   # We can instead say...
+    </PRE>
 
 
 
-<P>
-<PRE>   $FH = wraptie('FooHandle', &amp;FOO_RDWR, 2); </PRE>
+<PRE>   $FH = wraptie('FooHandle', &amp;FOO_RDWR, 2); 
+    </PRE>
 
 
 
-<P>
 <PRE>   # Now we can use...    
    print $FH &quot;Hello, &quot;;            # traditional operator syntax...
    $FH-&gt;print(&quot;world!\n&quot;);         # ...and OO syntax as well!</PRE>
@@ -132,26 +134,29 @@ You can inherit from the IO::WrapTie::Slave mixin to get a
 nifty <CODE>new_tie()</CODE> constructor...
 
 
-<P>
 <PRE>   #------------------------------    
-   package FooHandle;                        # a class which can TIEHANDLE</PRE>
+   package FooHandle;                        # a class which can TIEHANDLE
+   </PRE>
 
 
 
-<P>
 <PRE>   use IO::WrapTie;  
    @ISA = qw(IO::WrapTie::Slave);            # inherit new_tie()
-   ...</PRE>
+   ...
+   </PRE>
 
 
 
-<P>
+<PRE>    </PRE>
+
+
+
 <PRE>   #------------------------------    
-   package main; </PRE>
+   package main; 
+   </PRE>
 
 
 
-<P>
 <PRE>   $FH = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);   # $FH is an IO::WrapTie::Master
    print $FH &quot;Hello, &quot;;                      # traditional operator syntax
    $FH-&gt;print(&quot;world!\n&quot;);                   # OO syntax</PRE>
@@ -161,6 +166,10 @@ nifty <CODE>new_tie()</CODE> constructor...
 <P>
 See IO::Scalar as an example.  It also shows you how to create classes
 which work both with and without 5.004.
+
+
+<PRE></PRE>
+
 
 
 <P><HR>
@@ -182,7 +191,7 @@ file descriptor.  Good examples are IO::Scalar (for printing to a
 string) and IO::Lines (for printing to an array of lines).
 
 
-<P><LI><B>FooHandle implements the TIEHANDLE interface</B> (see <A HREF="../perltie.html">perltie</A>);
+<P><LI><B>FooHandle implements the TIEHANDLE interface</B> (see perltie);
 that is, it provides methods TIEHANDLE, GETC, PRINT, PRINTF,
 READ, and READLINE.
 
@@ -194,8 +203,16 @@ read(), print(), seek(), tell(), eof(), etc.
 </UL>
 
 
+<PRE></PRE>
+
+
+
 <P>
 Normally, users of your class would have two options:
+
+
+<PRE></PRE>
+
 
 <UL>
 
@@ -209,11 +226,14 @@ object via tied()... giving the object a &quot;split personality&quot;).
 </UL>
 
 
+<PRE></PRE>
+
+
+
 <P>
 But now with IO::WrapTie, you can say:
 
 
-<P>
 <PRE>    $WT = wraptie('FooHandle', &amp;FOO_RDWR, 2);
     $WT-&gt;print(&quot;Hello, world\n&quot;);   # OO syntax
     print $WT &quot;Yes!\n&quot;;             # Named operator syntax too!
@@ -226,7 +246,6 @@ And if you're authoring a class like FooHandle, just have it inherit
 from <CODE>IO::WrapTie::Slave</CODE> and that first line becomes even prettier:
 
 
-<P>
 <PRE>    $WT = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);</PRE>
 
 
@@ -236,12 +255,20 @@ from <CODE>IO::WrapTie::Slave</CODE> and that first line becomes even prettier:
 an IO::Handle... and be used both with OO and non-OO filehandle syntax.
 
 
+<PRE></PRE>
+
+
+
 <P><HR>
 <A NAME="how_it_all_works">
 <H1><FONT COLOR=#600020>
 <A HREF="#__top"><IMG SRC="IO-stringy/h1bullet.gif" ALT="" BORDER="0"></A>
 HOW IT ALL WORKS</FONT></H1>
 </A>
+
+
+<PRE></PRE>
+
 
 
 <P><HR>
@@ -256,13 +283,12 @@ The data structures</FONT></H2>
 Consider this example code, using classes in this distribution:
 
 
-<P>
 <PRE>    use IO::Scalar;
-    use IO::WrapTie;</PRE>
+    use IO::WrapTie;
+     </PRE>
 
 
 
-<P>
 <PRE>    $WT = wraptie('IO::Scalar',\$s);
     print $WT &quot;Hello, &quot;;
     $WT-&gt;print(&quot;world!\n&quot;);</PRE>
@@ -273,7 +299,6 @@ Consider this example code, using classes in this distribution:
 In it, the wraptie() function creates a data structure as follows:
 
 
-<P>
 <PRE>                          * $WT is a blessed reference to a tied filehandle
               $WT           glob; that glob is tied to the &quot;Slave&quot; object.
                |          * You would do all your i/o with $WT directly.
@@ -301,11 +326,19 @@ In it, the wraptie() function creates a data structure as follows:
 
 
 
+<PRE></PRE>
+
+
+
 <P>
 <I>NOTE:</I> just as an IO::Handle is really just a blessed reference to a 
 <I>traditional</I> filehandle glob... so also, an IO::WrapTie::Master 
 is really just a blessed reference to a filehandle 
 glob <I>which has been tied to some &quot;slave&quot; class.</I>
+
+
+<PRE></PRE>
+
 
 
 <P><HR>
@@ -348,6 +381,10 @@ to the caller.
 
 </UL>
 
+<PRE></PRE>
+
+
+
 <P><HR>
 <A NAME="how_io_operators_work_on_the_mas">
 <H2><FONT COLOR=#600020>
@@ -360,7 +397,6 @@ How I/O operators work (on the master)</FONT></H2>
 Consider using an i/o operator on the master:
 
 
-<P>
 <PRE>    print $WT &quot;Hello, world!\n&quot;;   </PRE>
 
 
@@ -383,6 +419,10 @@ of the same class.  So the <I>real</I> work is ultimately done by
 IO::Scalar::print().
 
 
+<PRE></PRE>
+
+
+
 <P><HR>
 <A NAME="how_methods_work_on_the_master">
 <H2><FONT COLOR=#600020>
@@ -395,7 +435,6 @@ How methods work (on the master)</FONT></H2>
 Consider using a method on the master:
 
 
-<P>
 <PRE>    $WT-&gt;print(&quot;Hello, world!\n&quot;);</PRE>
 
 
@@ -414,7 +453,6 @@ But let's suppose we're dealing with a method which <I>isn't</I> part
 of IO::Handle... for example:
 
 
-<P>
 <PRE>    my $sref = $WT-&gt;sref;</PRE>
 
 
@@ -439,6 +477,18 @@ a subclass of IO::WrapTie::Master which is an effective master for
 <I>your</I> class, and do the delegation there.
 
 
+<PRE></PRE>
+
+
+
+<PRE></PRE>
+
+
+
+<PRE></PRE>
+
+
+
 <P><HR>
 <A NAME="notes">
 <H1><FONT COLOR=#600020>
@@ -454,15 +504,19 @@ like print(), and you may need to pass the object to a subroutine
 which will attempt to use those operators:
 
 
-<P>
 <PRE>    $O = FooHandle-&gt;new(&amp;FOO_RDWR, 2);
-    $O-&gt;print(&quot;Hello, world\n&quot;);  # OO syntax is okay, BUT....</PRE>
+    $O-&gt;print(&quot;Hello, world\n&quot;);  # OO syntax is okay, BUT....
+    </PRE>
 
 
 
-<P>
 <PRE>    sub nope { print $_[0] &quot;Nope!\n&quot; }
- X  nope($O);                     # ERROR!!! (not a glob ref)</PRE>
+ X  nope($O);                     # ERROR!!! (not a glob ref)
+    </PRE>
+
+
+
+<PRE></PRE>
 
 
 
@@ -474,20 +528,23 @@ the tied symbol to another subroutine which will attempt to treat
 it in an OO-way... and that will break it:
 
 
-<P>
 <PRE>    tie *T, 'FooHandle', &amp;FOO_RDWR, 2; 
-    print T &quot;Hello, world\n&quot;;     # Operator is okay, BUT... </PRE>
+    print T &quot;Hello, world\n&quot;;     # Operator is okay, BUT... 
+    </PRE>
 
 
 
-<P>
-<PRE>    tied(*T)-&gt;other_stuff;        # yuck! AND...</PRE>
+<PRE>    tied(*T)-&gt;other_stuff;        # yuck! AND...
+    </PRE>
 
 
 
-<P>
 <PRE>    sub nope { shift-&gt;print(&quot;Nope!\n&quot;) }
  X  nope(\*T);                    # ERROR!!! (method &quot;print&quot; on unblessed ref)</PRE>
+
+
+
+<PRE></PRE>
 
 
 
@@ -501,7 +558,6 @@ Subclassing IO::Handle will work fine for the OO stuff, and fine with
 named operators <I>if</I> you tie()... but if you just attempt to say:
 
 
-<P>
 <PRE>    $IO = FooHandle-&gt;new(&amp;FOO_RDWR, 2);
     print $IO &quot;Hello!\n&quot;;</PRE>
 
@@ -511,7 +567,6 @@ named operators <I>if</I> you tie()... but if you just attempt to say:
 you get a warning from Perl like:
 
 
-<P>
 <PRE>    Filehandle GEN001 never opened</PRE>
 
 
@@ -523,7 +578,6 @@ which brings us right back to where we started!  At least the
 IO::WrapTie mixin lets us say:
 
 
-<P>
 <PRE>    $IO = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);
     print $IO &quot;Hello!\n&quot;;</PRE>
 
@@ -531,6 +585,10 @@ IO::WrapTie mixin lets us say:
 
 <P>
 and so is not <I>too</I> bad.  <CODE>:-)</CODE>
+
+
+<PRE></PRE>
+
 
 
 <P><HR>
@@ -564,6 +622,10 @@ I have not explored all the ramifications of this use of tie().
 <I>Here there be dragons</I>.
 
 
+<PRE></PRE>
+
+
+
 <P><HR>
 <A NAME="author">
 <H1><FONT COLOR=#600020>
@@ -574,12 +636,12 @@ AUTHOR</FONT></H1>
 
 <P>
 Eryq (<I><A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A></I>).
-President, Zero G Inc (<I><A HREF="http://www.zeegee.com">http://www.zeegee.com</A></I>).
+President, ZeeGee Software Inc (<I><A HREF="http://www.zeegee.com">http://www.zeegee.com</A></I>).
 
 
 <P><HR>
 <SMALL>
-		Last updated: Tue Apr 21 00:38:21 1998 <BR>
+		Last updated: Fri Jan 15 01:07:57 1999 <BR>
 		Generated by pod2coolhtml 1.101.  Want a copy?  Just email
 		<A HREF="mailto:eryq@zeegee.com">eryq@zeegee.com</A>.
 		(Yes, it's free.)

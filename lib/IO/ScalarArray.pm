@@ -102,7 +102,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.111 $, 10;
+$VERSION = substr q$Revision: 1.112 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -493,13 +493,13 @@ __END__
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.111 1998/04/18 06:16:40 eryq Exp $
+$Id: ScalarArray.pm,v 1.112 1998/12/16 02:00:04 eryq Exp $
 
 
 =head1 AUTHOR
 
 Eryq (F<eryq@zeegee.com>).
-President, Zero G Inc (F<http://www.zeegee.com>).
+President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
 Thanks to Andy Glew for suggesting C<getc()>.
 
