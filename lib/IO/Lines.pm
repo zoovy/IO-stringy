@@ -39,7 +39,7 @@ use IO::ScalarArray;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.106 $, 10;
+$VERSION = substr q$Revision: 1.108 $, 10;
 
 # Inheritance:
 @ISA = qw(IO::ScalarArray);     # also gets us new_tie  :-)
@@ -55,6 +55,12 @@ $VERSION = substr q$Revision: 1.106 $, 10;
 #
 sub getline {
     my $self = shift;
+    if (!defined $/) {
+	return join( '' => $self->getlines );
+    }
+    ($/ eq "\n")
+	or croak '$/ must be "\n" or undef, not ', "'$/'.";
+
     if (!$self->{Pos}) {      # full line...
 	return $self->{AR}[$self->{Str}++];
     }
@@ -63,6 +69,30 @@ sub getline {
 	$self->{Pos} = 0;
 	return $partial;
     }
+}
+
+#------------------------------
+# getlines
+#------------------------------
+# Instance method, override.
+# Return an array comprised of the remaining lines, or () on end of data.
+# Must be called in an array context.
+# Currently, lines are delimited by "\n".
+#
+sub getlines {
+    my $self = shift;
+    wantarray or croak("Can't call getlines in scalar context!");
+
+    my ($rArray, $Str, $Pos) = @$self{ qw( AR Str Pos ) };
+    my @partial = ();
+
+    if ($Pos) {					# partial line...
+	@partial = (substr( $rArray->[ $Str++ ], $Pos ));
+	$self->{Pos} = 0;
+    }
+    $self->{Str} = scalar @$rArray;		# about to exhaust @$rArray
+    return (@partial,
+	    @$rArray[ $Str .. $#$rArray ]);	# remaining full lines...
 }
 
 #------------------------------
@@ -93,13 +123,25 @@ __END__
 
 =head1 VERSION
 
-$Id: Lines.pm,v 1.106 1998/12/16 02:00:04 eryq Exp $
+$Id: Lines.pm,v 1.108 2000/03/14 07:49:16 eryq Exp $
 
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+
+=head2 Principal author
 
 Eryq (F<eryq@zeegee.com>).
 President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
 
+=head2 Other contributors 
+
+Thanks to the following individuals for their invaluable contributions
+(if I've forgotten or misspelled your name, please email me!):
+
+I<Morris M. Siegel,>
+for his $/ patch and the new C<getlines()>.
+
 =cut
+

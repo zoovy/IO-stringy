@@ -12,7 +12,7 @@ use Exporter;
 # Inheritance, exporting, and package version:
 @ISA     = qw(Exporter);
 @EXPORT  = qw(wraptie);
-$VERSION = substr q$Revision: 1.106 $, 10;
+$VERSION = substr q$Revision: 1.107 $, 10;
 
 # Function, exported.
 sub wraptie {
@@ -459,7 +459,7 @@ Remember: this stuff is for doing FileHandle-like i/o on things
 I<without underlying file descriptors>.  If you have an underlying
 file descriptor, you're better off just inheriting from IO::Handle.
 
-B<Be aware that C<new_tie()> always returns an instance of a
+B<Be aware that new_tie() always returns an instance of a
 kind of IO::WrapTie::Master...> it does B<not> return an instance 
 of the i/o class you're tying to!  
 

@@ -102,7 +102,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.112 $, 10;
+$VERSION = substr q$Revision: 1.113 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -302,26 +302,52 @@ Returns the number of bytes actually read, 0 on end-of-file, undef on error.
 
 sub read {
     my $self = $_[0];
-    my $nbytes = $_[2];
-    croak "OFFSET not yet supported" if defined($_[3]);
+    my $n    = $_[2];
+    my $off  = $_[3] || 0;
 
-    # Stop when we have zero bytes to go, or when we hit EOF:
     ### print "getline\n";
     my $justread;
-    $_[1] = '';  
-    until (!$nbytes or $self->eof) {       
-	# If at end of current string, go forward to next one (won't be EOF):
-	do {++$self->{Str}, $self->{Pos}=0} if $self->_eos; 
+    my $len;
+    substr($_[1], $off) = '';
+
+    # Stop when we have zero bytes to go, or when we hit EOF:
+    until (!$n or $self->eof) {       
+        # If at end of current string, go forward to next one (won't be EOF):
+        if ($self->_eos) {
+            ++$self->{Str};
+            $self->{Pos} = 0;
+        }
 
         # Get longest possible desired substring of current string:
-        $justread = substr($self->{AR}[$self->{Str}],
-			   $self->{Pos}, $nbytes);
+        $justread = substr($self->{AR}[$self->{Str}], $self->{Pos}, $n);
+        $len = length($justread);
         $_[1] .= $justread;
-        $nbytes      -= length($justread); 
-        $self->{Pos} += length($justread);
+        $n           -= $len; 
+        $self->{Pos} += $len;
     }
-    return length($_[1]);
+    return length($_[1])-$off;
 }
+
+#------------------------------
+
+=item write BUF, NBYTES, [OFFSET];
+
+I<Instance method.>
+Write some bytes into the array.
+
+=cut
+
+sub write {
+    my $self = $_[0];
+    my $n    = $_[2];
+    my $off  = $_[3] || 0;
+
+    my $data = substr($_[1], $n, $off);
+    $n = length($data);
+    $self->print($data);
+    return $n;
+}
+
 
 =back
 
@@ -473,6 +499,8 @@ sub PRINT     { shift->print(@_) }
 sub PRINTF    { shift->print(sprintf(shift, @_)) }
 sub READ      { shift->read(@_) }
 sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
+sub WRITE     { shift->write(@_); }
+sub CLOSE     { shift->close(@_); }
 
 #------------------------------------------------------------
 
@@ -493,17 +521,30 @@ __END__
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.112 1998/12/16 02:00:04 eryq Exp $
+$Id: ScalarArray.pm,v 1.113 2000/03/14 07:49:17 eryq Exp $
 
 
 =head1 AUTHOR
 
+=head2 Principal author
+
 Eryq (F<eryq@zeegee.com>).
 President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
-Thanks to Andy Glew for suggesting C<getc()>.
 
-Thanks to Brandon Browning for suggesting C<opened()>.
+=head2 Other contributors 
+
+Thanks to the following individuals for their invaluable contributions
+(if I've forgotten or misspelled your name, please email me!):
+
+I<Andy Glew,>
+for suggesting C<getc()>.
+
+I<Brandon Browning,>
+for suggesting C<opened()>.
+
+I<Eric L. Brine,>
+for his offset-using read() and write() implementations. 
 
 =cut
 

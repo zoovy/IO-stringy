@@ -99,7 +99,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.114 $, 10;
+$VERSION = substr q$Revision: 1.116 $, 10;
 
 # Inheritance:
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
@@ -237,10 +237,23 @@ sub getline {
     return undef if $self->eof;
 
     # Get next line:
-    pos(${$self->{SR}}) = $self->{Pos}; # start matching at this point
-    ${$self->{SR}} =~ m/(.*?)(\n|\Z)/g; # match up to newline or EOS
-    my $line = $1.$2;                   # save it
-    $self->{Pos} += length($line);      # everybody remember where we parked!
+    my $sr = $self->{SR};
+    my $i = $self->{Pos};	        # Start matching at this point.
+    my $len = length(${$sr});
+    for (; $i < $len; ++$i) {
+	last if ord (substr (${$sr}, $i, 1)) == 10;
+    }
+
+    # Extract the line:
+    my $line;
+    if ($i < $len) {
+	$line = substr (${$sr}, $self->{Pos}, $i - $self->{Pos} + 1);
+	$self->{Pos} = $i+1;            # Remember where we finished up.
+    }
+    else {
+	$line = substr (${$sr}, $self->{Pos}, $i - $self->{Pos});
+        $self->{Pos} = $len;
+    }
     return $line; 
 }
 
@@ -292,12 +305,35 @@ Returns the number of bytes actually read, 0 on end-of-file, undef on error.
 =cut
 
 sub read {
-    my ($self, $buf, $n, $off) = @_;
-    croak "OFFSET not yet supported" if defined($off);
+    my $self = $_[0];
+    my $n    = $_[2];
+    my $off  = $_[3] || 0;
+
     my $read = substr(${$self->{SR}}, $self->{Pos}, $n);
-    $self->{Pos} += length($read);
-    $_[1] = $read;
-    return length($read);
+    $n = length($read);
+    $self->{Pos} += $n;
+    substr($_[1], $off) = $read;
+    return $n;
+}
+
+#------------------------------
+
+=item write BUF, NBYTES, [OFFSET]
+
+I<Instance method.>
+Write some bytes to the scalar.
+
+=cut
+
+sub write {
+    my $self = $_[0];
+    my $n    = $_[2];
+    my $off  = $_[3] || 0;
+
+    my $data = substr($_[1], $n, $off);
+    $n = length($data);
+    $self->print($data);
+    return $n;
 }
 
 =back
@@ -418,6 +454,8 @@ sub PRINT     { shift->print(@_) }
 sub PRINTF    { shift->print(sprintf(shift, @_)) }
 sub READ      { shift->read(@_) }
 sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
+sub WRITE     { shift->write(@_); }
+sub CLOSE     { shift->close(@_); }
 
 #------------------------------------------------------------
 
@@ -432,19 +470,37 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.114 1998/12/16 02:00:04 eryq Exp $
+$Id: Scalar.pm,v 1.116 2000/03/14 07:49:16 eryq Exp $
 
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+
+=head2 Principal author
 
 Eryq (F<eryq@zeegee.com>).
 President, ZeeGee Software Inc (F<http://www.zeegee.com>).
 
-Thanks to Andy Glew for contributing C<getc()>.
 
-Thanks to Brandon Browning for suggesting C<opened()>.
+=head2 Other contributors 
 
-Thanks to David Richter for finding and fixing the bug in C<PRINTF()>.
+Thanks to the following individuals for their invaluable contributions
+(if I've forgotten or misspelled your name, please email me!):
+
+I<Andy Glew,>
+for contributing C<getc()>.
+
+I<Brandon Browning,>
+for suggesting C<opened()>.
+
+I<David Richter,>
+for finding and fixing the bug in C<PRINTF()>.
+
+I<Eric L. Brine,>
+for his offset-using read() and write() implementations. 
+
+I<Rich> (at Annexia),
+for his patch to massively improve the performance of C<getline()>.
+
 
 =cut
-

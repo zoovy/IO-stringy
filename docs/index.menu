@@ -1,0 +1,25 @@
+MENU perldoc
+
+SECTION Modules
+
+ITEM IO::AtomicFile
+HREF IO/AtomicFile.pm.html
+
+ITEM IO::Lines
+HREF IO/Lines.pm.html
+
+ITEM IO::Scalar
+HREF IO/Scalar.pm.html
+
+ITEM IO::ScalarArray
+HREF IO/ScalarArray.pm.html
+
+ITEM IO::Stringy
+HREF IO/Stringy.pm.html
+
+ITEM IO::Wrap
+HREF IO/Wrap.pm.html
+
+ITEM IO::WrapTie
+HREF IO/WrapTie.pm.html
+
