@@ -16,7 +16,7 @@ use IO::WrapTie;
 my $T = typical ExtUtils::TBone;
 
 # Set the counter:
-unless ($] >= 5.004) {
+unless ($] >= 5.004) {    # Run away!
     $T->begin(1);
     $T->ok(1);
     $T->end;

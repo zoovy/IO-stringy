@@ -8,7 +8,7 @@ use ExtUtils::MakeMaker;
 # Write the Makefile:
 WriteMakefile(
 	      NAME         => "IO-stringy",
-	      VERSION_FROM => "lib/IO/Scalar.pm",
+	      VERSION_FROM => "lib/IO/Stringy.pm",
 	      DISTNAME     => "IO-stringy",
 	      'dist'       => {
 		  PREOP    => "cd docs ; make",

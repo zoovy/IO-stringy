@@ -39,10 +39,10 @@ use IO::ScalarArray;
 use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.104 $, 10;
+$VERSION = substr q$Revision: 1.105 $, 10;
 
 # Inheritance:
-@ISA = qw(IO::ScalarArray);
+@ISA = qw(IO::ScalarArray);     # also gets us new_tie  :-)
 
 
 #------------------------------
@@ -93,7 +93,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Lines.pm,v 1.104 1998/03/23 06:09:13 eryq Exp $
+$Id: Lines.pm,v 1.105 1998/04/21 03:59:06 eryq Exp $
 
 
 =head1 AUTHOR

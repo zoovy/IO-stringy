@@ -88,6 +88,7 @@ sub test_init {
 sub test_print {
     my ($self, $GH, $all) = @_;
     local($_);
+    $T->msg("PRINT...");
 
     # Append with print:
     $M = "PRINT: able to print to $GH";
@@ -105,6 +106,7 @@ sub test_getc {
     my ($self, $GH) = @_;
     local($_);
     my @c;
+    $T->msg("GETC...");
 
     $M = "GETC: seek(0,0) and getc()";
     $GH->seek(0,0);
@@ -122,6 +124,7 @@ sub test_getc {
 sub test_getline {
     my ($self, $GH) = @_;
     local($_);
+    $T->msg("GETLINE...");
 
     $M = "GETLINE/SEEK3: seek(3,START) and getline() gets part of 1st line";
     $GH->seek(3,0);
@@ -161,6 +164,7 @@ sub test_getline {
 sub test_read {
     my ($self, $GH) = @_;
     local($_);
+    $T->msg("READ...");
 
     $M = "READ/FIRST10: reading first 10 bytes with seek(0,START) + read(10)";
     $GH->seek(0,0);
@@ -188,6 +192,7 @@ sub test_read {
 sub test_seek {
     my ($self, $GH) = @_;
     local($_);
+    $T->msg("SEEK...");
 
     $M = "SEEK/END: seek(-6,END) + read(3) returns 'too'";
     $GH->seek(-6,2);
@@ -212,7 +217,8 @@ sub test_tie {
     my @lines;
     my $i;
     my $nmatched;
-    
+    $T->msg("TIE...");
+
     $M = "TIE/TIE: able to tie";
     tie(*OUT, $tieclass, @tieargs);
     $T->ok(1, $M);
@@ -250,6 +256,64 @@ sub test_tie {
 }
 
 #------------------------------
+# test_new_tie PARAMHASH
+#------------------------------
+# Test tiehandle getline() interface.
+#
+sub test_new_tie {
+    my ($self, %p) = @_;
+    my ($tieclass, @tieargs) = @{$p{TieArgs}};
+    local($_);
+    my @lines;
+    my $i;
+    my $nmatched;
+    $T->msg("NEW_TIE [$tieclass]...");    
+
+    $M = "NEWTIE/TIE: able to tie";
+    my $OUT = $tieclass->new_tie(@tieargs);
+    $T->ok(1, $M,
+	   Object   => $OUT,
+	   TieClass => $tieclass,
+	   TieArgs  => \@tieargs);
+
+    $M = "NEWTIE/PRINT: printing data";
+    print $OUT @DATA_SA;
+    print $OUT $ADATA_SA[0];
+    $T->ok(1, $M);
+
+    $M = "NEWTIE/OOPRINT: printing more data, OO fashion";
+    $OUT->print(@ADATA_SA[1..2]);
+    $T->ok(1, $M);
+
+    $M = "NEWTIE/GETLINE: seek(0,0) and scalar <> get expected lines";
+    $OUT->seek(0,0);                       # rewind
+    @lines = (); push @lines, $_ while <$OUT>;    # get lines one at a time
+    $nmatched = 0;                                # total up matches...
+    for (0..$#lines) { ++$nmatched if ($lines[$_] eq $FDATA_LA[$_]) };
+    $T->ok(($nmatched == int(@FDATA_LA)), $M,
+	   Want => \@FDATA_LA,
+	   Gotl => \@lines,
+	   Lines=> "0..$#lines",
+	   Match=> $nmatched,
+	   FDatl=> int(@FDATA_LA),
+	   FData=> \@FDATA_LA);	  
+
+    $M = "NEWTIE/GETLINES: seek(0,0) and array <> slurps in lines";
+    $OUT->seek(0,0);                       # rewind
+    @lines = <$OUT>;                              # get lines all at once
+    $nmatched = 0;                               # total up matches...
+    for (0..$#lines) { ++$nmatched if ($lines[$_] eq $FDATA_LA[$_]) };
+    $T->ok(($nmatched == int(@FDATA_LA)), $M,
+	   Want => \@FDATA_LA,
+	   Gotl => \@lines,
+	   Lines=> "0..$#lines",
+	   Match=> $nmatched);
+
+    # return tied object
+    $OUT;
+}
+
+#------------------------------
 # test_close
 #------------------------------
 # Close the handle.
@@ -257,7 +321,8 @@ sub test_tie {
 sub test_close {
     my ($self, $GH) = @_;
     local($_);
-    
+    $T->msg("CLOSE...");
+
     $M = "CLOSE/OPENED: open?'";
     $T->ok($GH->opened, $M);
 
@@ -277,8 +342,9 @@ sub test_close {
 sub test_glob {
     my ($self, $GH) = @_;
     local($_);
- 
-    $M = "Can we use blessed globref like an ordinary filehandle?";
+    $T->msg("GLOB...");
+
+    $M = "GLOB: Can we use blessed globref like an ordinary filehandle?";
     $T->msg("OO print");
     $GH->print("a\nb\n");
     $T->msg("Op print");

@@ -18,15 +18,12 @@ If you have any Perl5, you can use the basic OO interface...
     
     # Open a handle on a string, read it line-by-line, then close it:
     $SH = new IO::Scalar \$somestring;
-    while ($_ = $SH->getline) {
-	print "Line: $_";
-    }
+    while ($_ = $SH->getline) { print "Line: $_" }
     $SH->close;
         
     # Open a handle on a string, and slurp in all the lines:
     $SH = new IO::Scalar \$somestring;
     print $SH->getlines; 
-    $SH->close;
      
     # Open a handle on a string, and append to it:
     $SH = new IO::Scalar \$somestring
@@ -57,10 +54,8 @@ interface, and read/write scalars just like files:
     # Reading and writing an anonymous scalar... 
     tie *OUT, 'IO::Scalar';
     print OUT "line 1\nline 2\n", "line 3\n";
-    tied(OUT)->setpos(0);
-    while (<OUT>) {
-       print "LINE: ", $_;
-    }  
+    tied(OUT)->seek(0,0);
+    while (<OUT>) { print "LINE: ", $_ }
 
 
 =head1 DESCRIPTION
@@ -73,15 +68,22 @@ Basically, this:
 
     my $s;
     $SH = new IO::Scalar \$s;
-    $SH->print("Hel", "lo, ");     
-    $SH->print("world!\n");     
+    $SH->print("Hel", "lo, ");         # OO style
+    $SH->print("world!\n");            # ditto
 
 Or this (if you have 5.004 or later):
 
     my $s;
     $SH = tie *OUT, 'IO::Scalar', \$s;
-    print OUT "Hel", "lo, "; 
-    print OUT "world!\n"; 
+    print OUT "Hel", "lo, ";           # non-OO style
+    print OUT "world!\n";              # ditto
+
+Or this (if you have 5.004 or later):
+
+    my $s;
+    $SH = IO::Scalar->new_tie(\$s);
+    $SH->print("Hel", "lo, ");         # OO style...
+    print $SH "world!\n";              # ...or non-OO style!
 
 Causes $s to be set to:    
 
@@ -94,10 +96,13 @@ Causes $s to be set to:
 
 use Carp;
 use strict;
-use vars qw($VERSION);
+use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.110 $, 10;
+$VERSION = substr q$Revision: 1.113 $, 10;
+
+# Inheritance:
+require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
 
 
 #==============================
@@ -123,8 +128,9 @@ sub new {
     $self->open(@_) if @_;
     $self;
 }
-sub DESTROY   { shift->close }
-
+sub DESTROY { 
+    shift->close;
+}
 
 #------------------------------
 
@@ -143,8 +149,8 @@ sub open {
     my ($self, $sref) = @_;
 
     # Sanity:
-    defined($sref) or do {my $s; $sref = \$s};
-    (ref($sref) eq "SCALAR") or croak "open needs a ref to a scalar";
+    defined($sref) or do {my $s = ''; $sref = \$s};
+    (ref($sref) eq "SCALAR") or croak "open() needs a ref to a scalar";
 
     # Setup:
     $self->{Pos} = 0;
@@ -299,23 +305,6 @@ sub read {
 =cut
 
 
-
-#------------------------------
-#
-# Tied handle methods...
-#
-#------------------------------
-
-sub TIEHANDLE { shift->new(@_) }
-sub GETC      { shift->getc(@_) }
-sub PRINT     { shift->print(@_) }
-sub PRINTF    { shift->print(sprintf(@_)) }
-sub READ      { shift->read(@_) }
-sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
-
-
-
-
 #==============================
 
 =head2 Seeking and telling
@@ -329,8 +318,7 @@ sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
 
 =item clearerr
 
-I<Instance method.>  Clear the error and EOF flags.
-A NOOP.
+I<Instance method.>  Clear the error and EOF flags.  A no-op.
 
 =cut
 
@@ -353,8 +341,7 @@ sub eof {
 
 =item seek OFFSET, WHENCE
 
-I<Instance method.>
-Seek to a given position in the stream.
+I<Instance method.>  Seek to a given position in the stream.
 
 =cut
 
@@ -389,7 +376,8 @@ sub tell { shift->{Pos} }
 
 =item setpos POS
 
-Set the current position, using the opaque returned by C<getpos()>.
+I<Instance method.>
+Set the current position, using the opaque value returned by C<getpos()>.
 
 =cut
 
@@ -399,6 +387,7 @@ sub setpos { shift->seek($_[0],0) }
 
 =item getpos 
 
+I<Instance method.>
 Return the current position in the string, as an opaque object.
 
 =cut
@@ -419,9 +408,22 @@ sub sref { shift->{SR} }
 
 
 #------------------------------
+# Tied handle methods...
+#------------------------------
+
+# Conventional tiehandle interface:
+sub TIEHANDLE { shift->new(@_) }
+sub GETC      { shift->getc(@_) }
+sub PRINT     { shift->print(@_) }
+sub PRINTF    { shift->print(sprintf(shift, @_)) }
+sub READ      { shift->read(@_) }
+sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
+
+#------------------------------------------------------------
 
 1;
 __END__
+
 
 
 =back
@@ -430,7 +432,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.110 1998/03/27 07:30:34 eryq Exp $
+$Id: Scalar.pm,v 1.113 1998/04/18 06:16:32 eryq Exp $
 
 
 =head1 AUTHOR
@@ -442,4 +444,7 @@ Thanks to Andy Glew for contributing C<getc()>.
 
 Thanks to Brandon Browning for suggesting C<opened()>.
 
+Thanks to David Richter for finding and fixing the bug in C<PRINTF()>.
+
 =cut
+

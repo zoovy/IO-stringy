@@ -1,8 +1,10 @@
 package IO::ScalarArray;
 
+
 =head1 NAME
 
 IO::ScalarArray - IO:: interface for reading/writing an array of scalars
+
 
 =head1 SYNOPSIS
 
@@ -17,15 +19,12 @@ If you have any Perl5, you can use the basic OO interface...
     # Open a handle on an array-of-scalars, read it line-by-line, 
     # then close it:
     $AH = new IO::ScalarArray \@a;
-    while ($_ = $AH->getline) {
-	print "Line: $_";
-    }
+    while ($_ = $AH->getline) { print "Line: $_" }
     $AH->close;
         
     # Open a handle on an array-of-scalars, and slurp in all the lines:
     $AH = new IO::ScalarArray \@a;
     print $AH->getlines; 
-    $AH->close;
      
     # Open a handle on an array-of-scalars, and append to it:
     $AH = new IO::ScalarArray \@a;
@@ -42,7 +41,7 @@ If you have any Perl5, you can use the basic OO interface...
     $AH = new IO::ScalarArray;
     $AH->print("Hi there!\nHey there!\n");
     $AH->print("Ho there!\n");
-    print "I got: ", join('', @{$AH->aref}), "\n";      ### get at value
+    print "I got: ", @{$AH->aref}, "\n";      ### get at value
 
 If your Perl is 5.004 or later, you can use the TIEHANDLE
 interface, and read/write as array-of-scalars just like files:
@@ -59,9 +58,7 @@ interface, and read/write as array-of-scalars just like files:
     tie *OUT, 'IO::ScalarArray';
     print OUT "line 1\nline 2\n", "line 3\n";
     tied(OUT)->seek(0,0);
-    while (<OUT>) {
-       print "LINE: ", $_;
-    }  
+    while (<OUT>) { print "LINE: ", $_ }
 
 
 =head1 DESCRIPTION
@@ -87,11 +84,11 @@ Or this (if you have 5.004 or later):
     print OUT "Hel", "lo, "; 
     print OUT "world!\n"; 
 
-Causes @a to be set to the following:
+Causes @a to be set to the following arrayt of 3 strings:
 
-    ( "Hel",
-      "lo, ",
-      "world!\n")
+    ( "Hel" , 
+      "lo, " , 
+      "world!\n" )
 
 Compare this with IO::Scalar.
 
@@ -100,25 +97,15 @@ Compare this with IO::Scalar.
 
 =cut
 
-# Some private notes:
-#
-#     * The "current position" is the position before the next
-#       character to be read/written.
-#
-#     * Str gives the string index of the current position, 0-based
-#
-#     * Pos gives the offset within AR[Str], 0-based.
-#
-#     * Inital pos is [0,0].  After print("Hello"), it is [1,0].
-
-
 use Carp;
 use strict;
-use vars qw($VERSION);
+use vars qw($VERSION @ISA);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.110 $, 10;
+$VERSION = substr q$Revision: 1.111 $, 10;
 
+# Inheritance:
+require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
 
 
 #==============================
@@ -144,7 +131,9 @@ sub new {
     $self->open(@_) if @_;
     $self;
 }
-DESTROY { shift->close }
+sub DESTROY { 
+    shift->close;
+}
 
 
 #------------------------------
@@ -473,26 +462,38 @@ sub aref {
 
 =cut
 
-
-
 #------------------------------
-#
 # Tied handle methods...
-#
 #------------------------------
 
+# Conventional tiehandle interface:
 sub TIEHANDLE { shift->new(@_) }
 sub GETC      { shift->getc(@_) }
 sub PRINT     { shift->print(@_) }
-sub PRINTF    { shift->print(sprintf(@_)) }
+sub PRINTF    { shift->print(sprintf(shift, @_)) }
 sub READ      { shift->read(@_) }
 sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
 
+#------------------------------------------------------------
+
+1;
+__END__
+
+# SOME PRIVATE NOTES:
+#
+#     * The "current position" is the position before the next
+#       character to be read/written.
+#
+#     * Str gives the string index of the current position, 0-based
+#
+#     * Pos gives the offset within AR[Str], 0-based.
+#
+#     * Inital pos is [0,0].  After print("Hello"), it is [1,0].
 
 
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.110 1998/03/27 07:30:34 eryq Exp $
+$Id: ScalarArray.pm,v 1.111 1998/04/18 06:16:40 eryq Exp $
 
 
 =head1 AUTHOR

@@ -1,34 +1,4 @@
-------------------------------------------------------------
-INSTALLATION
-
-    This distribution contains several modules:
-
-     	IO::
-     	::Lines        bdpO  I/O handle to read/write to array of lines   ERYQ
-    	::Scalar       RdpO  I/O handle to read/write to a string         ERYQ
-     	::ScalarArray  RdpO  I/O handle to read/write to array of scalars ERYQ
-  	::Wrap         RdpO  Wrap old-style FHs in IO::-like interface    ERYQ
-
-    You know the drill...
-
-	perl Makefile.PL
-	make test
-	make install
-
-------------------------------------------------------------
-CHANGE LOG FOR TOOLKIT
-
-    1.107
-	Added IO::Lines, and made some bug fixes to IO::ScalarArray.
-	Also, added getc().
-
-    1.105
-	No real changes; just upgraded IO::Wrap to have a $VERSION
-	string.
-
-
-------------------------------------------------------------
-Enjoy.  Yell if it breaks.
+See lib/IO/Stringy.pm for details.
 
 Eryq
 eryq@zeegee.com
