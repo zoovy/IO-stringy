@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w         #-*-Perl-*-
 
 use lib "./t", "./lib"; 
-use IO::ScalarArray;
+use IO::Lines;
 use ExtUtils::TBone;
 use Common;
 
@@ -21,29 +21,23 @@ my $tie_tests = (($] >= 5.004) ? 4 : 0);
 $T->begin(11 + $tie_tests);
 
 # Open a scalar on a string, containing initial data:
-my @sa = @Common::DATA_SA;
-my $SAH = IO::ScalarArray->new(\@sa);
-$T->ok($SAH, "OPEN: open a scalar on a ref to an array");
+my @la = @Common::DATA_LA;
+my $LAH = IO::Lines->new(\@la);
+$T->ok($LAH, "OPEN: open a scalar on a ref to an array");
 
 # Run standard tests:
-Common->test_print($SAH);
-Common->test_getc($SAH);
-Common->test_getline($SAH);
-Common->test_read($SAH);
-#Common->test_seek($SAH);
+Common->test_print($LAH);
+Common->test_getc($LAH);
+Common->test_getline($LAH);
+Common->test_read($LAH);
+#Common->test_seek($LAH);
 
 # Run tie tests:
 if ($tie_tests) {
-    Common->test_tie(TieArgs => ['IO::ScalarArray', []]);
+    Common->test_tie(TieArgs => ['IO::Lines', []]);
 }
 
 # So we know everything went well...
 $T->end;
-
-
-
-
-
-
 
 

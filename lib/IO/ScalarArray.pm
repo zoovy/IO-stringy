@@ -39,10 +39,10 @@ If you have any Perl5, you can use the basic OO interface...
     $AH->setpos($pos);          ### $AH->seek(POS,WHENCE) also works
       
     # Open an anonymous temporary scalar array:
-    $SH = new IO::ScalarArray;
-    $SH->print("Hi there!\nHey there!\n");
-    $SH->print("Ho there!\n");
-    print "I got: ", join('', @{$SH->aref}), "\n";      ### get at value
+    $AH = new IO::ScalarArray;
+    $AH->print("Hi there!\nHey there!\n");
+    $AH->print("Ho there!\n");
+    print "I got: ", join('', @{$AH->aref}), "\n";      ### get at value
 
 If your Perl is 5.004 or later, you can use the TIEHANDLE
 interface, and read/write as array-of-scalars just like files:
@@ -76,14 +76,14 @@ this is likely to be more efficient than IO::Scalar.
 Basically, this:
 
     my @a;
-    $SH = new IO::ScalarArray \@a;
-    $SH->print("Hel", "lo, ");     
-    $SH->print("world!\n");     
+    $AH = new IO::ScalarArray \@a;
+    $AH->print("Hel", "lo, ");     
+    $AH->print("world!\n");     
 
 Or this (if you have 5.004 or later):
 
     my @a;
-    $SH = tie *OUT, 'IO::ScalarArray', \@a;
+    $AH = tie *OUT, 'IO::ScalarArray', \@a;
     print OUT "Hel", "lo, "; 
     print OUT "world!\n"; 
 
@@ -117,7 +117,7 @@ use strict;
 use vars qw($VERSION);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.105 $, 10;
+$VERSION = substr q$Revision: 1.109 $, 10;
 
 
 
@@ -131,7 +131,7 @@ $VERSION = substr q$Revision: 1.105 $, 10;
 
 #------------------------------
 
-=item new
+=item new [ARGS...]
 
 I<Class method.>
 Return a new, unattached array handle.  
@@ -164,7 +164,7 @@ sub open {
     my ($self, $aref) = @_;
 
     # Sanity:
-    defined($aref) or do {my $tmp; $aref = \$tmp};
+    defined($aref) or do {my @a; $aref = \@a};
     (ref($aref) eq "ARRAY") or croak "open needs a ref to a array";
 
     # Setup:
@@ -205,6 +205,21 @@ sub close {
 
 #------------------------------
 
+=item getc
+
+I<Instance method.>
+Return the next character, or undef if none remain.
+This does a read(1), which is somewhat costly.
+
+=cut
+
+sub getc {
+    my $buf = '';
+    ($_[0]->read($buf, 1) ? $buf : undef);
+}
+
+#------------------------------
+
 =item getline
 
 I<Instance method.>
@@ -229,8 +244,8 @@ sub getline {
 
         # Get from here to either newline or end of string, and add to line:
 	$$str =~ m/\G(.*?)((\n)|\Z)/g;        # match to 1st newline or EOS
-	$line .= $&;                          # add it
-	$self->{Pos} += length($&);           # move forward
+	$line .= $1.$2;                       # add it
+	$self->{Pos} += length($1.$2);        # move forward by amount matched
 	return $line if $3;                   # done, got a line with "\n"
     }
     return ($line eq '') ? undef : $line;  # return undef if EOF
@@ -462,16 +477,15 @@ sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
 
 
 
-
-
 =head1 VERSION
 
-$Id: ScalarArray.pm,v 1.105 1997/11/06 04:39:41 eryq Exp $
+$Id: ScalarArray.pm,v 1.109 1998/03/23 05:55:53 eryq Exp $
 
 
 =head1 AUTHOR
 
-Eryq (F<eryq@zeegee.com>), Zero G Inc.
+Eryq (F<eryq@zeegee.com>).
+President, Zero G Inc (F<http://www.zeegee.com>).
 
 =cut
 

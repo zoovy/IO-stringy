@@ -97,7 +97,7 @@ use strict;
 use vars qw($VERSION);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.105 $, 10;
+$VERSION = substr q$Revision: 1.109 $, 10;
 
 
 #==============================
@@ -110,7 +110,7 @@ $VERSION = substr q$Revision: 1.105 $, 10;
 
 #------------------------------
 
-=item new
+=item new [ARGS...]
 
 I<Class method.>
 Return a new, unattached scalar handle.  
@@ -143,7 +143,7 @@ sub open {
     my ($self, $sref) = @_;
 
     # Sanity:
-    defined($sref) or do {my $tmp; $sref = \$tmp};
+    defined($sref) or do {my $s; $sref = \$s};
     (ref($sref) eq "SCALAR") or croak "open needs a ref to a scalar";
 
     # Setup:
@@ -182,6 +182,24 @@ sub close {
 
 =cut
 
+
+#------------------------------
+
+=item getc
+
+I<Instance method.>
+Return the next character, or undef if none remain.
+
+=cut
+
+sub getc {
+    my $self = shift;
+    
+    # Return undef right away if at EOF; else, move pos forward:
+    return undef if $self->eof;  
+    substr(${$self->{SR}}, $self->{Pos}++, 1);
+}
+ 
 #------------------------------
 
 =item getline
@@ -202,7 +220,7 @@ sub getline {
     # Get next line:
     pos(${$self->{SR}}) = $self->{Pos}; # start matching at this point
     ${$self->{SR}} =~ m/(.*?)(\n|\Z)/g; # match up to newline or EOS
-    my $line = $&;                      # save it
+    my $line = $1.$2;                   # save it
     $self->{Pos} += length($line);      # everybody remember where we parked!
     return $line; 
 }
@@ -387,6 +405,10 @@ Return a reference to the underlying scalar.
 sub sref { shift->{SR} }
 
 
+#------------------------------
+
+1;
+__END__
 
 
 =back
@@ -395,52 +417,16 @@ sub sref { shift->{SR} }
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.105 1997/12/14 02:24:35 eryq Exp $
+$Id: Scalar.pm,v 1.109 1998/03/23 05:55:47 eryq Exp $
 
 
 =head1 AUTHOR
 
-Eryq (F<eryq@zeegee.com>), Zero G Inc.
+Eryq (F<eryq@zeegee.com>).
+President, Zero G Inc (F<http://www.zeegee.com>).
+
+Thanks to Andy Glew for contributing C<getc>.
+
+
 
 =cut
-
-
-#------------------------------
-# Execute simple test if run as a script.
-#------------------------------
-{ 
-  package main; no strict;
-  eval join('',<main::DATA>) || die "$@ $main::DATA" unless caller();
-}
-1;           # end the module
-__END__
-
-
-sub hrule   {print '.','-'x30,"\n| $_[0]\n", '`','-'x30,"\n"}
-sub present {print "I GOT: <<", @_, ">>\n";}
-my $BUF = '';
-
-
-if ($] >= 5.004) {
-    hrule "Testing tie interface...";
-
-    hrule "Writin' to a scalar...";
-    my $s; 
-    tie *OUTS, 'IO::Scalar', \$s;
-    print OUTS "line 1\nline 2\n", "line 3\n";
-    print "s is now... (($s))\n";
-     
-    hrule "Readin' an' writin' an anonymous scalar...";
-    tie *INOUT, 'IO::Scalar';
-    print INOUT "line 1\nline 2\n", "line 3\n";
-    tied(*INOUT)->setpos(0);
-    while (<INOUT>) {
-       print "LINE: ", $_;
-    }  
-}
-
-# So we know everything went well...
-exit 0;
-
-#------------------------------
-1;

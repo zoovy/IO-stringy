@@ -1,130 +1,46 @@
-use lib "./t", "./lib";
-use IO::Scalar;
-use Checker;
+#!/usr/bin/perl -w         #-*-Perl-*-
 
-## $Checker::OUTPUT = 1;
-print STDERR "\n";
-print STDERR "\tTesting basic OO interface...\n";
+use lib "./t", "./lib"; 
+use IO::Scalar;
+use ExtUtils::TBone;
+use Common;
+
+
+#--------------------
+#
+# TEST...
+#
+#--------------------
+
+# Make a tester:
+my $T = typical ExtUtils::TBone;
+Common->test_init(TBone=>$T);
 
 # Set the counter:
-print "1..", (($] >= 5.004) ? 15 : 12), "\n";
+my $tie_tests = (($] >= 5.004) ? 4 : 0);
+$T->begin(14 + $tie_tests);
 
-my $LIMERICK = <<EOF;
-A diner while dining at Crewe
-Found a rather large mouse in his stew
-   Said the waiter, "Don't shout,
-   And wave it about...
-EOF
-my $LIMERICKFULL = <<EOF;
-A diner while dining at Crewe
-Found a rather large mouse in his stew
-   Said the waiter, "Don't shout,
-   And wave it about...
-or the rest will be wanting one too."
-EOF
+# Open a scalar on a string, containing initial data:
+my $s = $Common::DATA_S;
+my $SH = IO::Scalar->new(\$s);
+$T->ok($SH, "OPEN: open a scalar on a ref to a string");
 
-sub hrule   {print '.','-'x30,"\n| $_[0]\n", '`','-'x30,"\n"}
-sub present {print "I GOT: <<", @_, ">>\n";}
-my $BUF = '';
+# Run standard tests:
+Common->test_print($SH);
+$T->ok(($s eq $Common::FDATA_S), "FULL",
+       S=>$s, F=>$Common::FDATA_S);
+Common->test_getc($SH);
+Common->test_getline($SH);
+Common->test_read($SH);
+Common->test_seek($SH);
 
-
-
-# 1: Open a scalar on a string:
-my $SH = IO::Scalar->new(\$LIMERICK);
-check $SH, 
-    "open a scalar on a ref to a string";
-
-# 2: Append with print
-$SH->print("or the rest");
-$SH->print(" will be wanting one ", 
-           "too.\"\n");
-check(($LIMERICK eq $LIMERICKFULL), 
-      "append to string with print");
-
-# 3: Seek and getline:
-$SH->seek(3,0);
-$_ = $SH->getline;	
-check(($_ eq "iner while dining at Crewe\n"), 
-      "seek(3,START) and getline() gets part of 1st line");
-
-# 4: Subsequent getline:
-$_ = $SH->getline;	
-check(($_ eq "Found a rather large mouse in his stew\n"), 
-      "getline() gets subsequent line");
-
-# 5: EOF:
-$_ = $SH->getline;
-$_ = $SH->getline;
-$_ = $SH->getline;
-$_ = $SH->getline;
-check(!$_,
-      "repeated getline() finds end of stream");
-
-# 6: getlines
-$SH->seek(0,0);
-check((join('', $SH->getlines) eq $LIMERICK),
-      "seek(0,0) and getlines() slurps in string");
-
-# 7: read:
-$SH->seek(0,0);
-$SH->read($BUF,10);
-check (($BUF eq "A diner wh"),
-       "reading first 10 bytes with seek(0,START) + read(10)");
-
-# 8: read:
-$SH->read($BUF,10);
-check (($BUF eq "ile dining"),
-       "reading next 10 bytes with read(10)");
-
-# 9: tell:
-check(($SH->tell == 20),
-      "tell() the current location as 20");
-
-# 10: slurp:
-$SH->seek(0,0);
-$SH->read($BUF,1000);
-check(($BUF eq $LIMERICK),
-      "seek(0,START) + read(1000) reads in whole string");
-
-# 11:
-$SH->seek(-6,2);
-$SH->read($BUF,3);
-check(($BUF eq 'too'),
-      "seek(-6,END) + read(3) returns 'too'");
-
-# 12:
-$SH->seek(-3,1);
-$SH->read($BUF,3);
-present $BUF;
-check(($BUF eq 'too'), 
-      "seek(-3,CUR) + read(3) returns 'too' again");
-
-if ($] >= 5.004) {
-    print STDERR "\tTesting TIEHANDLE interface...\n";
-
-    # 13:
-    my $s; 
-    tie *OUT, 'IO::Scalar', \$s;
-    print OUT "line 1\nline 2\n", "line 3";
-    check(($s eq "line 1\nline 2\nline 3"), 
-	  "tied handle: print");
-
-    # 14:
-    tied(*OUT)->seek(0,0);
-    my @lines;
-    while (<OUT>) { push @lines, $_ }  
-    check(($lines[1] eq "line 2\n"),
-	  "tied handle: setpos and scalar <> gets expected lines");
-
-    # 15:
-    tied(*OUT)->seek(0,0);
-    @lines = <OUT>;
-    check(((join '', @lines) eq "line 1\nline 2\nline 3"),
-	  "tied handle: setpos and array <> slurps in string");
-
+# Run tie tests:
+if ($tie_tests) {
+    Common->test_tie(TieArgs => ['IO::Scalar']);
 }
 
 # So we know everything went well...
+$T->end;
 
 
 
