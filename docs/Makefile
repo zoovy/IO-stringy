@@ -1,22 +1,35 @@
+MODDIR = IO
+MODPATH = IO/Stringy.pm
 
-TOP = ..
-LIB = ../lib
-P2CH   = perl -I${HOME}/dev/perl/podpeople/lib ${HOME}/dev/perl/podpeople/bin/pod2coolhtml
+### Variables:
+TOP      = ..
+LIB      = ../lib
+POD2HTML = perl \
+	-I ~/dev/perl/podpeople/lib \
+	-I /usr/lib/perl5/site-perl \
+	~/dev/perl/podpeople/bin/pod2coolhtml
+READMES  = ${TOP}/README \
+           ${TOP}/README.system 
 
-dist: all
 
-all: readme htmls
+### Rules:
+all:  Makefile readmes htmls
 
-readme: ../README ../README.system
+Makefile: Makefile.cfg
+	pmdocmake
 
-../README : ${LIB}/IO/Stringy.pm
-	pod2readme -t $< > ../README
+dist: all 
 
-../README.system :
-	perlsetup > ../README.system
+${TOP}/README : ${LIB}/${MODPATH} ${TOP}/Makefile
+	pod2readme -t $< > ${TOP}/README
 
-htmls:
-	${P2CH} -R ../lib -O . -I IO
+${TOP}/README.system : ${TOP}/Makefile
+	perlsetup > ${TOP}/README.system
+
+readmes: ${READMES}
+
+htmls: ${LIB}/${MODPATH}
+	( ${POD2HTML} -R ${LIB} -I ${MODDIR} -O . )
 
 
 

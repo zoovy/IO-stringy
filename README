@@ -38,6 +38,9 @@ INSTALLATION
         make install
 
 CHANGE LOG
+    Version 1.206
+        Added creation of ./testout when Makefile.PL is run.
+
     Version 1.205
         Verified for Perl5.005.
 
@@ -55,7 +58,7 @@ CHANGE LOG
         No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 VERSION
-    $Id: Stringy.pm,v 1.205 1999/01/15 06:06:18 eryq Exp $
+    $Id: Stringy.pm,v 1.206 1999/04/18 03:43:41 eryq Exp $
 
 AUTHOR
     Eryq (eryq@zeegee.com). President, ZeeGee Software Inc

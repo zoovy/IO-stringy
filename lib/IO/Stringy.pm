@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.205 $, 10;
+$VERSION = substr q$Revision: 1.206 $, 10;
 
 1;
 __END__
@@ -57,6 +57,11 @@ You know the drill...
 
 =over 4
 
+=item Version 1.206
+
+Added creation of ./testout when Makefile.PL is run.
+
+
 =item Version 1.205
 
 Verified for Perl5.005.
@@ -89,7 +94,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.205 1999/01/15 06:06:18 eryq Exp $
+$Id: Stringy.pm,v 1.206 1999/04/18 03:43:41 eryq Exp $
 
 
 

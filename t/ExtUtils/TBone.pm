@@ -31,7 +31,11 @@ and then write your t/*.t files like this:
 	   "Do they match?",
 	   This => $this,
 	   That => $that);
-    
+     
+    # That last one could have also been written... 
+    $T->ok_eq($this, $that);            # does 'eq' and logs operands
+    $T->ok_eqnum($this, $that);         # does '==' and logs operands 
+     
     # End testing:
     $T->end;   
 
@@ -83,7 +87,7 @@ use vars qw($VERSION);
 use FileHandle;
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.106 $, 10;
+$VERSION = substr q$Revision: 1.110 $, 10;
 
 
 #------------------------------
@@ -111,6 +115,7 @@ sub new {
 	Count=>0,
     }, shift;
     $self->log_open(@_) if @_;
+    $self;
 }
 
 #------------------------------
@@ -247,14 +252,60 @@ sub ok {
 	my ($k, $v) = (shift @ps, shift @ps);
 	my @vs = ((ref($v) and (ref($v) eq 'ARRAY'))? @$v : ($v));
 	foreach (@vs) { 
-	    s{([\n\t\x00-\x1F\x7F-\xFF\\"])}{'\\'.sprintf("%02X",ord($1)) }exg;
-	    s{\\0A}{\\n}g;
-	    $self->ln_print(qq{  $k: "$_"\n});
+	    if (!defined($_)) {  # value not defined: output keyword
+		$self->ln_print(qq{  $k: undef\n});
+	    }
+	    else {               # value defined: output quoted, encoded form
+		s{([\n\t\x00-\x1F\x7F-\xFF\\\"])}
+                 {'\\'.sprintf("%02X",ord($1)) }exg;
+	        s{\\0A}{\\n}g;
+	        $self->ln_print(qq{  $k: "$_"\n});
+            }
 	}
     }
     $self->ln_print($status, "\n");
     $self->l_print("\n");
     1;
+}
+
+
+#------------------------------
+
+=item ok_eq ASTRING, BSTRING, [TESTNAME], [PARAMHASH...]
+
+I<Instance method.>  
+Convenience front end to ok(): test whether C<ASTRING eq BSTRING>, and
+logs the operands as 'A' and 'B'.
+
+=cut
+
+sub ok_eq {
+    my ($self, $this, $that, $test, @ps) = @_;
+    $self->ok(($this eq $that), 
+	      ($test || "(Is 'A' string-equal to 'B'?)"),
+	      A => $this,
+	      B => $that,
+	      @ps);
+}
+
+
+#------------------------------
+
+=item ok_eqnum ANUM, BNUM, [TESTNAME], [PARAMHASH...]
+
+I<Instance method.>  
+Convenience front end to ok(): test whether C<ANUM == BNUM>, and
+logs the operands as 'A' and 'B'.  
+
+=cut
+
+sub ok_eqnum {
+    my ($self, $this, $that, $test, @ps) = @_;
+    $self->ok(($this == $that), 
+	      ($test || "(Is 'A' numerically-equal to 'B'?)"),
+	      A => $this,
+	      B => $that,
+	      @ps);
 }
 
 #------------------------------
@@ -362,9 +413,19 @@ sub ln_print {
 
 =back
 
-=head1 VERSION
 
-Revision: $Revision: 1.106 $
+=head1 CHANGE LOG
+
+B<Current version:>
+$Id: TBone.pm,v 1.110 1999/04/17 05:12:29 eryq Exp $
+
+=over 4
+
+=item Version 1.110
+
+Fixed bug in constructor that surfaced if no log was being used. 
+
+=back
 
 Created: Friday-the-13th of February, 1998.
 
