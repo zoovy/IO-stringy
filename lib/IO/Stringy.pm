@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 2.106 $, 10;
+$VERSION = substr q$Revision: 2.108 $, 10;
 
 1;
 __END__
@@ -107,7 +107,7 @@ Don't think I won't.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 2.106 2001/08/17 01:57:46 eryq Exp $
+$Id: Stringy.pm,v 2.108 2001/08/20 20:36:15 eryq Exp $
 
 
 
@@ -167,6 +167,12 @@ object is just like an IO::Scalar in its use of globrefs.
 =over 4
 
 
+=item Version 2.108   (2001/08/20)
+
+The terms-of-use have been placed in the distribution file "COPYING".  
+Also, small documentation tweaks were made.
+
+
 =item Version 2.105   (2001/08/09)
 
 Added support for various seek() whences to IO::ScalarArray.
@@ -178,7 +184,6 @@ Unsupported record separators will cause a croak().
 Added a lot of regression tests to supoprt the above.
 
 Better on-line docs (hyperlinks to individual functions).
-
 
 
 =item Version 2.103   (2001/08/08)
@@ -408,6 +413,9 @@ are officially recognized:
 
 
 =back
+
+Go to F<http://www.zeegee.com> for the latest downloads
+and on-line documentation for this module. 
 
 Enjoy.  Yell if it breaks.
 
