@@ -64,6 +64,16 @@ Stringification now works, too!
     $SH->print("world!");
     print "I've got: <$SH>\n";
 
+You can also make the objects sensitive to the $/ setting,
+just like IO::Handle wants them to be:
+
+    my $SH = new IO::Scalar \$somestring;
+    $SH->use_RS(1);           ### perlvar's short name for $/
+    ...
+    local $/ = "";            ### read paragraph-at-a-time
+    $nextpar = $SH->getline;
+
+
 
 =head1 DESCRIPTION
 
@@ -111,12 +121,11 @@ use overload '""'   => sub { ${$_[0]->{SR}} };
 use overload 'bool' => sub { 1 };      ### have to do this, so object is true! 
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.124 $, 10;
+$VERSION = substr q$Revision: 1.125 $, 10;
 
 ### Inheritance:
 @ISA = qw(IO::Handle);
 require IO::WrapTie and push @ISA, 'IO::WrapTie::Slave' if ($] >= 5.004);
-
 
 #==============================
 
@@ -166,8 +175,8 @@ sub open {
     (ref($sref) eq "SCALAR") or croak "open() needs a ref to a scalar";
 
     # Setup:
-    $self->{Pos} = 0;
-    $self->{SR} = $sref;
+    $self->{Pos} = 0;          ### seek position
+    $self->{SR}  = $sref;      ### scalar reference
     $self;
 }
 
@@ -262,23 +271,71 @@ sub getline {
 
     # Get next line:
     my $sr = $self->{SR};
-    my $i = $self->{Pos};	        # Start matching at this point.
-    my $len = length(${$sr});
-    for (; $i < $len; ++$i) {
-	last if ord (substr (${$sr}, $i, 1)) == 10;
+    my $i  = $self->{Pos};	        # Start matching at this point.
+
+    ### Minimal impact implementation!
+    ### We do the fast fast thing (no regexps) if using the
+    ### classic input record separator.
+    my $RS = $self->{UseRS} ? $/ : "\012";
+
+    ### Case 1: $RS is undef: slurp all...    
+    if    (!defined($RS)) {
+	$self->{Pos} = length $$sr;
+        return substr($$sr, $i);
     }
 
-    # Extract the line:
-    my $line;
-    if ($i < $len) {
-	$line = substr (${$sr}, $self->{Pos}, $i - $self->{Pos} + 1);
-	$self->{Pos} = $i+1;            # Remember where we finished up.
+    ### Case 2: $RS is "\n": zoom zoom zoom...
+    elsif ($RS eq "\012") {    
+        
+        ### Seek ahead for "\n"... yes, this really is faster than regexps.
+        my $len = length($$sr);
+        for (; $i < $len; ++$i) {
+           last if ord (substr ($$sr, $i, 1)) == 10;
+        }
+
+        ### Extract the line:
+        my $line;
+        if ($i < $len) {                ### We found a "\n":
+            $line = substr ($$sr, $self->{Pos}, $i - $self->{Pos} + 1);
+            $self->{Pos} = $i+1;            ### Remember where we finished up.
+        }
+        else {                          ### No "\n"; slurp the remainder:
+            $line = substr ($$sr, $self->{Pos}, $i - $self->{Pos});
+            $self->{Pos} = $len;
+        }
+        return $line; 
     }
-    else {
-	$line = substr (${$sr}, $self->{Pos}, $i - $self->{Pos});
-        $self->{Pos} = $len;
+
+    ### Case 3: $RS is ref to int.  Bail out.
+    elsif (ref($RS)) {
+        croak '$RS as ref to int is currently unsupported';
     }
-    return $line; 
+
+    ### Case 4: $RS is either "" (paragraphs) or something weird...
+    ###         This is Graham's general-purpose stuff, which might be 
+    ###         a tad slower than Case 2 for typical data, because
+    ###         of the regexps.
+    else {                
+        pos($$sr) = $i;
+
+	### If in paragraph mode, skip leading lines (and update i!):
+        length($RS) or 
+	    (($$sr =~ m/\G\n*/g) and ($i = pos($$sr)));
+
+        ### If we see the separator in the buffer ahead...
+        if (length($RS)                       
+	    ?  $$sr =~ m,\Q$RS\E,g         ###   (ordinary sep) TBD: precomp!
+            :  $$sr =~ m,\n\n,g            ###   (a paragraph)
+            ) {
+            $self->{Pos} = pos $$sr;
+            return substr($$sr, $i, $self->{Pos}-$i);
+        }
+        ### Else if no separator remains, just slurp the rest:
+        else {      
+            $self->{Pos} = length $$sr;
+            return substr($$sr, $i);
+        }
+    }
 }
 
 #------------------------------
@@ -481,8 +538,8 @@ I<Instance method.> Identical to C<seek OFFSET, WHENCE>, I<q.v.>
 =cut
 
 sub sysseek {
-  my $self = shift;
-  $self->seek (@_);
+    my $self = shift;
+    $self->seek (@_);
 }
 
 #------------------------------
@@ -495,6 +552,21 @@ Return the current position in the stream, as a numeric offset.
 =cut
 
 sub tell { shift->{Pos} }
+
+#------------------------------
+
+=item use_RS [YESNO]
+
+I<Instance method.>
+Obey the curent setting of $/, like IO::Handle does?
+Default is false.
+
+=cut
+
+sub use_RS {
+    my ($self, $yesno) = @_;
+    $self->{UseRS} = $yesno;
+}
 
 #------------------------------
 
@@ -559,7 +631,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.124 2001/02/23 07:15:35 eryq Exp $
+$Id: Scalar.pm,v 1.125 2001/02/23 09:46:22 eryq Exp $
 
 
 =head1 AUTHORS

@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.218 $, 10;
+$VERSION = substr q$Revision: 1.219 $, 10;
 
 1;
 __END__
@@ -78,7 +78,7 @@ Don't think I won't.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.218 2001/02/23 07:08:00 eryq Exp $
+$Id: Stringy.pm,v 1.219 2001/02/23 09:46:23 eryq Exp $
 
 
 
@@ -86,11 +86,14 @@ $Id: Stringy.pm,v 1.218 2001/02/23 07:08:00 eryq Exp $
 
 =over 4
 
-=item (2000/08/02)  Add $/ support
+=item (2000/08/02)  Finalize $/ support
 
 Graham Barr submitted this patch half a I<year> ago; 
-Like a moron, I lost his message under a ton of others.
-Graham, forgive me.  It's back on the queue.
+Like a moron, I lost his message under a ton of others,
+and only now have the experimental implementation done.
+
+Will the sudden sensitivity to $/ hose anyone out there?
+I'm worried, so you have to enable it explicitly.
 
 
 =item (2000/09/28)  Separate read/write cursors?
@@ -121,6 +124,14 @@ But I'll give it a shot.)
 =head1 CHANGE LOG 
 
 =over 4
+
+=item Version 1.219   (2001/02/23)
+
+IO::Scalar objects can now be made sensitive to $/ .
+Pains were taken to keep the fast code fast while adding this feature.
+I<Cheers to Graham Barr for submitting his patch; 
+jeers to me for losing his email for 6 months.>
+
 
 =item Version 1.218   (2001/02/23)
 

@@ -99,6 +99,17 @@ interface, and read/write scalars just like files:
     print &quot;I've got: &lt;$SH&gt;\n&quot;;
 </PRE></FONT>
 
+<P>You can also make the objects sensitive to the $/ setting,
+just like IO::Handle wants them to be:
+
+<FONT SIZE=3 FACE="courier"><PRE>
+    my $SH = new IO::Scalar \$somestring;
+    $SH-&gt;use_RS(1);           ### perlvar's short name for $/
+    ...
+    local $/ = &quot;&quot;;            ### read paragraph-at-a-time
+    $nextpar = $SH-&gt;getline;
+</PRE></FONT>
+
 
 <P><HR>
 <A NAME="DESCRIPTION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> DESCRIPTION</H2></A>
@@ -286,6 +297,12 @@ No-op, provided for OO compatibility.
 <I>Instance method.</I>
 Return the current position in the stream, as a numeric offset.
 
+<P><DT><B><A NAME="item:use_RS">use_RS [YESNO]</A></B></DT>
+<DD>
+<I>Instance method.</I>
+Obey the curent setting of $/, like IO::Handle does?
+Default is false.
+
 <P><DT><B><A NAME="item:setpos">setpos POS</A></B></DT>
 <DD>
 <I>Instance method.</I>
@@ -309,7 +326,7 @@ Return a reference to the underlying scalar.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Scalar.pm,v 1.124 2001/02/23 07:15:35 eryq Exp $
+<P>$Id: Scalar.pm,v 1.125 2001/02/23 09:46:22 eryq Exp $
 
 
 
@@ -364,7 +381,7 @@ and sundry good ideas.
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Fri Feb 23 02:15:59 2001 by cvu_pod2html
+Generated Fri Feb 23 04:46:59 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

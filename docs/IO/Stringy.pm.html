@@ -109,7 +109,7 @@ Don't think I won't.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Stringy.pm,v 1.218 2001/02/23 07:08:00 eryq Exp $
+<P>$Id: Stringy.pm,v 1.219 2001/02/23 09:46:23 eryq Exp $
 
 
 
@@ -119,11 +119,15 @@ Don't think I won't.
 
 
 <DL>
-<P><DT><B><A NAME="item:2000_08_02_Add_support">(2000/08/02)  Add $/ support</A></B></DT>
+<P><DT><B><A NAME="item:2000_08_02_Finalize_support">(2000/08/02)  Finalize $/ support</A></B></DT>
 <DD>
 Graham Barr submitted this patch half a <I>year</I> ago; 
-Like a moron, I lost his message under a ton of others.
-Graham, forgive me.  It's back on the queue.
+Like a moron, I lost his message under a ton of others,
+and only now have the experimental implementation done.
+
+
+<P>Will the sudden sensitivity to $/ hose anyone out there?
+I'm worried, so you have to enable it explicitly.
 
 <P><DT><B><A NAME="item:2000_09_28_Separate_read_write_cursors">(2000/09/28)  Separate read/write cursors?</A></B></DT>
 <DD>
@@ -160,6 +164,13 @@ But I'll give it a shot.)
 
 
 <DL>
+<P><DT><B><A NAME="item:Version">Version 1.219   (2001/02/23)</A></B></DT>
+<DD>
+IO::Scalar objects can now be made sensitive to $/ .
+Pains were taken to keep the fast code fast while adding this feature.
+<I>Cheers to Graham Barr for submitting his patch; 
+jeers to me for losing his email for 6 months.</I>
+
 <P><DT><B><A NAME="item:Version">Version 1.218   (2001/02/23)</A></B></DT>
 <DD>
 IO::Scalar has a new sysseek() method.
@@ -298,7 +309,7 @@ are officially recognized:
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Fri Feb 23 02:16:04 2001 by cvu_pod2html
+Generated Fri Feb 23 04:47:04 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>
