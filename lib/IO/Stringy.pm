@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.211 $, 10;
+$VERSION = substr q$Revision: 1.212 $, 10;
 
 1;
 __END__
@@ -56,6 +56,13 @@ You know the drill...
 =head1 CHANGE LOG 
 
 =over 4
+
+
+=item Version 1.212
+
+Fixed IO::InnerFile incompatibility with Perl5.004.
+I<Thanks to many folks for reporting this.>
+
 
 =item Version 1.210
 
@@ -112,7 +119,7 @@ No real changes; just upgraded IO::Wrap to have a $VERSION string.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.211 2000/05/03 12:14:50 eryq Exp $
+$Id: Stringy.pm,v 1.212 2000/06/02 06:30:15 eryq Exp $
 
 
 

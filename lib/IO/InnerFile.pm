@@ -19,6 +19,9 @@ can open an IO::InnerFile on a range of the underlying file.
 
 use Symbol;
 
+# The package version, both in 1.23 style *and* usable by MakeMaker:
+$VERSION = substr q$Revision: 1.102 $, 10;
+
 #------------------------------
 
 =item new FILEHANDLE, [START, [LENGTH]]
@@ -190,7 +193,9 @@ sub GETC   {
 }
 
 sub READ   { 
-    my ($self, undef, $lg, $ofs) = @_;
+    my ($self, $undefined, $lg, $ofs) = @_;
+    $undefined = undef;
+
     return 0 if ($self->{CRPOS} >= $self->{LG});
     $lg = $self->{LG} - $self->{CRPOS} if ($self->{CRPOS} + $lg > $self->{LG});
     return 0 unless ($lg);
@@ -246,6 +251,7 @@ sub CLOSE { %{$_[0]}=(); }
 __END__
 
 =back
+
 
 =head1 AUTHOR
 
