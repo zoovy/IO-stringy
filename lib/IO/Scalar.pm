@@ -11,30 +11,30 @@ IO::Scalar - IO:: interface for reading/writing a scalar
 If you have any Perl5, you can use the basic OO interface...
 
     use IO::Scalar;
-    
+
     ### Open a handle on a string:
     $SH = new IO::Scalar;
     $SH->open(\$somestring);
-    
+
     ### Open a handle on a string, read it line-by-line, then close it:
     $SH = new IO::Scalar \$somestring;
     while ($_ = $SH->getline) { print "Line: $_" }
     $SH->close;
-        
+
     ### Open a handle on a string, and slurp in all the lines:
     $SH = new IO::Scalar \$somestring;
     print $SH->getlines; 
-     
+
     ### Open a handle on a string, and append to it:
     $SH = new IO::Scalar \$somestring
     $SH->print("bar\n");        ### will add "bar\n" to the end   
-      
+
     ### Get the current position:
     $pos = $SH->getpos;         ### $SH->tell() also works
-     
+
     ### Set the current position:
     $SH->setpos($pos);          ### $SH->seek(POS,WHENCE) also works
-        
+
     ### Open an anonymous temporary scalar:
     $SH = new IO::Scalar;
     $SH->print("Hi there!");
@@ -50,7 +50,7 @@ interface, and read/write scalars just like files:
     tie *OUT, 'IO::Scalar', \$s;
     print OUT "line 1\nline 2\n", "line 3\n";
     print "s is now... $s\n"
-     
+
     ### Reading and writing an anonymous scalar... 
     tie *OUT, 'IO::Scalar';
     print OUT "line 1\nline 2\n", "line 3\n";
@@ -121,7 +121,7 @@ use overload '""'   => sub { ${$_[0]->{SR}} };
 use overload 'bool' => sub { 1 };      ### have to do this, so object is true! 
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision: 1.125 $, 10;
+$VERSION = substr q$Revision: 1.126 $, 10;
 
 ### Inheritance:
 @ISA = qw(IO::Handle);
@@ -246,12 +246,12 @@ Return the next character, or undef if none remain.
 
 sub getc {
     my $self = shift;
-    
+
     # Return undef right away if at EOF; else, move pos forward:
     return undef if $self->eof;  
     substr(${$self->{SR}}, $self->{Pos}++, 1);
 }
- 
+
 #------------------------------
 
 =item getline
@@ -286,7 +286,7 @@ sub getline {
 
     ### Case 2: $RS is "\n": zoom zoom zoom...
     elsif ($RS eq "\012") {    
-        
+
         ### Seek ahead for "\n"... yes, this really is faster than regexps.
         my $len = length($$sr);
         for (; $i < $len; ++$i) {
@@ -616,6 +616,9 @@ sub READ      { shift->read(@_) }
 sub READLINE  { wantarray ? shift->getlines(@_) : shift->getline(@_) }
 sub WRITE     { shift->write(@_); }
 sub CLOSE     { shift->close(@_); }
+sub SEEK      { shift->seek(@_); }
+sub TELL      { shift->tell(@_); }
+sub EOF       { shift->eof(@_); }
 
 #------------------------------------------------------------
 
@@ -631,7 +634,7 @@ __END__
 
 =head1 VERSION
 
-$Id: Scalar.pm,v 1.125 2001/02/23 09:46:22 eryq Exp $
+$Id: Scalar.pm,v 1.126 2001/04/04 05:37:51 eryq Exp $
 
 
 =head1 AUTHORS
@@ -670,5 +673,13 @@ I<B. K. Oxley (binkley),>
 for stringification and inheritance improvements,
 and sundry good ideas.
 
+
+=head1 SEE ALSO
+
+L<IO::String>, which is quite similar but which was designed
+more-recently and with an IO::Handle-like interface in mind, 
+so you can mix OO- and native-filehandle usage without using tied().  
+I<Note:> if anyone can make IO::Scalar do that without breaking
+the regression tests, I'm all ears.
 
 =cut

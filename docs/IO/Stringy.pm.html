@@ -90,9 +90,10 @@ it.  For example, under Linux:
 
 <FONT SIZE=3 FACE="courier"><PRE>
     cp -r IO-stringy-1.234/lib/* /path/to/my/perl/
-    
-Now, in your Perl code, do this:
 </PRE></FONT>
+
+<P>Now, in your Perl code, do this:
+
 <FONT SIZE=3 FACE="courier"><PRE>
     use lib &quot;/path/to/my/perl&quot;;
     use IO::Scalar;                   ### or whatever
@@ -109,7 +110,7 @@ Don't think I won't.
 <A NAME="VERSION"><H2><A HREF="#__TOP__"><IMG SRC="icons/h1bullet.gif" ALT="Top" BORDER="0"></A> VERSION</H2></A>
 
 
-<P>$Id: Stringy.pm,v 1.219 2001/02/23 09:46:23 eryq Exp $
+<P>$Id: Stringy.pm,v 1.220 2001/04/04 05:37:51 eryq Exp $
 
 
 
@@ -164,6 +165,19 @@ But I'll give it a shot.)
 
 
 <DL>
+<P><DT><B><A NAME="item:Version">Version 1.220   (2001/04/03)</A></B></DT>
+<DD>
+Added untested SEEK, TELL, and EOF methods to IO::Scalar 
+and IO::ScalarArray to support corresponding functions for
+tied filehandles: untested, because I'm still running 5.00556 
+and Perl is complaining about &quot;tell() on unopened file&quot;.
+<I>Thanks to Graham Barr for the suggestion.</I>
+
+
+<P>Removed not-fully-blank lines from modules; these were causing
+lots of POD-related warnings.  
+<I>Thanks to Nicolas Joly for the suggestion.</I>
+
 <P><DT><B><A NAME="item:Version">Version 1.219   (2001/02/23)</A></B></DT>
 <DD>
 IO::Scalar objects can now be made sensitive to $/ .
@@ -207,7 +221,8 @@ For you, Rich, a double-length haiku:</I>
        Newspaper headline
           typeset by dyslexic man
        loses urgency
-        
+</PRE></FONT>
+<FONT SIZE=3 FACE="courier"><PRE>
        BABY EATS FISH is
           simply not equivalent   
        to FISH EATS BABY
@@ -309,7 +324,7 @@ are officially recognized:
 
 <P><HR>
 <ADDRESS><FONT SIZE=-1>
-Generated Fri Feb 23 04:47:04 2001 by cvu_pod2html
+Generated Wed Apr  4 01:38:26 2001 by cvu_pod2html
 </FONT></ADDRESS>
 </FONT></BODY>
 </HTML>

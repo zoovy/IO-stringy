@@ -1,7 +1,7 @@
 package IO::Stringy;
 
 use vars qw($VERSION);
-$VERSION = substr q$Revision: 1.219 $, 10;
+$VERSION = substr q$Revision: 1.220 $, 10;
 
 1;
 __END__
@@ -63,7 +63,7 @@ under my "./lib" directory into someplace where your script can "see"
 it.  For example, under Linux:
 
     cp -r IO-stringy-1.234/lib/* /path/to/my/perl/
-    
+
 Now, in your Perl code, do this:
 
     use lib "/path/to/my/perl";
@@ -78,7 +78,7 @@ Don't think I won't.
 
 =head1 VERSION
 
-$Id: Stringy.pm,v 1.219 2001/02/23 09:46:23 eryq Exp $
+$Id: Stringy.pm,v 1.220 2001/04/04 05:37:51 eryq Exp $
 
 
 
@@ -125,6 +125,19 @@ But I'll give it a shot.)
 
 =over 4
 
+=item Version 1.220   (2001/04/03)
+
+Added untested SEEK, TELL, and EOF methods to IO::Scalar 
+and IO::ScalarArray to support corresponding functions for
+tied filehandles: untested, because I'm still running 5.00556 
+and Perl is complaining about "tell() on unopened file".
+I<Thanks to Graham Barr for the suggestion.>
+
+Removed not-fully-blank lines from modules; these were causing
+lots of POD-related warnings.  
+I<Thanks to Nicolas Joly for the suggestion.>
+
+
 =item Version 1.219   (2001/02/23)
 
 IO::Scalar objects can now be made sensitive to $/ .
@@ -167,7 +180,7 @@ For you, Rich, a double-length haiku:>
        Newspaper headline
           typeset by dyslexic man
        loses urgency
-        
+
        BABY EATS FISH is
           simply not equivalent   
        to FISH EATS BABY
@@ -280,11 +293,4 @@ Enjoy.  Yell if it breaks.
 
 
 =cut
-
-
-
-
-
-
-
 
